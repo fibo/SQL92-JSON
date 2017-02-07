@@ -6,7 +6,7 @@
 [Usage](#usage) |
 [License](#license)
 
-[![NPM version](https://badge.fury.io/js/SQL92-JSON.svg)](http://badge.fury.io/js/SQL92-JSON) [![Build Status](https://travis-ci.org/fibo/SQL92-JSON.svg?branch=master)](https://travis-ci.org/fibo/SQL92-JSON?branch=master) [![Dependency Status](https://david-dm.org/fibo/SQL92-JSON.svg)](https://david-dm.org/fibo/SQL92-JSON)
+[![NPM version](https://badge.fury.io/js/sql92-json.svg)](http://badge.fury.io/js/sql92-json) [![Build Status](https://travis-ci.org/fibo/SQL92-JSON.svg?branch=master)](https://travis-ci.org/fibo/SQL92-JSON?branch=master) [![Dependency Status](https://david-dm.org/fibo/sql92-json.svg)](https://david-dm.org/fibo/sql92-json)
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
