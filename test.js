@@ -14,7 +14,9 @@ test('README', function (t) {
 })
 
 test('examples', function (t) {
-  t.plan(1)
+  var numSelect = 2
+
+  t.plan(numSelect)
 
   var examplesDir = path.join(__dirname, 'examples')
 
