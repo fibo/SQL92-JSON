@@ -1,6 +1,6 @@
 {
   "name": "sql92-json",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "can stringify a JSON into an SQL",
   "main": "sql92-json.js",
   "scripts": {
