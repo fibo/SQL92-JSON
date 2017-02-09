@@ -1,5 +1,9 @@
 var hasFrom = require('./hasFrom')
+var hasLimit = require('./hasLimit')
+var hasOffset = require('./hasOffset')
+var hasWhere = require('./hasWhere')
 var isSelect = require('./isSelect')
+var whereConditions = require('./whereConditions')
 
 /**
  * Convert JSON to SQL.
@@ -13,17 +17,29 @@ function stringify (json) {
   var sql = null
 
   if (isSelect(json)) {
-    if (sql) sql += '\nSELECT '
+    if (sql) sql += ' SELECT '
     else sql = 'SELECT '
 
-    sql += json.SELECT.join('\n\t')
+    sql += json.SELECT.join(', ')
   }
 
   if (hasFrom(json)) {
-    sql += '\nFROM ' + json.FROM.join('\n\t')
+    sql += ' FROM ' + json.FROM.join(' ')
   }
 
-  return sql + '\n'
+  if (hasWhere(json)) {
+    sql += ' WHERE ' + whereConditions(json.WHERE)
+  }
+
+  if (hasLimit(json)) {
+    sql += ' LIMIT ' + json.LIMIT
+  }
+
+  if (hasOffset(json)) {
+    sql += ' OFFSET ' + json.OFFSET
+  }
+
+  return sql
 }
 
 module.exports = stringify

@@ -7,14 +7,14 @@ var json2sql = require('sql92-json').stringify
 test('README', function (t) {
   t.plan(1)
 
-  var expected = 'SELECT *\nFROM revenue\n'
+  var expected = 'SELECT * FROM revenue'
   var result = json2sql({SELECT: ['*'], FROM: ['revenue']})
 
-  t.equal(expected, result)
+  t.equal(expected, result, 'README example')
 })
 
 test('examples', function (t) {
-  var numSelect = 2
+  var numSelect = 5
 
   t.plan(numSelect)
 
@@ -36,7 +36,10 @@ test('examples', function (t) {
 
           var result = json2sql(require(jsonFile))
 
-          t.equal(expected, result)
+          expected = expected.replace(/\n$/, '')
+          expected = expected.replace(/[\t\n]+/g, ' ')
+
+          t.equal(result, expected, filename)
         })
       }
     })

@@ -1,0 +1,3 @@
+SELECT *
+FROM mytable
+WHERE yyyymmdd = 20170101

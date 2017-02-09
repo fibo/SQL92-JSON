@@ -33,6 +33,24 @@ console.log(json2sql({SELECT: ['*'], FROM: ['revenue']}))
 
 See [examples] folder.
 
+```json
+{
+  "SELECT": [ "field1", "field2" ],
+  "FROM": [ "mytable" ],
+  "LIMIT": 10,
+  "OFFSET": 2
+}
+```
+
+```sql
+SELECT
+	field1,
+	field2
+FROM mytable
+LIMIT 10
+OFFSET 2
+```
+
 ## License
 
 [MIT](http://g14n.info/mit-license/)
