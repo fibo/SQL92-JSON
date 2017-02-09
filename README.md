@@ -25,10 +25,10 @@ npm install sql92-json
 ```javascript
 var json2sql = require('sql92-json').stringify
 
-console.log(json2sql({SELECT: ['*'], FROM: ['revenue']}))
-// SELECT *
-// FROM revenue
-//
+console.log(json2sql({  //
+  SELECT: ['*'],        // SELECT *
+  FROM: ['revenue']     // FROM revenue
+}))                     //
 ```
 
 See [examples] folder where every `.json` file has its homonym `.sql`.
@@ -41,7 +41,7 @@ See for example the following [example JSON][exampleJSON] and its [corresponding
   "FROM": ["mytable"],
   "WHERE": [
     "yyyymmdd", { "=": 20170101 },
-    { "AND": [ "country", { "=": "IT" } ] }
+    { "AND": [ "country", { "IN": ["IT", "US"] } ] }
   ]
 }
 ```
@@ -50,7 +50,7 @@ See for example the following [example JSON][exampleJSON] and its [corresponding
 SELECT *
 FROM mytable
 WHERE yyyymmdd = 20170101
-	AND country = 'IT'
+	AND country IN ('IT', 'US')
 ```
 
 ## License
@@ -58,5 +58,5 @@ WHERE yyyymmdd = 20170101
 [MIT](http://g14n.info/mit-license/)
 
 [examples]: https://github.com/fibo/SQL92-JSON/tree/master/examples
-[exampleSQL]: https://github.com/fibo/SQL92-JSON/blob/master/examples/select.0006.sql
-[examplesJSON]: https://github.com/fibo/SQL92-JSON/blob/master/examples/select.0006.json
+[exampleSQL]: https://github.com/fibo/SQL92-JSON/blob/master/examples/_readme.select.sql
+[exampleJSON]: https://github.com/fibo/SQL92-JSON/blob/master/examples/_readme.select.json
