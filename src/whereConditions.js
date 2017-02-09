@@ -9,10 +9,14 @@ var whereFilter = require('./whereFilter')
  */
 
 function whereConditions (conditions) {
-  var firstField = conditions[0]
-  var firstFilter = conditions[1]
+  var firstField = conditions.shift()
+  var firstFilter = conditions.shift()
 
   var result = firstField + ' ' + whereFilter(firstFilter)
+
+  for (var i = 0; i < conditions.length; i++) {
+    result += ' ' + whereFilter(conditions[i])
+  }
 
   return result
 }

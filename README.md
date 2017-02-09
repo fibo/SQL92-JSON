@@ -31,24 +31,26 @@ console.log(json2sql({SELECT: ['*'], FROM: ['revenue']}))
 //
 ```
 
-See [examples] folder.
+See [examples] folder where every `.json` file has its homonym `.sql`.
+
+See for example the following [example JSON][exampleJSON] and its [corresponding SQL][exampleSQL].
 
 ```json
 {
-  "SELECT": [ "field1", "field2" ],
-  "FROM": [ "mytable" ],
-  "LIMIT": 10,
-  "OFFSET": 2
+  "SELECT": ["*"],
+  "FROM": ["mytable"],
+  "WHERE": [
+    "yyyymmdd", { "=": 20170101 },
+    { "AND": [ "country", { "=": "IT" } ] }
+  ]
 }
 ```
 
 ```sql
-SELECT
-	field1,
-	field2
+SELECT *
 FROM mytable
-LIMIT 10
-OFFSET 2
+WHERE yyyymmdd = 20170101
+	AND country = 'IT'
 ```
 
 ## License
@@ -56,3 +58,5 @@ OFFSET 2
 [MIT](http://g14n.info/mit-license/)
 
 [examples]: https://github.com/fibo/SQL92-JSON/tree/master/examples
+[exampleSQL]: https://github.com/fibo/SQL92-JSON/blob/master/examples/select.0006.sql
+[examplesJSON]: https://github.com/fibo/SQL92-JSON/blob/master/examples/select.0006.json

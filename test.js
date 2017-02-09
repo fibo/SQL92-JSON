@@ -4,20 +4,25 @@ var test = require('tape')
 
 var json2sql = require('sql92-json').stringify
 
-test('README', function (t) {
-  t.plan(1)
+function normalizeSQL (sql) {
+  sql = sql.replace(/^\s+/, '')
+  sql = sql.replace(/\s+$/, '')
+  sql = sql.replace(/\n$/, '')
+  sql = sql.replace(/[\t\n]+/g, ' ')
 
+  return sql
+}
+
+test('README', function (t) {
   var expected = 'SELECT * FROM revenue'
   var result = json2sql({SELECT: ['*'], FROM: ['revenue']})
 
-  t.equal(expected, result, 'README example')
+  t.equal(expected, result, 'README example 1')
+
+  t.end()
 })
 
 test('examples', function (t) {
-  var numSelect = 5
-
-  t.plan(numSelect)
-
   var examplesDir = path.join(__dirname, 'examples')
 
   fs.readdir(examplesDir, function (err, files) {
@@ -36,14 +41,15 @@ test('examples', function (t) {
 
           var result = json2sql(require(jsonFile))
 
-          expected = expected.replace(/\n$/, '')
-          expected = expected.replace(/[\t\n]+/g, ' ')
+          expected = normalizeSQL(expected)
 
           t.equal(result, expected, filename)
         })
       }
     })
   })
+
+  t.end()
 })
 
 /*
