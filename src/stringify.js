@@ -3,6 +3,8 @@ var hasLimit = require('./hasLimit')
 var hasOffset = require('./hasOffset')
 var hasWhere = require('./hasWhere')
 var isSelect = require('./isSelect')
+var resultSet = require('./resultSet')
+var selectField = require('./selectField')
 var whereConditions = require('./whereConditions')
 
 /**
@@ -20,11 +22,11 @@ function stringify (json) {
     if (sql) sql += ' SELECT '
     else sql = 'SELECT '
 
-    sql += json.SELECT.join(', ')
+    sql += json.SELECT.map(selectField).join(', ')
   }
 
   if (hasFrom(json)) {
-    sql += ' FROM ' + json.FROM.join(' ')
+    sql += ' FROM ' + json.FROM.map(resultSet(stringify)).join(' ')
   }
 
   if (hasWhere(json)) {

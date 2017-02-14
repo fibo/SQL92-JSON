@@ -1,3 +1,3 @@
 SELECT *
 FROM mytable
-WHERE yyyymmdd IN (20170101, 20170104)
+WHERE yyyymmdd IN ( 20170101, 20170104 )

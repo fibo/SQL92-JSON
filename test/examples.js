@@ -4,26 +4,10 @@ var test = require('tape')
 
 var json2sql = require('sql92-json').stringify
 
-function normalizeSQL (sql) {
-  sql = sql.replace(/^\s+/, '')
-  sql = sql.replace(/\s+$/, '')
-  sql = sql.replace(/\n$/, '')
-  sql = sql.replace(/[\t\n]+/g, ' ')
-
-  return sql
-}
-
-test('README', function (t) {
-  var expected = 'SELECT * FROM revenue'
-  var result = json2sql({SELECT: ['*'], FROM: ['revenue']})
-
-  t.equal(expected, result, 'README example 1')
-
-  t.end()
-})
+var normalizeSQL = require('src/util/normalizeSQL')
 
 test('examples', function (t) {
-  var examplesDir = path.join(__dirname, 'examples')
+  var examplesDir = path.join(__dirname, '..', 'examples')
 
   fs.readdir(examplesDir, function (err, files) {
     if (err) throw err
@@ -53,22 +37,7 @@ test('examples', function (t) {
 })
 
 /*
-select * from foo
 
-{ SELECT: ['*'], FROM: ['foo'] }
-
-select
-  pippo,
-  pluto
-from paperino
-where pippo = 'ok'
-
-{
-SELECT: [
-'pippo', 'pluto'
-],
-FROM: [ 'paperino' ],
-WHERE: [ pippo, {'=': 'ok'} ]
 }
 
 select * from paperino where yyyymmdd > 20161801
@@ -169,6 +138,11 @@ select count(*) from foo
 {select: [{count:'*'}],
 from: ['foo']}
 
+select count(*) as num from foo
+
+{select: [{count:'*', as: num}],
+from: ['foo']}
+
 select max(a.time),num from foo a group by num
 
 {select: [{max:{a: 'time'}},'num'],
@@ -196,10 +170,6 @@ where:[
 
 var sql2json = require('sql-json').parse
 var json2sql = require('sql-json').stringify
-
-select 1
-
-{select: [1]}
 
 insert into mytable values ('ok')
 

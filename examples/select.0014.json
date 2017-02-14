@@ -1,0 +1,4 @@
+{
+  "SELECT": [ { "AS": "num", "COUNT": 1 } ],
+  "FROM": [ "mytable" ]
+}
