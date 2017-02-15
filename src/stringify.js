@@ -1,8 +1,10 @@
 var hasFrom = require('./hasFrom')
 var hasLimit = require('./hasLimit')
 var hasOffset = require('./hasOffset')
+var hasOrderBy = require('./hasOrderBy')
 var hasUnion = require('./hasUnion')
 var hasWhere = require('./hasWhere')
+var orderByCondition = require('./orderByCondition')
 var isSelect = require('./isSelect')
 var resultSet = require('./resultSet')
 var selectField = require('./selectField')
@@ -23,6 +25,8 @@ function stringify (json) {
     if (sql) sql += ' SELECT '
     else sql = 'SELECT '
 
+    if (json.DISTINCT) sql += 'DISTINCT '
+
     sql += json.SELECT.map(selectField).join(', ')
   }
 
@@ -32,6 +36,10 @@ function stringify (json) {
 
   if (hasWhere(json)) {
     sql += ' WHERE ' + whereConditions(stringify)(json.WHERE)
+  }
+
+  if (hasOrderBy(json)) {
+    sql += ' ORDER BY ' + json.ORDER.map(orderByCondition).join(', ')
   }
 
   if (hasLimit(json)) {

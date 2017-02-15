@@ -1,7 +1,7 @@
 var whereFilter = require('./whereFilter')
 
 /**
- * A result set is given by a SQL statement.
+ * Extract WHERE conditions.
  *
  * @param {Function} stringify
  *
@@ -10,8 +10,7 @@ var whereFilter = require('./whereFilter')
 
 function whereConditions (stringify) {
  /**
-  * Extract WHERE conditions.
-  *
+  * St
   * @param {Array} conditions
   *
   * @returns {String} result

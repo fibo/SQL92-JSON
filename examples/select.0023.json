@@ -1,0 +1,6 @@
+{
+  "SELECT": [ "state" ],
+  "DISTINCT": true,
+  "FROM": [ "suppliers" ],
+  "ORDER": ["state"]
+}
