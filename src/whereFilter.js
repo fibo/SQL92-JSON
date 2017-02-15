@@ -1,4 +1,5 @@
 var encloseWithParenthesis = require('./util/encloseWithParenthesis')
+var isBetween = require('./isBetween')
 var isSelect = require('./isSelect')
 var quoteIfString = require('./util/quoteIfString')
 
@@ -60,6 +61,12 @@ function whereFilter (stringify) {
       } else {
         return 'AND ' + encloseWithParenthesis(stringyfiedAND)
       }
+    }
+
+    var BETWEEN = filter.BETWEEN
+
+    if (isBetween(filter)) {
+      return 'BETWEEN ' + BETWEEN.map(quoteIfString).join(' AND ')
     }
 
     var OR = filter.OR

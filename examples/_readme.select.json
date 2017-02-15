@@ -10,7 +10,7 @@
         "yyyymmdd", { "=": 20170101 },
         { "AND": [ "country", { "IN": ["IT", "US"] } ] },
         { "AND": [
-          "categoryid", { "=": 100 },
+          "categoryid", { "BETWEEN": [100, 200] },
           { "OR": [ "productname", { "!=": "icecream" } ] }
         ] }
       ]

@@ -5,6 +5,7 @@ FROM (
 	WHERE yyyymmdd = 20170101
 		AND country IN ( 'IT', 'US' )
 		AND (
-			categoryid = 100 OR productname != 'icecream'
+			categoryid BETWEEN 100 AND 200
+			OR productname != 'icecream'
 		)
 )
