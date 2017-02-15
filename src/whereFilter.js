@@ -1,4 +1,5 @@
 var encloseWithParenthesis = require('./util/encloseWithParenthesis')
+var isSelect = require('./isSelect')
 var quoteIfString = require('./util/quoteIfString')
 
 var isArray = Array.isArray
@@ -8,38 +9,73 @@ var comparisonOperators = ['=', '>', '<', '<>', '<=', '>=', '!=']
 /**
  * Extract WHERE filter.
  *
- * @param {Object} filter
+ * @param {Function} stringify
  *
- * @returns {String} result
+ * @returns {Function} stringifyFilter
  */
 
-function whereFilter (filter) {
-  for (var i = 0; i < comparisonOperators.length; i++) {
-    var operator = comparisonOperators[i]
-    var operand = filter[operator]
+function whereFilter (stringify) {
+ /**
+  *
+  * @param {Object} filter
+  *
+  * @returns {String} result
+  */
 
-    if (typeof operand !== 'undefined') {
-      return operator + ' ' + quoteIfString(operand)
+  return function stringifyFilter (filter) {
+    var i
+
+    for (i = 0; i < comparisonOperators.length; i++) {
+      var operator = comparisonOperators[i]
+      var operand = filter[operator]
+
+      if (typeof operand !== 'undefined') {
+        return operator + ' ' + quoteIfString(operand)
+      }
     }
-  }
 
-  if (isArray(filter.IN)) {
-    return 'IN ' + encloseWithParenthesis(filter.IN.map(quoteIfString).join(', '))
-  }
+    var IN = filter.IN
 
-  if (isArray(filter.AND)) {
-    if (filter.AND.length === 2) {
-      return 'AND ' + filter.AND[0] + ' ' + whereFilter(filter.AND[1])
-    } else {
-      return 'AND ' + encloseWithParenthesis(whereFilter(filter.AND))
+    if (IN) {
+      if (isArray(IN)) {
+        return 'IN ' + encloseWithParenthesis(filter.IN.map(quoteIfString).join(', '))
+      }
+
+      if (isSelect(IN)) {
+        return 'IN ' + encloseWithParenthesis(stringify(IN))
+      }
     }
-  }
 
-  if (isArray(filter.OR)) {
-    if (filter.OR.length === 2) {
-      return 'AND ' + filter.AND[0] + ' ' + whereFilter(filter.AND[1])
-    } else {
-      return 'OR ' + encloseWithParenthesis(whereFilter(filter.OR))
+    var AND = filter.AND
+
+    if (isArray(AND)) {
+      var stringyfiedAND = AND[0] + ' ' + stringifyFilter(AND[1])
+
+      for (i = 2; i < AND.length; i++) {
+        stringyfiedAND += ' ' + stringifyFilter(AND[i])
+      }
+
+      if (AND.length === 2) {
+        return 'AND ' + stringyfiedAND
+      } else {
+        return 'AND ' + encloseWithParenthesis(stringyfiedAND)
+      }
+    }
+
+    var OR = filter.OR
+
+    if (isArray(OR)) {
+      var stringyfiedOR = OR[0] + ' ' + stringifyFilter(OR[1])
+
+      for (i = 2; i < OR.length; i++) {
+        stringyfiedOR += ' ' + stringifyFilter(OR[i])
+      }
+
+      if (OR.length === 2) {
+        return 'OR ' + stringyfiedOR
+      } else {
+        return 'OR ' + encloseWithParenthesis(stringyfiedOR)
+      }
     }
   }
 }

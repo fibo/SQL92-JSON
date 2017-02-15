@@ -30,7 +30,7 @@ function stringify (json) {
   }
 
   if (hasWhere(json)) {
-    sql += ' WHERE ' + whereConditions(json.WHERE)
+    sql += ' WHERE ' + whereConditions(stringify)(json.WHERE)
   }
 
   if (hasLimit(json)) {

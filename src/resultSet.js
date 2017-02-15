@@ -8,11 +8,19 @@ var isString = require('./util/isString')
  *
  * @param {Function} stringify
  *
- * @returns {Function} result
+ * @returns {Function} stringifyResultSet
  */
 
 function resultSet (stringify) {
-  return function (statement) {
+ /**
+  * Stringify resultset
+  *
+  * @param {String|Object} statement
+  *
+  * @returns {String} result
+  */
+
+  return function stringifyResultSet (statement) {
     if (isString(statement) && isNoun(statement)) {
       return statement
     }

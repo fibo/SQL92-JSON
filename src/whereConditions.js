@@ -1,24 +1,36 @@
 var whereFilter = require('./whereFilter')
 
 /**
- * Extract WHERE conditions.
+ * A result set is given by a SQL statement.
  *
- * @param {Array} conditions
+ * @param {Function} stringify
  *
- * @returns {String} result
+ * @returns {Function} stringifyWhereConditions
  */
 
-function whereConditions (conditions) {
-  var firstField = conditions.shift()
-  var firstFilter = conditions.shift()
+function whereConditions (stringify) {
+ /**
+  * Extract WHERE conditions.
+  *
+  * @param {Array} conditions
+  *
+  * @returns {String} result
+  */
 
-  var result = firstField + ' ' + whereFilter(firstFilter)
+  return function stringifyWhereConditions (conditions) {
+    var firstField = conditions.shift()
+    var firstFilter = conditions.shift()
 
-  for (var i = 0; i < conditions.length; i++) {
-    result += ' ' + whereFilter(conditions[i])
+    var strinfigyFilter = whereFilter(stringify)
+
+    var result = firstField + ' ' + strinfigyFilter(firstFilter)
+
+    for (var i = 0; i < conditions.length; i++) {
+      result += ' ' + strinfigyFilter(conditions[i])
+    }
+
+    return result
   }
-
-  return result
 }
 
 module.exports = whereConditions

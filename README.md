@@ -48,7 +48,11 @@ See for example the following [example JSON][exampleJSON] and its [corresponding
       "FROM": ["mytable"],
       "WHERE": [
         "yyyymmdd", { "=": 20170101 },
-        { "AND": [ "country", { "IN": ["IT", "US"] } ] }
+        { "AND": [ "country", { "IN": ["IT", "US"] } ] },
+        { "AND": [
+          "categoryid", { "=": 100 },
+          { "OR": [ "productname", { "!=": "icecream" } ] }
+        ] }
       ]
     }
   ]
@@ -62,6 +66,9 @@ FROM (
 	FROM mytable
 	WHERE yyyymmdd = 20170101
 		AND country IN ( 'IT', 'US' )
+		AND (
+			categoryid = 100 OR productname != 'icecream'
+		)
 )
 ```
 

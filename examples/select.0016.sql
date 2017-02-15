@@ -1,0 +1,6 @@
+SELECT COUNT(*)
+FROM mytable
+WHERE id IN (
+	SELECT id
+	FROM mytable2
+)
