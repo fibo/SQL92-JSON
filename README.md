@@ -6,7 +6,9 @@
 [Usage](#usage) |
 [License](#license)
 
-[![NPM version](https://badge.fury.io/js/sql92-json.svg)](http://badge.fury.io/js/sql92-json) [![Build Status](https://travis-ci.org/fibo/SQL92-JSON.svg?branch=master)](https://travis-ci.org/fibo/SQL92-JSON?branch=master) [![Dependency Status](https://gemnasium.com/fibo/static-props.svg)](https://gemnasium.com/fibo/static-props)
+[![NPM version](https://badge.fury.io/js/sql92-json.svg)](http://badge.fury.io/js/sql92-json)
+[![Build Status](https://travis-ci.org/fibo/SQL92-JSON.svg?branch=master)](https://travis-ci.org/fibo/SQL92-JSON?branch=master)
+[![Dependency Status](https://gemnasium.com/fibo/static-props.svg)](https://gemnasium.com/fibo/static-props)
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
@@ -37,20 +39,30 @@ See for example the following [example JSON][exampleJSON] and its [corresponding
 
 ```json
 {
-  "SELECT": ["*"],
-  "FROM": ["mytable"],
-  "WHERE": [
-    "yyyymmdd", { "=": 20170101 },
-    { "AND": [ "country", { "IN": ["IT", "US"] } ] }
+  "SELECT": [
+    { "COUNT": "*", "AS": "num" }
+  ],
+  "FROM": [
+    {
+      "SELECT": ["*"],
+      "FROM": ["mytable"],
+      "WHERE": [
+        "yyyymmdd", { "=": 20170101 },
+        { "AND": [ "country", { "IN": ["IT", "US"] } ] }
+      ]
+    }
   ]
 }
 ```
 
 ```sql
-SELECT *
-FROM mytable
-WHERE yyyymmdd = 20170101
-	AND country IN ( 'IT', 'US' )
+SELECT COUNT(*) AS num
+FROM (
+	SELECT *
+	FROM mytable
+	WHERE yyyymmdd = 20170101
+		AND country IN ( 'IT', 'US' )
+)
 ```
 
 ## License
