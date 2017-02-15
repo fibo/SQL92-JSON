@@ -1,6 +1,10 @@
+var conditions = require('./conditions')
+var groupByCondition = require('./groupByCondition')
 var hasFrom = require('./hasFrom')
 var hasLimit = require('./hasLimit')
 var hasOffset = require('./hasOffset')
+var hasGroupBy = require('./hasGroupBy')
+var hasHaving = require('./hasHaving')
 var hasOrderBy = require('./hasOrderBy')
 var hasUnion = require('./hasUnion')
 var hasWhere = require('./hasWhere')
@@ -8,7 +12,6 @@ var orderByCondition = require('./orderByCondition')
 var isSelect = require('./isSelect')
 var resultSet = require('./resultSet')
 var selectField = require('./selectField')
-var whereConditions = require('./whereConditions')
 
 /**
  * Convert JSON to SQL.
@@ -35,7 +38,15 @@ function stringify (json) {
   }
 
   if (hasWhere(json)) {
-    sql += ' WHERE ' + whereConditions(stringify)(json.WHERE)
+    sql += ' WHERE ' + conditions(stringify)(json.WHERE)
+  }
+
+  if (hasGroupBy(json)) {
+    sql += ' GROUP BY ' + json.GROUP.map(groupByCondition).join(', ')
+
+    if (hasHaving(json)) {
+      sql += ' HAVING ' + conditions(stringify)(json.HAVING)
+    }
   }
 
   if (hasOrderBy(json)) {
@@ -51,7 +62,6 @@ function stringify (json) {
   }
 
   if (hasUnion(json)) {
-    console.log(json)
     sql += ' UNION ' + json.UNION.map(stringify).join(' UNION ')
   }
 

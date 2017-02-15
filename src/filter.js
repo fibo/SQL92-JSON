@@ -8,14 +8,14 @@ var isArray = Array.isArray
 var comparisonOperators = ['=', '>', '<', '<>', '<=', '>=', '!=']
 
 /**
- * Extract WHERE filter.
+ * Extract filter.
  *
  * @param {Function} stringify
  *
  * @returns {Function} stringifyFilter
  */
 
-function whereFilter (stringify) {
+function filter (stringify) {
  /**
   *
   * @param {Object} filter
@@ -87,4 +87,4 @@ function whereFilter (stringify) {
   }
 }
 
-module.exports = whereFilter
+module.exports = filter

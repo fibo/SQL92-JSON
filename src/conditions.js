@@ -1,26 +1,25 @@
-var whereFilter = require('./whereFilter')
+var filter = require('./filter')
 
 /**
- * Extract WHERE conditions.
+ * Extract filter conditions.
  *
  * @param {Function} stringify
  *
- * @returns {Function} stringifyWhereConditions
+ * @returns {Function} stringifyConditions
  */
 
-function whereConditions (stringify) {
+function conditions (stringify) {
  /**
-  * St
   * @param {Array} conditions
   *
   * @returns {String} result
   */
 
-  return function stringifyWhereConditions (conditions) {
+  return function stringifyConditions (conditions) {
     var firstField = conditions.shift()
     var firstFilter = conditions.shift()
 
-    var strinfigyFilter = whereFilter(stringify)
+    var strinfigyFilter = filter(stringify)
 
     var result = firstField + ' ' + strinfigyFilter(firstFilter)
 
@@ -32,4 +31,4 @@ function whereConditions (stringify) {
   }
 }
 
-module.exports = whereConditions
+module.exports = conditions
