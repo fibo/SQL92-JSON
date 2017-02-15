@@ -1,7 +1,9 @@
+var isString = require('./util/isString')
+
 /**
  * Check that expression is an alias field.
  *
- * { SELECT: ['*'] } => true
+ * { AS: "myalias" } => true
  *
  * @param {Object} json
  *
@@ -9,7 +11,7 @@
  */
 
 function isAlias (json) {
-  return typeof json.AS !== 'undefined'
+  return isString(json.AS)
 }
 
 module.exports = isAlias

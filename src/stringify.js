@@ -1,6 +1,7 @@
 var hasFrom = require('./hasFrom')
 var hasLimit = require('./hasLimit')
 var hasOffset = require('./hasOffset')
+var hasUnion = require('./hasUnion')
 var hasWhere = require('./hasWhere')
 var isSelect = require('./isSelect')
 var resultSet = require('./resultSet')
@@ -39,6 +40,11 @@ function stringify (json) {
 
   if (hasOffset(json)) {
     sql += ' OFFSET ' + json.OFFSET
+  }
+
+  if (hasUnion(json)) {
+    console.log(json)
+    sql += ' UNION ' + json.UNION.map(stringify).join(' UNION ')
   }
 
   return sql

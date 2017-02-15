@@ -1,7 +1,7 @@
 /**
  * Check that expression is a SELECT.
  *
- * { SELECT: ['*'] } => true
+ * { SELECT: [1] } => true
  *
  * @param {Object} json
  *
@@ -9,7 +9,9 @@
  */
 
 function isSelect (json) {
-  return Array.isArray(json.SELECT) && json.SELECT.length > 0
+  var SELECT = json.SELECT
+
+  return Array.isArray(SELECT) && SELECT.length > 0
 }
 
 module.exports = isSelect

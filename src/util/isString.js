@@ -1,5 +1,7 @@
-function isString (field) {
-  return typeof field === 'string'
+var isStar = require('./isStar')
+
+function isString (value) {
+  return typeof value === 'string' && (!isStar(value))
 }
 
 module.exports = isString

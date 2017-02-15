@@ -1,0 +1,5 @@
+SELECT id FROM table1
+UNION
+SELECT id FROM table2
+UNION
+SELECT id FROM table3
