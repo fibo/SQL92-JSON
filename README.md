@@ -73,6 +73,10 @@ FROM (
 )
 ```
 
+## References
+
+[sql1992.txt](./sql1992.txt) was downloaded from http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt
+
 ## License
 
 [MIT](http://g14n.info/mit-license/)
