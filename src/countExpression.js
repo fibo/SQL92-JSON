@@ -1,5 +1,6 @@
-var isAlias = require('./isAlias')
+var aliasExpression = require('./aliasExpression')
 var isStar = require('./util/isStar')
+var isString = require('./util/isString')
 
 /**
  * Stringify COUNT expression
@@ -10,17 +11,15 @@ var isStar = require('./util/isStar')
  */
 
 function countExpression (json) {
+  var result = ''
+
   var COUNT = json.COUNT
 
-  if (isAlias(json)) {
-    var aliasName = json.AS
+  if (isStar(COUNT)) result = 'COUNT(*)'
+  if (COUNT === 1) result = 'COUNT(1)'
+  if (isString(COUNT)) result = 'COUNT(' + COUNT + ')'
 
-    if (isStar(COUNT)) return 'COUNT(*) AS ' + aliasName
-    if (COUNT === 1) return 'COUNT(1) AS ' + aliasName
-  } else {
-    if (isStar(COUNT)) return 'COUNT(*)'
-    if (COUNT === 1) return 'COUNT(1)'
-  }
+  return result + aliasExpression(json)
 }
 
 module.exports = countExpression

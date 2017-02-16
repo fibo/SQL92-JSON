@@ -4,6 +4,7 @@
 
 [Installation](#installation) |
 [Usage](#usage) |
+[References](#references) |
 [License](#license)
 
 [![NPM version](https://badge.fury.io/js/sql92-json.svg)](http://badge.fury.io/js/sql92-json)
