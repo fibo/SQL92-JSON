@@ -1,10 +1,9 @@
 var encloseWithParenthesis = require('./util/encloseWithParenthesis')
-var isNoun = require('./util/isNoun')
+var isTableName = require('./util/isTableName')
 var isSelect = require('./isSelect')
-var isString = require('./util/isString')
 
 /**
- * A result set is given by a SQL statement.
+ * A result set is given by a table name or a SQL statement.
  *
  * @param {Function} stringify
  *
@@ -21,7 +20,7 @@ function resultSet (stringify) {
   */
 
   return function stringifyResultSet (statement) {
-    if (isString(statement) && isNoun(statement)) {
+    if (isTableName(statement)) {
       return statement
     }
 

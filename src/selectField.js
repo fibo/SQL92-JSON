@@ -1,9 +1,8 @@
 var countExpression = require('./countExpression')
-var isNoun = require('./util/isNoun')
+var isFieldName = require('./util/isFieldName')
 var isNumber = require('./util/isNumber')
 var isObject = require('./util/isObject')
 var isStar = require('./util/isStar')
-var isString = require('./util/isString')
 
 /**
  * Columns in a SELECT.
@@ -18,7 +17,7 @@ function selectField (field) {
 
   if (isNumber(field)) return field
 
-  if (isString(field) && isNoun(field)) return field
+  if (isFieldName(field)) return field
 
   if (isObject(field)) {
     if (field.COUNT) {
