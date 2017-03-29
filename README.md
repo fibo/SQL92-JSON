@@ -44,10 +44,13 @@ console.log(json2sql({  //
 ```javascript
 var sql2json = require('sql92-json').parse
 
-console.log(sql2json(` //
-SELECT *               // { SELECT: ['*'],
-FROM revenue           //   FROM: ['revenue'] }
-`)
+console.log(sql2json(`
+SELECT *
+FROM revenue
+`)                      // {
+                        //   SELECT: ['*'],
+                        //   FROM: ['revenue']
+                        // }
 ```
 
 ## Examples
