@@ -3,7 +3,8 @@
 > can stringify a JSON into an SQL
 
 [Installation](#installation) |
-[Usage](#usage) |
+[API](#api) |
+[Examples](#examples) |
 [References](#references) |
 [License](#license)
 
@@ -21,7 +22,9 @@ With [npm](https://npmjs.org/) do
 npm install sql92-json
 ```
 
-## Usage
+## API
+
+### `stringify`
 
 > Convert a JSON to SQL
 
@@ -33,6 +36,21 @@ console.log(json2sql({  //
   FROM: ['revenue']     // FROM revenue
 }))                     //
 ```
+
+### `parse`
+
+> Convert an SQL to JSON
+
+```javascript
+var sql2json = require('sql92-json').parse
+
+console.log(sql2json(` //
+SELECT *               // { SELECT: ['*'],
+FROM revenue           //   FROM: ['revenue'] }
+`)
+```
+
+## Examples
 
 See [examples] folder where every `.json` file has its homonym `.sql`.
 

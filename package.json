@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "standard",
     "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
-    "test": "NODE_PATH=. tape test/*.js | tap-min"
+    "test": "NODE_PATH=. tape test/*.js"
   },
   "pre-commit": [
     "lint",
@@ -33,7 +33,6 @@
     "dot-editorconfig": "^0.4.0",
     "pre-commit": "^1.2.2",
     "standard": "^8.6.0",
-    "tap-min": "^1.2.1",
     "tape": "^4.6.3"
   }
 }

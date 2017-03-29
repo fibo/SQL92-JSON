@@ -7,8 +7,7 @@
  */
 
 function normalizeSQL (sql) {
-  sql = sql.replace(/^\s+/, '')
-  sql = sql.replace(/\s+$/, '')
+  sql = sql.trim()
   sql = sql.replace(/\n$/, '')
   sql = sql.replace(/[\t\n]+/g, ' ')
 
