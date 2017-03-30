@@ -5,7 +5,7 @@ var quoteIfString = require('./util/quoteIfString')
 
 var isArray = Array.isArray
 
-var comparisonOperators = ['=', '>', '<', '<>', '<=', '>=', '!=']
+var comparisonOperators = require('./comparisonOperators')
 
 /**
  * Extract filter.

@@ -1,4 +1,4 @@
-var splitOnParenthesis = require('./util/splitOnParenthesis')
+var splitOnParenthesis = require('./splitOnParenthesis')
 
 /**
  * Analyze SQL and convert into a list of tokens.
@@ -8,7 +8,7 @@ var splitOnParenthesis = require('./util/splitOnParenthesis')
  * @returns {Array} tokens
  */
 
-function tokenizer (sql) {
+function tokenize (sql) {
   var tokens = []
 
   // Trim and analyze single quotes first. They are special characters in SQL.
@@ -126,4 +126,4 @@ function tokenizer (sql) {
   return tokens
 }
 
-module.exports = tokenizer
+module.exports = tokenize

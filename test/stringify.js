@@ -6,9 +6,9 @@ var json2sql = require('sql92-json').stringify
 
 var normalizeSQL = require('src/util/normalizeSQL')
 
-test('examples', function (t) {
-  var examplesDir = path.join(__dirname, '..', 'examples')
+var examplesDir = path.join(__dirname, '..', 'examples')
 
+test('examples', function (t) {
   fs.readdir(examplesDir, function (err, files) {
     if (err) throw err
 
