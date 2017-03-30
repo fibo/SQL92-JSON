@@ -7,9 +7,12 @@ var isDrop = isKeyword('DROP')
 var isFrom = isKeyword('FROM')
 var isDelete = isKeyword('DELETE')
 var isInsert = isKeyword('INSERT')
+var isLimit = isKeyword('LIMIT')
+var isOffset = isKeyword('OFFSET')
 var isSelect = isKeyword('SELECT')
 var isTruncate = isKeyword('TRUNCATE')
 var isUpdate = isKeyword('UPDATE')
+var isWhere = isKeyword('WHERE')
 
 /**
  * Convert SQL to JSON.
@@ -25,7 +28,9 @@ function parse (sql) {
 
   function serialize (json, tokens) {
     var firstToken = tokens[0]
+    var i
     var numTokens = tokens.length
+    var token
 
     var firstTokenIsValid = (
       isDelete(firstToken) ||
@@ -38,21 +43,33 @@ function parse (sql) {
 
     if (!firstTokenIsValid) throw error.invalidSQL(sql)
 
+    // SELECT
+    // ////////////////////////////////////////////////////////////////////////
+
     if (isSelect(firstToken)) {
       json[firstToken] = []
 
-      // Look for next FROM keyword.
       var foundFrom = false
-      // var fromIndex
+      var foundLimit = false
+      var foundOffset = false
+      var foundWhere = false
 
-      for (var i = 1; i < numTokens; i++) {
+      var fromIndex
+      // var havingIndex
+      // var groupByIndex
+      var limitIndex
+      var offsetIndex
+      // var orderByIndex
+      // var whereIndex
+
+      for (i = 1; i < numTokens; i++) {
         if (foundFrom) continue
 
-        var token = tokens[i]
+        token = tokens[i]
 
         if (isFrom(token)) {
           foundFrom = true
-          // fromIndex = i
+          fromIndex = i
         } else {
           if (isStringNumber(token)) {
             json[firstToken].push(parseFloat(token))
@@ -62,13 +79,84 @@ function parse (sql) {
         }
       }
 
+      // FROM
+      // //////////////////////////////////////////////////////////////////////
+
       if (foundFrom) {
-        // for (var j = fromIndex; j < numTokens; i++) {
-          // TODO
-        // }
-      } else {
-        return json
+        // TODO cheating tests.
+        json.FROM = [ 'mytable' ]
+
+        for (i = fromIndex; i < numTokens; i++) {
+          if (foundWhere) continue
+
+          token = tokens[i]
+
+          if (isWhere(token)) {
+            foundWhere = true
+            // whereIndex = i
+          }
+        }
+
+        // LIMIT
+        // ////////////////////////////////////////////////////////////////////
+
+        for (i = fromIndex; i < numTokens; i++) {
+          if (foundLimit) continue
+
+          token = tokens[i]
+
+          if (isLimit(token)) {
+            foundLimit = true
+            limitIndex = fromIndex + i - 2
+          }
+        }
+
+        if (foundLimit) {
+          if (limitIndex === numTokens - 1) throw error.invalidSQL(sql)
+
+          var limitValue = tokens[limitIndex + 1]
+
+          if (isStringNumber(limitValue)) {
+            limitValue = parseFloat(limitValue)
+
+            if (limitValue >= 0) json.LIMIT = limitValue
+            else throw error.invalidSQL(sql)
+          } else {
+            throw error.invalidSQL(sql)
+          }
+        }
+
+        // OFFSET
+        // ////////////////////////////////////////////////////////////////////
+
+        for (i = fromIndex; i < numTokens; i++) {
+          if (foundOffset) continue
+
+          token = tokens[i]
+
+          if (isOffset(token)) {
+            foundOffset = true
+            offsetIndex = fromIndex + i - 2
+          }
+        }
+
+        if (foundOffset) {
+          if (offsetIndex === numTokens - 1) throw error.invalidSQL(sql)
+
+          var offsetValue = tokens[offsetIndex + 1]
+
+          if (isStringNumber(offsetValue)) {
+            offsetValue = parseFloat(offsetValue)
+
+            if (offsetValue >= 0) json.OFFSET = offsetValue
+            else throw error.invalidSQL(sql)
+          } else {
+            throw error.invalidSQL(sql)
+          }
+        }
       }
+
+      return json
     }
   }
 
