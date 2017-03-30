@@ -1,6 +1,6 @@
 # SQL92-JSON
 
-> can stringify a JSON into an SQL
+> can stringify a JSON into an SQL and viceversa parse an SQL and serialize it into a JSON
 
 [Installation](#installation) |
 [API](#api) |

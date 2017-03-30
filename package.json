@@ -1,7 +1,7 @@
 {
   "name": "sql92-json",
   "version": "0.5.0",
-  "description": "can stringify a JSON into an SQL",
+  "description": "can stringify a JSON into an SQL and viceversa parse an SQL and serialize it into a JSON",
   "main": "sql92-json.js",
   "scripts": {
     "lint": "standard",
