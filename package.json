@@ -4,6 +4,7 @@
   "description": "can stringify a JSON into an SQL and viceversa parse an SQL and serialize it into a JSON",
   "main": "sql92-json.js",
   "scripts": {
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "lint": "standard",
     "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
     "test": "NODE_PATH=. tape test/*.js"
@@ -30,7 +31,9 @@
   },
   "homepage": "http://g14n.info/SQL92-JSON",
   "devDependencies": {
+    "coveralls": "^2.13.0",
     "dot-editorconfig": "^0.4.0",
+    "nyc": "^10.2.0",
     "pre-commit": "^1.2.2",
     "standard": "^9.0.2",
     "tape": "^4.6.3"
