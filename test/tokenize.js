@@ -6,12 +6,12 @@ var tokenize = require('../src/util/tokenize')
 
 test('tokenize', function (t) {
   t.deepEqual(tokenize('select'), ['select'])
-  t.deepEqual(tokenize('  select   1'), ['select', '1'])
-  t.deepEqual(tokenize('select * from sales '), ['select', '*', 'from', 'sales'])
-  t.deepEqual(tokenize("select 'hello'"), ['select', "'hello'"])
-  t.deepEqual(tokenize("select 'hello' from table"), ['select', "'hello'", 'from', 'table'])
-  t.deepEqual(tokenize("  select  'x'   as  y"), ['select', "'x'", 'as', 'y'])
-// TODO  t.deepEqual(tokenize('select \'select\' "select"'), ['select', "'select'", '"select"'])
+  t.deepEqual(tokenize('  select   1'), ['select', '1'], 'left trim')
+  t.deepEqual(tokenize('select * from sales '), ['select', '*', 'from', 'sales'], 'right trim')
+  t.deepEqual(tokenize("select 'hello'"), ['select', "'hello'"], 'single quotes')
+  t.deepEqual(tokenize("  select  'x'   as  y"), ['select', "'x'", 'as', 'y'], 'internal space chars')
+// TODO  t.deepEqual(tokenize('select \'select\' "select"'), ['select', "'select'", '"select"'], 'silly query')
+  t.deepEqual(tokenize('group by'), ['group by'], 'GROUP BY')
 
   t.deepEqual(tokenize(`
 SELECT COUNT(    *) AS num
@@ -37,7 +37,7 @@ FROM (
     'OR', 'productname', '!=', "'icecream'",
     ')',
     ')'
-  ])
+  ], 'readme example')
 
   t.end()
 })

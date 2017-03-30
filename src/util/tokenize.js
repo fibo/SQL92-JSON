@@ -1,4 +1,5 @@
 var splitOnParenthesis = require('./splitOnParenthesis')
+var isPartialKeyword = require('./isPartialKeyword')
 
 /**
  * Analyze SQL and convert into a list of tokens.
@@ -123,7 +124,44 @@ function tokenize (sql) {
     isQuoted = !isQuoted
   })
 
-  return tokens
+  // Finally, we have all tokens but some keywords are composed by two or
+  // more words, for example "GROUP BY", "LEFT OUTER JOIN"
+
+  var joinedTokens = []
+  var numTokens = tokens.length
+
+  for (var i = 0; i < numTokens; i++) {
+    var token = tokens[i]
+    var isNotLastToken = i < numTokens - 1
+    // var isNotSecondToLastToken = i < numTokens - 2
+    var nextToken
+    var NEXT_TOKEN
+
+    if (isNotLastToken) {
+      nextToken = tokens[i + 1]
+      NEXT_TOKEN = nextToken.toUpperCase()
+    } else {
+      nextToken = null
+      NEXT_TOKEN = null
+    }
+
+    if (isPartialKeyword(token)) {
+      var TOKEN = token.toUpperCase()
+
+      if ((TOKEN === 'GROUP') || (TOKEN === 'ORDER')) {
+        if (NEXT_TOKEN === 'BY') {
+          joinedTokens.push(token + ' ' + nextToken)
+          i = i + 1
+        }
+      }
+
+      // TODO: left join, left outer join, right join, full outer join
+    } else {
+      joinedTokens.push(token)
+    }
+  }
+
+  return joinedTokens
 }
 
 module.exports = tokenize
