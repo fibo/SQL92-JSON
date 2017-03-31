@@ -1,4 +1,4 @@
-var splitOnParenthesis = require('./splitOnParenthesis')
+var splitOnParenthesisAndCommas = require('./splitOnParenthesisAndCommas')
 var isPartialKeyword = require('./isPartialKeyword')
 
 /**
@@ -90,7 +90,7 @@ function tokenize (sql) {
               // Close current token, only if it is valued otherwise many
               // equivalent to space characters concatenated will produce
               // empty tokens.
-              tokens = tokens.concat(splitOnParenthesis(currentToken))
+              tokens = tokens.concat(splitOnParenthesisAndCommas(currentToken))
 
               currentToken = ''
             }
@@ -112,7 +112,7 @@ function tokenize (sql) {
 
             // Push it, f it is last token.
             if (index === array.length - 1) {
-              tokens = tokens.concat(splitOnParenthesis(currentToken))
+              tokens = tokens.concat(splitOnParenthesisAndCommas(currentToken))
             }
           }
         }

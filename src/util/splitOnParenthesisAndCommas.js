@@ -1,7 +1,7 @@
 /**
  * Take a string that is supposed to be not quoted or double quoted
  * and split it on left and right parenthesis to get tokens, with parenthesis
- * included.
+ * included. Split on commas too, if any.
  *
  * 'COUNT(*)' => ['COUNT', '(', '*', ')']
  *
@@ -15,9 +15,9 @@
  * @return {Array} tokens
  */
 
-function splitOnParenthesis (notQuotedString) {
-  // Do nothing if input string does not contain parenthesis.
-  if ((notQuotedString.indexOf('(') === -1) && (notQuotedString.indexOf(')') === -1)) return [notQuotedString]
+function splitOnParenthesisAndCommas (notQuotedString) {
+  // Special case first.
+  if (notQuotedString === ',') return [notQuotedString]
 
   var tokens = []
 
@@ -42,4 +42,4 @@ function splitOnParenthesis (notQuotedString) {
   return tokens
 }
 
-module.exports = splitOnParenthesis
+module.exports = splitOnParenthesisAndCommas

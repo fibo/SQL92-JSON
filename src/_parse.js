@@ -67,6 +67,8 @@ function parse (sql) {
 
         token = tokens[i]
 
+        if (token === ',') continue
+
         if (isFrom(token)) {
           foundFrom = true
           fromIndex = i
@@ -107,7 +109,7 @@ function parse (sql) {
 
           if (isLimit(token)) {
             foundLimit = true
-            limitIndex = fromIndex + i - 2
+            limitIndex = i
           }
         }
 
@@ -136,7 +138,7 @@ function parse (sql) {
 
           if (isOffset(token)) {
             foundOffset = true
-            offsetIndex = fromIndex + i - 2
+            offsetIndex = i
           }
         }
 

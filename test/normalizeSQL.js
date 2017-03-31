@@ -8,5 +8,8 @@ test('normalizeSQL', function (t) {
   t.equal(normalizeSQL('select COUNT( 1  )'), 'select COUNT(1)', 'parenthesis spacing')
   t.equal(normalizeSQL('IN (1,2,   3 )'), 'IN (1, 2, 3)', 'comma spacing')
 
+  var sql = "SELECT * FROM mytable WHERE yyyymmdd = 20170101 AND country IN ('IT', 'US')"
+  t.equal(normalizeSQL(sql), sql, 'idempotent')
+
   t.end()
 })
