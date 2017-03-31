@@ -1,4 +1,6 @@
 var error = require('./error')
+var isComparisonOperator = require('./util/isComparisonOperator')
+var isKeywordOrOperator = require('./util/isKeywordOrOperator')
 var isStringNumber = require('./util/isStringNumber')
 var isKeyword = require('./util/isKeyword')
 var tokenize = require('./util/tokenize')
@@ -13,6 +15,15 @@ var isSelect = isKeyword('SELECT')
 var isTruncate = isKeyword('TRUNCATE')
 var isUpdate = isKeyword('UPDATE')
 var isWhere = isKeyword('WHERE')
+
+var isEqual = isComparisonOperator('=')
+
+// TODO organize this snippet, by now it is used for equal conditions in WHERE
+function condition (operator, rightOperand) {
+  var obj = {}
+  obj[operator] = rightOperand
+  return obj
+}
 
 /**
  * Convert SQL to JSON.
@@ -60,7 +71,10 @@ function parse (sql) {
       var limitIndex
       var offsetIndex
       // var orderByIndex
-      // var whereIndex
+      var whereIndex
+
+      var leftOperand
+      var rightOperand
 
       for (i = 1; i < numTokens; i++) {
         if (foundFrom) continue
@@ -88,6 +102,9 @@ function parse (sql) {
         // TODO cheating tests.
         json.FROM = [ 'mytable' ]
 
+        // WHERE
+        // ////////////////////////////////////////////////////////////////////
+
         for (i = fromIndex; i < numTokens; i++) {
           if (foundWhere) continue
 
@@ -95,7 +112,31 @@ function parse (sql) {
 
           if (isWhere(token)) {
             foundWhere = true
-            // whereIndex = i
+            whereIndex = i
+            json.WHERE = []
+          }
+        }
+
+        if (foundWhere) {
+          // After a WHERE there should be at least one condition and it will
+          // have more al least 3 tokens: leftOperand, operator, rightOperand.
+          if (whereIndex === numTokens - 3) throw error.invalidSQL(sql)
+
+          for (i = whereIndex; i < numTokens; i++) {
+            token = tokens[i]
+
+            if (isEqual(token)) {
+              leftOperand = tokens[i - 1]
+              rightOperand = tokens[i + 1]
+
+              if (isKeywordOrOperator(leftOperand)) throw error.invalidSQL(sql)
+              if (isKeywordOrOperator(rightOperand)) throw error.invalidSQL(sql)
+
+              if (isStringNumber(leftOperand)) leftOperand = parseFloat(leftOperand)
+              if (isStringNumber(rightOperand)) rightOperand = parseFloat(rightOperand)
+
+              json.WHERE.push(leftOperand, condition(token, rightOperand))
+            }
           }
         }
 
