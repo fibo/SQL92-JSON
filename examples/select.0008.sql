@@ -1,3 +1,4 @@
 SELECT *
 FROM mytable
-WHERE country IN ( 'IT', 'ES' )
+WHERE yyyymmdd = 20170101
+	AND country IN ( 'IT', 'US' )

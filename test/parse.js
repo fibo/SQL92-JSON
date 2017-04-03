@@ -15,7 +15,7 @@ test('examples', function (t) {
       var filename = path.parse(file).name
 
       // TODO Restrict tests by now, until completion.
-      if (filename > 'select.0005') return
+      if (filename > 'select.0007') return
       if (filename === '_readme.select') return
 
       if (extension === '.sql') {

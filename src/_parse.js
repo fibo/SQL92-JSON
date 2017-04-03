@@ -1,6 +1,8 @@
 var error = require('./error')
-var isComparisonOperator = require('./util/isComparisonOperator')
 var isKeywordOrOperator = require('./util/isKeywordOrOperator')
+// var isLogicalOperator = require('./util/isLogicalOperator')
+var isSetOperator = require('./util/isSetOperator')
+var isSingleQuotedString = require('./util/isSingleQuotedString')
 var isStringNumber = require('./util/isStringNumber')
 var isKeyword = require('./util/isKeyword')
 var tokenize = require('./util/tokenize')
@@ -16,7 +18,8 @@ var isTruncate = isKeyword('TRUNCATE')
 var isUpdate = isKeyword('UPDATE')
 var isWhere = isKeyword('WHERE')
 
-var isEqual = isComparisonOperator('=')
+// var isAnd = isLogicalOperator('AND')
+var isIn = isSetOperator('IN')
 
 // TODO organize this snippet, by now it is used for equal conditions in WHERE
 function condition (operator, rightOperand) {
@@ -38,8 +41,11 @@ function parse (sql) {
   var tokens = tokenize(sql)
 
   function serialize (json, tokens) {
+    var currentToken
     var firstToken = tokens[0]
     var i
+    var j
+    var nextToken
     var numTokens = tokens.length
     var token
 
@@ -64,6 +70,8 @@ function parse (sql) {
       var foundLimit = false
       var foundOffset = false
       var foundWhere = false
+
+      var foundRightParenthesis = false
 
       var fromIndex
       // var havingIndex
@@ -125,7 +133,7 @@ function parse (sql) {
           for (i = whereIndex; i < numTokens; i++) {
             token = tokens[i]
 
-            if (isEqual(token)) {
+            if (token === '=') {
               leftOperand = tokens[i - 1]
               rightOperand = tokens[i + 1]
 
@@ -134,6 +142,54 @@ function parse (sql) {
 
               if (isStringNumber(leftOperand)) leftOperand = parseFloat(leftOperand)
               if (isStringNumber(rightOperand)) rightOperand = parseFloat(rightOperand)
+
+              json.WHERE.push(leftOperand, condition(token, rightOperand))
+            }
+
+            if (isIn(token)) {
+              nextToken = tokens[i + 1]
+              foundRightParenthesis = false
+              leftOperand = tokens[i - 1]
+              rightOperand = []
+
+              if (nextToken !== '(') throw error.invalidSQL(sql)
+
+              if (isKeywordOrOperator(leftOperand)) throw error.invalidSQL(sql)
+              if (isStringNumber(leftOperand)) throw error.invalidSQL(sql)
+
+              for (j = i + 2; j < numTokens; j = j + 2) {
+                currentToken = tokens[j]
+                nextToken = tokens[j + 1]
+
+                if ((nextToken === ',') || (nextToken === ')')) {
+                  if (isSingleQuotedString(currentToken)) {
+                    // Remove quotes, that are first and last characters.
+                    rightOperand.push(currentToken.substring(1, currentToken.length - 1))
+                  }
+
+                  if (isStringNumber(currentToken)) {
+                    rightOperand.push(parseFloat(currentToken))
+                  }
+
+                  // TODO I am not sure if there are other cases,
+                  // should I raise an exception here, if token is not
+                  // a string or is not a number?
+                }
+
+                // Clean up, this will be the last iteration so place
+                // the cursor at the right position and remember that
+                // we found a right parenthesis.
+
+                if (nextToken === ')') {
+                  i = j + 1
+
+                  foundRightParenthesis = true
+
+                  break
+                }
+              }
+
+              if (!foundRightParenthesis) throw error.invalidSQL(sql)
 
               json.WHERE.push(leftOperand, condition(token, rightOperand))
             }
