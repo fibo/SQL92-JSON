@@ -1,3 +1,11 @@
 [
-  "CROSS", "GROUP", "IS", "JOIN", "LEFT", "ORDER", "RIGHT"
+  "CROSS",
+  "FULL",
+  "GROUP",
+  "INNER",
+  "IS",
+  "JOIN",
+  "LEFT",
+  "ORDER",
+  "RIGHT"
 ]
