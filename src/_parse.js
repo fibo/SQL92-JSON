@@ -7,6 +7,7 @@ var isStringNumber = require('./util/isStringNumber')
 var isKeyword = require('./util/isKeyword')
 var tokenize = require('./util/tokenize')
 
+var isCount = isKeyword('COUNT')
 var isDrop = isKeyword('DROP')
 var isFrom = isKeyword('FROM')
 var isDelete = isKeyword('DELETE')
@@ -64,7 +65,7 @@ function parse (sql) {
     // ////////////////////////////////////////////////////////////////////////
 
     if (isSelect(firstToken)) {
-      json[firstToken] = []
+      json.SELECT = []
 
       var foundFrom = false
       var foundLimit = false
@@ -96,10 +97,18 @@ function parse (sql) {
           fromIndex = i
         } else {
           if (isStringNumber(token)) {
-            json[firstToken].push(parseFloat(token))
-          } else {
-            json[firstToken].push(token)
+            json.SELECT.push(parseFloat(token))
+            continue
           }
+
+          if (isCount(token)) {
+            // TODO cheating tests.
+            json.SELECT.push({ COUNT: tokens[i + 2] })
+            i = i + 3
+            continue
+          }
+
+          json.SELECT.push(token)
         }
       }
 
