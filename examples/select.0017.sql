@@ -1,4 +1,4 @@
 SELECT *
 FROM mytable
-WHERE foo = 'bar'
+WHERE 'foo' = bar
 	OR quz != 4

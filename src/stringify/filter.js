@@ -31,7 +31,7 @@ function filter (stringify) {
       var operand = filter[operator]
 
       if (typeof operand !== 'undefined') {
-        return operator + ' ' + quoteIfString(operand)
+        return operator + ' ' + operand
       }
     }
 

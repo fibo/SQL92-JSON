@@ -184,8 +184,13 @@ function parse (sql) {
               if (isKeywordOrOperator(leftOperand)) throw error.invalidSQL(sql)
               if (isKeywordOrOperator(rightOperand)) throw error.invalidSQL(sql)
 
-              if (isStringNumber(leftOperand)) leftOperand = parseFloat(leftOperand)
-              if (isStringNumber(rightOperand)) rightOperand = parseFloat(rightOperand)
+              if (isStringNumber(leftOperand)) {
+                leftOperand = parseFloat(leftOperand)
+              }
+
+              if (isStringNumber(rightOperand)) {
+                rightOperand = parseFloat(rightOperand)
+              }
 
               currentCondition[token] = rightOperand
               json.WHERE.push(leftOperand, currentCondition)

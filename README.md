@@ -74,7 +74,7 @@ See for example the following [example JSON][exampleJSON] and its [corresponding
         { "AND": [ "country", { "IN": ["IT", "US"] } ] },
         { "AND": [
           "categoryid", { "BETWEEN": [100, 200] },
-          { "OR": [ "productname", { "!=": "icecream" } ] }
+          { "OR": [ "productname", { "!=": "'icecream'" } ] }
         ] }
       ]
     }

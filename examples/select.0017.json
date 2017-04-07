@@ -2,8 +2,7 @@
   "SELECT": [ "*" ],
   "FROM": ["mytable"],
   "WHERE": [
-    "foo",
-    { "=": "bar" },
+    "'foo'", { "=": "bar" },
     {
       "OR": [
         "quz", { "!=": 4 }

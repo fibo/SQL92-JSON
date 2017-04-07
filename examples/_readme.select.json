@@ -11,7 +11,7 @@
         { "AND": [ "country", { "IN": ["IT", "US"] } ] },
         { "AND": [
           "categoryid", { "BETWEEN": [100, 200] },
-          { "OR": [ "productname", { "!=": "icecream" } ] }
+          { "OR": [ "productname", { "!=": "'icecream'" } ] }
         ] }
       ]
     }
