@@ -1,11 +1,11 @@
-var encloseWithParenthesis = require('./util/encloseWithParenthesis')
+var encloseWithParenthesis = require('../util/encloseWithParenthesis')
 var isBetween = require('./isBetween')
 var isSelect = require('./isSelect')
-var quoteIfString = require('./util/quoteIfString')
+var quoteIfString = require('../util/quoteIfString')
 
 var isArray = Array.isArray
 
-var comparisonOperators = require('./comparisonOperators')
+var comparisonOperators = require('../comparisonOperators')
 
 /**
  * Extract filter.

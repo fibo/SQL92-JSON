@@ -7,6 +7,7 @@
  *
  * @returns {Boolean}
  */
+
 function hasFrom (json) {
   var FROM = json.FROM
 

@@ -1,12 +1,12 @@
 var countExpression = require('./countExpression')
-var isDataType = require('./util/isDataType')
-var isFieldName = require('./util/isFieldName')
-var isNumber = require('./util/isNumber')
-var isObject = require('./util/isObject')
-var isSingleQuotedString = require('./util/isSingleQuotedString')
-var isStringNumber = require('./util/isStringNumber')
-var isStar = require('./util/isStar')
-var isString = require('./util/isString')
+var isDataType = require('../util/isDataType')
+var isFieldName = require('../util/isFieldName')
+var isNumber = require('../util/isNumber')
+var isObject = require('../util/isObject')
+var isSingleQuotedString = require('../util/isSingleQuotedString')
+var isStringNumber = require('../util/isStringNumber')
+var isStar = require('../util/isStar')
+var isString = require('../util/isString')
 
 /**
  * Map columns in a SELECT.

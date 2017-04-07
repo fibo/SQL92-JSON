@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var isSingleQuotedString = require('../src/util/isSingleQuotedString')
+var isSingleQuotedString = require('src/util/isSingleQuotedString')
 
 test('isSingleQuotedString', function (t) {
   t.ok(isSingleQuotedString("'string'"), 'string')

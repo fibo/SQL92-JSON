@@ -1,6 +1,6 @@
 var aliasExpression = require('./aliasExpression')
-var isStar = require('./util/isStar')
-var isString = require('./util/isString')
+var isStar = require('../util/isStar')
+var isString = require('../util/isString')
 
 /**
  * Stringify COUNT expression

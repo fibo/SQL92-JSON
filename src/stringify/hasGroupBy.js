@@ -1,4 +1,4 @@
-var isNumberOrString = require('./util/isNumberOrString')
+var isNumberOrString = require('../util/isNumberOrString')
 
 /**
  * Check that expression has a GROUP BY.
@@ -9,6 +9,7 @@ var isNumberOrString = require('./util/isNumberOrString')
  *
  * @returns {Boolean}
  */
+
 function hasGroupBy (json) {
   var GROUP = json.GROUP
 

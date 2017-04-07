@@ -1,4 +1,4 @@
-var isNumberOrString = require('./util/isNumberOrString')
+var isNumberOrString = require('../util/isNumberOrString')
 
 /**
  * Check that filter is a BETWEEN expression.

@@ -1,4 +1,4 @@
-var isString = require('./util/isString')
+var isString = require('../util/isString')
 
 /**
  * Can map a list of GROUP BY directives to a SQL statement.

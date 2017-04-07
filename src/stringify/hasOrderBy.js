@@ -1,4 +1,4 @@
-var isNumberOrString = require('./util/isNumberOrString')
+var isNumberOrString = require('../util/isNumberOrString')
 
 /**
  * Check that expression has an ORDER BY.

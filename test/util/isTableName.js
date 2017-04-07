@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var isTableName = require('../src/util/isTableName')
+var isTableName = require('src/util/isTableName')
 
 test('isTableName', function (t) {
   t.ok(isTableName('my_table2'), 'with numbers and underscores')

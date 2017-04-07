@@ -1,5 +1,5 @@
-var isString = require('./util/isString')
-var doubleQuoteIfStringContainsSpace = require('./util/doubleQuoteIfStringContainsSpace')
+var isString = require('../util/isString')
+var doubleQuoteIfStringContainsSpace = require('../util/doubleQuoteIfStringContainsSpace')
 
 /**
  * Stringify as AS expression.

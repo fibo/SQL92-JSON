@@ -1,5 +1,5 @@
-var encloseWithParenthesis = require('./util/encloseWithParenthesis')
-var isTableName = require('./util/isTableName')
+var encloseWithParenthesis = require('../util/encloseWithParenthesis')
+var isTableName = require('../util/isTableName')
 var isSelect = require('./isSelect')
 
 /**

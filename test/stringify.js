@@ -8,7 +8,7 @@ var normalizeSQL = require('src/util/normalizeSQL')
 
 var examplesDir = path.join(__dirname, '..', 'examples')
 
-test('examples', function (t) {
+test('stringify', function (t) {
   fs.readdir(examplesDir, function (err, files) {
     if (err) throw err
 

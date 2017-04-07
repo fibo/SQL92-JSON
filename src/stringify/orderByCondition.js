@@ -1,5 +1,5 @@
-var isNumberOrString = require('./util/isNumberOrString')
-var isObject = require('./util/isObject')
+var isNumberOrString = require('../util/isNumberOrString')
+var isObject = require('../util/isObject')
 
 /**
  * Can map a list of ORDER BY directives to a SQL statement.

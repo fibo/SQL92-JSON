@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var selectField = require('../src/selectField')
+var selectField = require('src/stringify/selectField')
 
 test('selectField', function (t) {
   t.equal(selectField('field'), 'field', 'common field')
