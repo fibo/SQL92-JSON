@@ -1,13 +1,18 @@
-var isValidName = require('./isValidName')
+var isKeyword = require('./isKeyword')
 var isString = require('./isString')
+var isValidName = require('./isValidName')
 
-function isTableName (name) {
-  if (!isString(name)) return false
+function isTableName (token) {
+  if (!isString(token)) return false
+
+  if (isKeyword()(token)) return false
 
   // A table can be given as
+  //
   // * mytable
   // * myschema.mytable
-  var names = name.split('.')
+  //
+  var names = token.split('.')
 
   if ((names.length === 0) || (names.length > 2)) return false
 

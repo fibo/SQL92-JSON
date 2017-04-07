@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var splitOnOperators = require('../src/util/splitOnOperators')
+var splitOnOperators = require('src/util/splitOnOperators')
 
 test('splitOnOperators', function (t) {
   t.deepEqual(splitOnOperators('word'), ['word'], 'single word')

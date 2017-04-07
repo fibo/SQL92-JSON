@@ -6,6 +6,7 @@ var isLogicalOperator = require('../util/isLogicalOperator')
 var isSetOperator = require('../util/isSetOperator')
 var isSingleQuotedString = require('../util/isSingleQuotedString')
 var isStringNumber = require('../util/isStringNumber')
+var isTableName = require('../util/isTableName')
 var tokenize = require('../util/tokenize')
 
 var isCount = isKeyword('COUNT')
@@ -70,6 +71,7 @@ function parse (sql) {
       var foundWhere = false
 
       var foundRightParenthesis = false
+      var subQueryTokens
 
       var fromIndex
       // var havingIndex
@@ -99,7 +101,6 @@ function parse (sql) {
           }
 
           if (isCount(token)) {
-            // TODO cheating tests.
             json.SELECT.push({ COUNT: tokens[i + 2] })
             i = i + 3
             continue
@@ -113,23 +114,58 @@ function parse (sql) {
       // //////////////////////////////////////////////////////////////////////
 
       if (foundFrom) {
-        // TODO cheating tests.
-        json.FROM = [ 'mytable' ]
+        json.FROM = []
 
-        // WHERE
-        // ////////////////////////////////////////////////////////////////////
-
-        for (i = fromIndex; i < numTokens; i++) {
-          if (foundWhere) continue
-
+        for (i = fromIndex + 1; i < numTokens; i++) {
           token = tokens[i]
+
+          if (token === ',') continue
+
+          if (token === '(') {
+            // A sub query must start with a SELECT.
+            firstToken = tokens[i + 1]
+            if (!isSelect(firstToken)) throw error.invalidSQL(sql)
+
+            foundRightParenthesis = false
+            subQueryTokens = []
+
+            for (j = i + 1; j < numTokens; j++) {
+              token = tokens[j]
+
+              if (token === ')') {
+                foundRightParenthesis = true
+                i = j
+                json.FROM.push(serialize({}, subQueryTokens))
+              } else {
+                subQueryTokens.push(token)
+              }
+            }
+
+            if (foundRightParenthesis) {
+              foundRightParenthesis = false
+            } else {
+              throw error.invalidSQL(sql)
+            }
+          }
+
+          if (isTableName(token)) {
+            json.FROM.push(token)
+          }
 
           if (isWhere(token)) {
             foundWhere = true
             whereIndex = i
             json.WHERE = []
+            break
           }
+
+          // TODO if (isOrderBy(token)) {
+
+          // if (isKeyword(token)) break
         }
+
+        // WHERE
+        // ////////////////////////////////////////////////////////////////////
 
         if (foundWhere) {
           // After a WHERE there should be at least one condition and it will
