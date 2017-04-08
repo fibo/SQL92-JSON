@@ -42,6 +42,7 @@ function parse (sql) {
     var currentCondition = null
     var countExpression
 
+    var afterNextToken
     var currentToken
     var firstToken = tokens[0]
     var foundRightParenthesis = false
@@ -238,64 +239,92 @@ function parse (sql) {
             }
 
             if (isIn(token)) {
-              if (!currentCondition) currentCondition = {}
-
-              nextToken = tokens[i + 1]
-              foundRightParenthesis = false
               leftOperand = tokens[i - 1]
-              rightOperand = []
+              nextToken = tokens[i + 1]
+              afterNextToken = tokens[i + 2]
+              foundRightParenthesis = false
 
               if (nextToken !== '(') throw error.invalidSQL(sql)
 
-              if (isKeywordOrOperator(leftOperand)) throw error.invalidSQL(sql)
-              if (isStringNumber(leftOperand)) throw error.invalidSQL(sql)
+              if (!afterNextToken) throw error.invalidSQL(sql)
 
-              for (j = i + 2; j < numTokens; j = j + 2) {
-                currentToken = tokens[j]
-                nextToken = tokens[j + 1]
+              if (isSelect(afterNextToken)) {
+                currentCondition = {}
+                subQueryTokens = []
 
-                if ((nextToken === ',') || (nextToken === ')')) {
-                  if (isSingleQuotedString(currentToken)) {
-                    // Remove quotes, that are first and last characters.
-                    rightOperand.push(currentToken.substring(1, currentToken.length - 1))
+                for (j = i + 2; j < numTokens; j++) {
+                  token = tokens[j]
+
+                  if (token === ')') {
+                    currentCondition.IN = serialize({}, subQueryTokens)
+                    json.WHERE.push(leftOperand, currentCondition)
+
+                    foundRightParenthesis = true
+                    i = j
+                  } else {
+                    subQueryTokens.push(token)
                   }
-
-                  if (isStringNumber(currentToken)) {
-                    rightOperand.push(parseFloat(currentToken))
-                  }
-
-                  // TODO I am not sure if there are other cases,
-                  // should I raise an exception here, if token is not
-                  // a string or is not a number?
                 }
 
-                // Clean up, this will be the last iteration so place
-                // the cursor at the right position and remember that
-                // we found a right parenthesis.
-
-                if (nextToken === ')') {
-                  i = j + 1
-
-                  foundRightParenthesis = true
-
-                  break
+                if (foundRightParenthesis) {
+                  foundRightParenthesis = false
+                } else {
+                  throw error.invalidSQL(sql)
                 }
-              }
+              } else {
+                if (!currentCondition) currentCondition = {}
+                rightOperand = []
 
-              if (!foundRightParenthesis) throw error.invalidSQL(sql)
+                if (isKeywordOrOperator(leftOperand)) throw error.invalidSQL(sql)
+                if (isStringNumber(leftOperand)) throw error.invalidSQL(sql)
 
-              currentCondition[token] = rightOperand
+                for (j = i + 2; j < numTokens; j = j + 2) {
+                  currentToken = tokens[j]
+                  nextToken = tokens[j + 1]
 
-              if (andCondition) {
-                andCondition.AND.push(leftOperand, currentCondition)
-                json.WHERE.push(andCondition)
-                andCondition = null
+                  if ((nextToken === ',') || (nextToken === ')')) {
+                    if (isSingleQuotedString(currentToken)) {
+                      // Remove quotes, that are first and last characters.
+                      rightOperand.push(currentToken.substring(1, currentToken.length - 1))
+                    }
+
+                    if (isStringNumber(currentToken)) {
+                      rightOperand.push(parseFloat(currentToken))
+                    }
+
+                    // TODO I am not sure if there are other cases,
+                    // should I raise an exception here, if token is not
+                    // a string or is not a number?
+                  }
+
+                  // Clean up, this will be the last iteration so place
+                  // the cursor at the right position and remember that
+                  // we found a right parenthesis.
+
+                  if (nextToken === ')') {
+                    i = j + 1
+
+                    foundRightParenthesis = true
+
+                    break
+                  }
+                }
+
+                if (!foundRightParenthesis) throw error.invalidSQL(sql)
+
+                currentCondition[token] = rightOperand
+
+                if (andCondition) {
+                  andCondition.AND.push(leftOperand, currentCondition)
+                  json.WHERE.push(andCondition)
+                  andCondition = null
+                  currentCondition = null
+                  continue
+                }
+
+                json.WHERE.push(leftOperand, currentCondition)
                 currentCondition = null
-                continue
               }
-
-              json.WHERE.push(leftOperand, currentCondition)
-              currentCondition = null
             }
           }
         }
