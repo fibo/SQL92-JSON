@@ -1,5 +1,6 @@
 var error = require('../error')
 var isComparisonOperator = require('../util/isComparisonOperator')
+
 var isKeyword = require('../util/isKeyword')
 var isKeywordOrOperator = require('../util/isKeywordOrOperator')
 var isLogicalOperator = require('../util/isLogicalOperator')
@@ -23,7 +24,11 @@ var isUpdate = isKeyword('UPDATE')
 var isWhere = isKeyword('WHERE')
 
 var isAnd = isLogicalOperator('AND')
+var isOr = isLogicalOperator('OR')
+
 var isIn = isSetOperator('IN')
+
+var comparison = require('./comparison')
 
 /**
  * Convert SQL to JSON.
@@ -38,8 +43,10 @@ function parse (sql) {
   var tokens = tokenize(sql)
 
   function serialize (json, tokens) {
-    var andCondition
+    var andCondition = null
+    var orCondition = null
     var currentCondition = null
+    var comparisonExpression
     var countExpression
 
     var afterNextToken
@@ -84,6 +91,7 @@ function parse (sql) {
     // SELECT
     // ////////////////////////////////////////////////////////////////////////
 
+    // TODO separated serializeSelect function.
     if (isSelect(firstToken)) {
       json.SELECT = []
 
@@ -210,38 +218,42 @@ function parse (sql) {
 
           for (i = whereIndex; i < numTokens; i++) {
             token = tokens[i]
-
-            if (isComparisonOperator(token)) {
-              currentCondition = {}
-
-              leftOperand = tokens[i - 1]
-              rightOperand = tokens[i + 1]
-
-              if (isKeywordOrOperator(leftOperand)) throw error.invalidSQL(sql)
-              if (isKeywordOrOperator(rightOperand)) throw error.invalidSQL(sql)
-
-              if (isStringNumber(leftOperand)) {
-                leftOperand = parseFloat(leftOperand)
-              }
-
-              if (isStringNumber(rightOperand)) {
-                rightOperand = parseFloat(rightOperand)
-              }
-
-              currentCondition[token] = rightOperand
-              json.WHERE.push(leftOperand, currentCondition)
-              currentCondition = null
-            }
+            nextToken = tokens[i + 1]
+            afterNextToken = tokens[i + 2]
 
             if (isAnd(token)) {
               andCondition = {}
               andCondition.AND = []
             }
 
+            if (isOr(token)) {
+              orCondition = {}
+              orCondition.OR = []
+            }
+
+            if (isComparisonOperator(nextToken)) {
+              try {
+                comparisonExpression = comparison(token, nextToken, afterNextToken)
+
+                if (andCondition) {
+                  andCondition.AND = andCondition.AND.concat(comparisonExpression)
+                  json.WHERE = json.WHERE.concat(andCondition)
+                } else if (orCondition) {
+                  orCondition.OR = orCondition.OR.concat(comparisonExpression)
+                  json.WHERE = json.WHERE.concat(orCondition)
+                } else {
+                  json.WHERE = json.WHERE.concat(comparisonExpression)
+                }
+
+                i = i + 1
+              } catch (err) {
+                throw err
+              }
+            }
+
             if (isIn(token)) {
               leftOperand = tokens[i - 1]
               nextToken = tokens[i + 1]
-              afterNextToken = tokens[i + 2]
               foundRightParenthesis = false
 
               if (nextToken !== '(') throw error.invalidSQL(sql)
@@ -318,6 +330,14 @@ function parse (sql) {
                   andCondition.AND.push(leftOperand, currentCondition)
                   json.WHERE.push(andCondition)
                   andCondition = null
+                  currentCondition = null
+                  continue
+                }
+
+                if (orCondition) {
+                  orCondition.OR.push(leftOperand, currentCondition)
+                  json.WHERE.push(orCondition)
+                  orCondition = null
                   currentCondition = null
                   continue
                 }
