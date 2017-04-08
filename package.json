@@ -18,8 +18,10 @@
     "url": "git+https://github.com/fibo/SQL92-JSON.git"
   },
   "keywords": [
-    "sql",
-    "json"
+    "SQL",
+    "JSON",
+    "bidirectional",
+    "parser"
   ],
   "author": {
     "name": "Gianluca Casati",

@@ -9,6 +9,7 @@ var isStringNumber = require('../util/isStringNumber')
 var isTableName = require('../util/isTableName')
 var tokenize = require('../util/tokenize')
 
+var isAs = isKeyword('AS')
 var isCount = isKeyword('COUNT')
 var isDrop = isKeyword('DROP')
 var isFrom = isKeyword('FROM')
@@ -37,14 +38,36 @@ function parse (sql) {
   var tokens = tokenize(sql)
 
   function serialize (json, tokens) {
+    var andCondition
     var currentCondition = null
+    var countExpression
+
     var currentToken
     var firstToken = tokens[0]
-    var i
-    var j
+    var foundRightParenthesis = false
     var nextToken
     var numTokens = tokens.length
+    var subQueryTokens
     var token
+
+    var i
+    var j
+
+    var leftOperand
+    var rightOperand
+
+    var foundFrom = false
+    var foundLimit = false
+    var foundOffset = false
+    var foundWhere = false
+
+    var fromIndex
+    // var havingIndex
+    // var groupByIndex
+    var limitIndex
+    var offsetIndex
+    // var orderByIndex
+    var whereIndex
 
     var firstTokenIsValid = (
       isDelete(firstToken) ||
@@ -63,27 +86,6 @@ function parse (sql) {
     if (isSelect(firstToken)) {
       json.SELECT = []
 
-      var andCondition
-
-      var foundFrom = false
-      var foundLimit = false
-      var foundOffset = false
-      var foundWhere = false
-
-      var foundRightParenthesis = false
-      var subQueryTokens
-
-      var fromIndex
-      // var havingIndex
-      // var groupByIndex
-      var limitIndex
-      var offsetIndex
-      // var orderByIndex
-      var whereIndex
-
-      var leftOperand
-      var rightOperand
-
       for (i = 1; i < numTokens; i++) {
         if (foundFrom) continue
 
@@ -101,8 +103,41 @@ function parse (sql) {
           }
 
           if (isCount(token)) {
-            json.SELECT.push({ COUNT: tokens[i + 2] })
-            i = i + 3
+            foundRightParenthesis = false
+            countExpression = {}
+
+            nextToken = tokens[i + 1]
+            if (nextToken !== '(') throw error.invalidSQL(sql)
+
+            for (j = i + 1; j < numTokens; j++) {
+              currentToken = tokens[j]
+              nextToken = tokens[j + 1]
+
+              if (currentToken === ')') {
+                foundRightParenthesis = true
+
+                if (isAs(nextToken)) {
+                  countExpression.AS = tokens[j + 2]
+                  i = j + 2
+                } else {
+                  i = j
+                }
+
+                break
+              }
+
+              // TODO complex count expressions
+              if (isStringNumber(currentToken)) {
+                countExpression.COUNT = parseFloat(currentToken)
+              } else {
+                countExpression.COUNT = currentToken
+              }
+            }
+
+            if (!foundRightParenthesis) throw error.invalidSQL(sql)
+
+            json.SELECT.push(countExpression)
+
             continue
           }
 
