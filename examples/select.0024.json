@@ -1,5 +1,5 @@
 {
   "SELECT": [ "state", "city" ],
   "FROM": [ "suppliers" ],
-  "ORDER": [ 1, 2 ]
+  "ORDER BY": [ 1, 2 ]
 }

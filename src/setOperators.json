@@ -1,1 +1,6 @@
-["IN", "BETWEEN", "UNION"]
+[
+  "BETWEEN",
+  "DISTINCT",
+  "IN",
+  "UNION"
+]

@@ -50,7 +50,7 @@ function stringify (json) {
   }
 
   if (hasOrderBy(json)) {
-    sql += ' ORDER BY ' + json.ORDER.map(orderByCondition).join(', ')
+    sql += ' ORDER BY ' + json['ORDER BY'].map(orderByCondition).join(', ')
   }
 
   if (hasLimit(json)) {

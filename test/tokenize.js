@@ -13,6 +13,7 @@ test('tokenize', function (t) {
   t.deepEqual(tokenize('select 1,2'), ['select', '1', ',', '2'], 'commas')
 // TODO  t.deepEqual(tokenize('select \'select\' "select"'), ['select', "'select'", '"select"'], 'silly query')
   t.deepEqual(tokenize('group by'), ['group by'], 'GROUP BY')
+  t.deepEqual(tokenize('ORDER by'), ['ORDER by'], 'ORDER BY')
   t.deepEqual(tokenize('COUNT(*)'), ['COUNT', '(', '*', ')'], 'COUNT(*)')
 
   t.deepEqual(tokenize(`

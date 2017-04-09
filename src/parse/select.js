@@ -6,9 +6,11 @@ var isTableName = require('../util/isTableName')
 
 var isAs = isKeyword('AS')
 var isCount = isKeyword('COUNT')
+var isDistinct = isKeyword('DISTINCT')
 var isFrom = isKeyword('FROM')
 var isLimit = isKeyword('LIMIT')
 var isOffset = isKeyword('OFFSET')
+var isOrderBy = isKeyword('ORDER BY')
 var isSelect = isKeyword('SELECT')
 var isUnion = isKeyword('UNION')
 var isWhere = isKeyword('WHERE')
@@ -29,7 +31,6 @@ function select (tokens, sql) {
 
   var countExpression
 
-//  var afterNextToken
   var currentToken
   var firstToken = tokens[0]
   var foundRightParenthesis = false
@@ -44,6 +45,7 @@ function select (tokens, sql) {
   var foundFrom = false
   var foundLimit = false
   var foundOffset = false
+  var foundOrderBy = false
   var foundUnion = false
   var foundWhere = false
 
@@ -52,7 +54,7 @@ function select (tokens, sql) {
   // var groupByIndex
   var limitIndex
   var offsetIndex
-  // var orderByIndex
+  var orderByIndex
   var unionIndex
   var whereIndex
 
@@ -67,6 +69,11 @@ function select (tokens, sql) {
     token = tokens[i]
 
     if (token === ',') continue
+
+    if (isDistinct(token)) {
+      json.DISTINCT = true
+      continue
+    }
 
     if (isFrom(token)) {
       foundFrom = true
@@ -127,8 +134,6 @@ function select (tokens, sql) {
     json.FROM = []
 
     for (i = fromIndex + 1; i < numTokens; i++) {
-      if (foundUnion) continue
-
       token = tokens[i]
 
       if (token === ',') continue
@@ -170,7 +175,11 @@ function select (tokens, sql) {
         break
       }
 
-      // TODO if (isOrderBy(token)) {
+      if (isOrderBy(token)) {
+        foundOrderBy = true
+        orderByIndex = i
+        break
+      }
 
       if (isUnion(token)) {
         foundUnion = true
@@ -216,6 +225,22 @@ function select (tokens, sql) {
         else throw error.invalidSQL(sql)
       } else {
         throw error.invalidSQL(sql)
+      }
+    }
+
+    // ORDER BY
+    // ////////////////////////////////////////////////////////////////////
+
+    if (foundOrderBy) {
+      json['ORDER BY'] = []
+
+      for (i = orderByIndex + 1; i < numTokens; i++) {
+        token = tokens[i]
+
+        // TODO probably this logic is incomplete
+        if (isKeyword()(token)) break
+
+        json['ORDER BY'].push(token)
       }
     }
 
