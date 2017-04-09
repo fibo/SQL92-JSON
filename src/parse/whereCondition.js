@@ -1,5 +1,7 @@
 var error = require('../error')
 
+var between = require('./between')
+
 var isKeyword = require('../util/isKeyword')
 var isSingleQuotedString = require('../util/isSingleQuotedString')
 var isStringNumber = require('../util/isStringNumber')
@@ -16,6 +18,7 @@ var comparison = require('./comparison')
 var isAnd = isLogicalOperator('AND')
 var isOr = isLogicalOperator('OR')
 
+var isBetween = isSetOperator('BETWEEN')
 var isIn = isSetOperator('IN')
 
 function whereCondition (tokens, startIndex, select, sql) {
@@ -91,7 +94,15 @@ function whereCondition (tokens, startIndex, select, sql) {
       }
     }
 
-    // Common condition can be OR, AND, IN.
+    // Common condition can be OR, AND, IN, BETWEEN.
+
+    if (isBetween(nextToken)) {
+      try {
+        comparisonExpression = between(token, tokens[i + 2], tokens[i + 3], tokens[i + 4])
+
+        json = json.concat(comparisonExpression)
+      } catch (err) { throw err }
+    }
 
     if (isAnd(token)) {
       andCondition = {}
@@ -122,9 +133,7 @@ function whereCondition (tokens, startIndex, select, sql) {
         }
 
         i = i + 1
-      } catch (err) {
-        throw err
-      }
+      } catch (err) { throw err }
     }
 
     if (isIn(token)) {

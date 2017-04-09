@@ -2,6 +2,6 @@
   "SELECT": ["*"],
   "FROM": ["products"],
   "WHERE": [
-    "name", { "BETWEEN": ["C", "M"] }
+    "name", { "BETWEEN": ["'C'", "'M'"] }
   ]
 }

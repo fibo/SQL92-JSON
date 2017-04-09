@@ -66,7 +66,7 @@ function filter (stringify) {
     var BETWEEN = filter.BETWEEN
 
     if (isBetween(filter)) {
-      return 'BETWEEN ' + BETWEEN.map(quoteIfString).join(' AND ')
+      return 'BETWEEN ' + BETWEEN.join(' AND ')
     }
 
     var OR = filter.OR
