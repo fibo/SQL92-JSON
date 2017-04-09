@@ -15,7 +15,7 @@ test('parse', function (t) {
       var filename = path.parse(file).name
 
       // TODO Restrict tests by now, until completion.
-      if (filename > 'select.0020') return
+      if (filename > 'select.0022') return
       if (filename === '_readme.select') return
 
       if (extension === '.sql') {
@@ -28,7 +28,7 @@ test('parse', function (t) {
           var result = sql2json(statement)
           var expected = require(jsonFile)
 
-          t.deepEqual(result, expected)
+          t.deepEqual(result, expected, 'parse ' + filename)
         })
       }
     })

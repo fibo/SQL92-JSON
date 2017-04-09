@@ -13,7 +13,7 @@ var isSelect = require('./isSelect')
 function hasUnion (json) {
   var UNION = json.UNION
 
-  return Array.isArray(UNION) && UNION.filter(isSelect).length === UNION.length
+  return UNION && isSelect(UNION)
 }
 
 module.exports = hasUnion

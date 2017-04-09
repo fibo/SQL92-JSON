@@ -7,7 +7,6 @@ var isStringNumber = require('../util/isStringNumber')
 var isAnd = isLogicalOperator('AND')
 
 function between (item, left, and, right) {
-  console.log(left, right)
   var json = []
   var interval = { BETWEEN: [] }
 
@@ -30,7 +29,6 @@ function between (item, left, and, right) {
   json.push(item)
   json.push(interval)
 
-  console.log(json)
   return json
 }
 

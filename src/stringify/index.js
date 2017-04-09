@@ -62,7 +62,7 @@ function stringify (json) {
   }
 
   if (hasUnion(json)) {
-    sql += ' UNION ' + json.UNION.map(stringify).join(' UNION ')
+    sql += ' UNION ' + stringify(json.UNION)
   }
 
   return sql

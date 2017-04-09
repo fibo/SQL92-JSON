@@ -1,7 +1,8 @@
-var keywords = require('../keywords.json')
 var functions = require('../functions.json')
+var keywords = require('../keywords.json')
+var setOperators = require('../setOperators.json')
 
-var allKeywords = keywords.concat(functions)
+var allKeywords = keywords.concat(functions).concat(setOperators)
 
 /**
  * Tells if a keyword is some token or a specific token.

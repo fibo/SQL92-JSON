@@ -27,7 +27,7 @@ test('stringify', function (t) {
 
           expected = normalizeSQL(expected)
 
-          t.equal(result, expected, filename)
+          t.equal(result, expected, 'stringify ' + filename)
         })
       }
     })

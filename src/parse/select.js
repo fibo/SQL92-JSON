@@ -10,6 +10,7 @@ var isFrom = isKeyword('FROM')
 var isLimit = isKeyword('LIMIT')
 var isOffset = isKeyword('OFFSET')
 var isSelect = isKeyword('SELECT')
+var isUnion = isKeyword('UNION')
 var isWhere = isKeyword('WHERE')
 
 var whereCondition = require('./whereCondition')
@@ -43,6 +44,7 @@ function select (tokens, sql) {
   var foundFrom = false
   var foundLimit = false
   var foundOffset = false
+  var foundUnion = false
   var foundWhere = false
 
   var fromIndex
@@ -51,6 +53,7 @@ function select (tokens, sql) {
   var limitIndex
   var offsetIndex
   // var orderByIndex
+  var unionIndex
   var whereIndex
 
   if (!isSelect(firstToken)) throw error.invalidSQL(sql)
@@ -124,6 +127,8 @@ function select (tokens, sql) {
     json.FROM = []
 
     for (i = fromIndex + 1; i < numTokens; i++) {
+      if (foundUnion) continue
+
       token = tokens[i]
 
       if (token === ',') continue
@@ -162,13 +167,16 @@ function select (tokens, sql) {
       if (isWhere(token)) {
         foundWhere = true
         whereIndex = i
-        json.WHERE = []
         break
       }
 
       // TODO if (isOrderBy(token)) {
 
-      // if (isKeyword(token)) break
+      if (isUnion(token)) {
+        foundUnion = true
+        unionIndex = i
+        break
+      }
     }
 
     // WHERE
@@ -238,6 +246,13 @@ function select (tokens, sql) {
       } else {
         throw error.invalidSQL(sql)
       }
+    }
+
+    // UNION
+    // ////////////////////////////////////////////////////////////////////
+
+    if (foundUnion) {
+      json.UNION = select(tokens.splice(unionIndex + 1), sql)
     }
   }
 
