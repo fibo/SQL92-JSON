@@ -9,6 +9,7 @@ var isNumberOrString = require('../util/isNumberOrString')
  *
  * @returns {Boolean}
  */
+
 function hasOrderBy (json) {
   var ORDERBY = json['ORDER BY']
 

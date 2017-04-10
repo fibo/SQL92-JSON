@@ -11,9 +11,9 @@ var isNumberOrString = require('../util/isNumberOrString')
  */
 
 function hasGroupBy (json) {
-  var GROUP = json.GROUP
+  var GROUPBY = json['GROUP BY']
 
-  return Array.isArray(GROUP) && GROUP.length > 0 && GROUP.filter(isNumberOrString).length === GROUP.length
+  return Array.isArray(GROUPBY) && GROUPBY.length > 0 && GROUPBY.filter(isNumberOrString).length === GROUPBY.length
 }
 
 module.exports = hasGroupBy

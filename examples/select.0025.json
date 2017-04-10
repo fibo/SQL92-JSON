@@ -1,6 +1,6 @@
 {
   "SELECT": [ "foo", { "COUNT": "*" } ],
   "FROM": ["mytable"],
-  "GROUP": [ "foo", "bar" ],
+  "GROUP BY": [ "foo", "bar" ],
   "HAVING": [ "bar", {"=": "'ok'"} ]
 }

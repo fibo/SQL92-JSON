@@ -8,6 +8,8 @@ var isAs = isKeyword('AS')
 var isCount = isKeyword('COUNT')
 var isDistinct = isKeyword('DISTINCT')
 var isFrom = isKeyword('FROM')
+var isGroupBy = isKeyword('GROUP BY')
+var isHaving = isKeyword('HAVING')
 var isLimit = isKeyword('LIMIT')
 var isOffset = isKeyword('OFFSET')
 var isOrderBy = isKeyword('ORDER BY')
@@ -44,14 +46,16 @@ function select (tokens, sql) {
 
   var foundFrom = false
   var foundLimit = false
+  var foundGroupBy = false
+  var foundHaving = false
   var foundOffset = false
   var foundOrderBy = false
   var foundUnion = false
   var foundWhere = false
 
   var fromIndex
-  // var havingIndex
-  // var groupByIndex
+  var havingIndex
+  var groupByIndex
   var limitIndex
   var offsetIndex
   var orderByIndex
@@ -136,6 +140,34 @@ function select (tokens, sql) {
     for (i = fromIndex + 1; i < numTokens; i++) {
       token = tokens[i]
 
+      if (isWhere(token)) {
+        foundWhere = true
+        whereIndex = i
+      }
+
+      if (isGroupBy(token)) {
+        foundGroupBy = true
+        groupByIndex = i
+      }
+
+      if (isHaving(token)) {
+        foundHaving = true
+        havingIndex = i
+      }
+
+      if (isOrderBy(token)) {
+        foundOrderBy = true
+        orderByIndex = i
+      }
+
+      if (isUnion(token)) {
+        foundUnion = true
+        unionIndex = i
+        break
+      }
+
+      if (foundWhere || foundGroupBy || foundHaving || foundOrderBy) continue
+
       if (token === ',') continue
 
       if (token === '(') {
@@ -168,24 +200,6 @@ function select (tokens, sql) {
       if (isTableName(token)) {
         json.FROM.push(token)
       }
-
-      if (isWhere(token)) {
-        foundWhere = true
-        whereIndex = i
-        break
-      }
-
-      if (isOrderBy(token)) {
-        foundOrderBy = true
-        orderByIndex = i
-        break
-      }
-
-      if (isUnion(token)) {
-        foundUnion = true
-        unionIndex = i
-        break
-      }
     }
 
     // WHERE
@@ -197,6 +211,61 @@ function select (tokens, sql) {
       if (whereIndex === numTokens - 3) throw error.invalidSQL(sql)
 
       json.WHERE = whereCondition(tokens, whereIndex, select, sql)
+    }
+
+    // GROUP BY
+    // ////////////////////////////////////////////////////////////////////
+
+    if (foundGroupBy) {
+      json['GROUP BY'] = []
+
+      for (i = groupByIndex + 1; i < numTokens; i++) {
+        token = tokens[i]
+
+        if (token === ',') continue
+
+        // TODO probably this logic is incomplete
+        if (isKeyword()(token)) break
+
+        if (isStringNumber(token)) {
+          token = parseFloat(token)
+        }
+
+        json['GROUP BY'].push(token)
+      }
+    }
+
+    // HAVING
+    // ////////////////////////////////////////////////////////////////////
+
+    if (foundHaving) {
+      // After a HAVING there should be at least one condition and it will
+      // have more al least 3 tokens: leftOperand, operator, rightOperand.
+      if (havingIndex === numTokens - 3) throw error.invalidSQL(sql)
+
+      json.HAVING = whereCondition(tokens, havingIndex, select, sql)
+    }
+
+    // ORDER BY
+    // ////////////////////////////////////////////////////////////////////
+
+    if (foundOrderBy) {
+      json['ORDER BY'] = []
+
+      for (i = orderByIndex + 1; i < numTokens; i++) {
+        token = tokens[i]
+
+        if (token === ',') continue
+
+        // TODO probably this logic is incomplete
+        if (isKeyword()(token)) break
+
+        if (isStringNumber(token)) {
+          token = parseFloat(token)
+        }
+
+        json['ORDER BY'].push(token)
+      }
     }
 
     // LIMIT
@@ -225,28 +294,6 @@ function select (tokens, sql) {
         else throw error.invalidSQL(sql)
       } else {
         throw error.invalidSQL(sql)
-      }
-    }
-
-    // ORDER BY
-    // ////////////////////////////////////////////////////////////////////
-
-    if (foundOrderBy) {
-      json['ORDER BY'] = []
-
-      for (i = orderByIndex + 1; i < numTokens; i++) {
-        token = tokens[i]
-
-        if (token === ',') continue
-
-        // TODO probably this logic is incomplete
-        if (isKeyword()(token)) break
-
-        if (isStringNumber(token)) {
-          token = parseFloat(token)
-        }
-
-        json['ORDER BY'].push(token)
       }
     }
 

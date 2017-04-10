@@ -42,7 +42,7 @@ function stringify (json) {
   }
 
   if (hasGroupBy(json)) {
-    sql += ' GROUP BY ' + json.GROUP.map(groupByCondition).join(', ')
+    sql += ' GROUP BY ' + json['GROUP BY'].map(groupByCondition).join(', ')
 
     if (hasHaving(json)) {
       sql += ' HAVING ' + conditions(stringify)(json.HAVING)
