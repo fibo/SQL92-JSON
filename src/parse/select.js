@@ -237,8 +237,14 @@ function select (tokens, sql) {
       for (i = orderByIndex + 1; i < numTokens; i++) {
         token = tokens[i]
 
+        if (token === ',') continue
+
         // TODO probably this logic is incomplete
         if (isKeyword()(token)) break
+
+        if (isStringNumber(token)) {
+          token = parseFloat(token)
+        }
 
         json['ORDER BY'].push(token)
       }
