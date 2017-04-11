@@ -15,6 +15,7 @@ test('tokenize', function (t) {
   t.deepEqual(tokenize('group by'), ['group by'], 'GROUP BY')
   t.deepEqual(tokenize('ORDER by'), ['ORDER by'], 'ORDER BY')
   t.deepEqual(tokenize('COUNT(*)'), ['COUNT', '(', '*', ')'], 'COUNT(*)')
+  t.deepEqual(tokenize('1::VARCHAR'), ['1::VARCHAR'], 'cast')
 
   t.deepEqual(tokenize(`
 SELECT COUNT(    *) AS num

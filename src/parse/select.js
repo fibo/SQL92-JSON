@@ -93,14 +93,16 @@ function select (tokens, sql) {
 
     // Math expressions.
 
+    if (isMathOperator(nextToken)) {
+      // TODO for loop to get more complex math expressions
+      json.SELECT.push([parseFloat(token), nextToken, parseFloat(afterNextToken)])
+      i = i + 2
+      continue
+    }
+
     if (isStringNumber(token)) {
-      if (isMathOperator(nextToken)) {
-        // TODO for loop to get more complex math expressions
-        json.SELECT.push([parseFloat(token), nextToken, parseFloat(afterNextToken)])
-        i = i + 2
-      } else {
-        json.SELECT.push(parseFloat(token))
-      }
+      console.log(token)
+      json.SELECT.push(parseFloat(token))
 
       continue
     }
