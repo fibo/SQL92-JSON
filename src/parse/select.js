@@ -2,7 +2,9 @@ var error = require('../error')
 
 var isKeyword = require('../util/isKeyword')
 var isStringNumber = require('../util/isStringNumber')
+var isDoubleQuotedString = require('../util/isDoubleQuotedString')
 var isTableName = require('../util/isTableName')
+var removeFirstAndLastChar = require('../util/removeFirstAndLastChar')
 
 var isAs = isKeyword('AS')
 var isCount = isKeyword('COUNT')
@@ -33,7 +35,7 @@ function select (tokens, sql) {
 
   var countExpression
 
-  var currentToken
+  var afterNextToken
   var firstToken = tokens[0]
   var foundRightParenthesis = false
   var nextToken
@@ -68,9 +70,14 @@ function select (tokens, sql) {
   // ////////////////////////////////////////////////////////////////////////
 
   for (i = 1; i < numTokens; i++) {
-    if (foundFrom) continue
-
     token = tokens[i]
+    nextToken = tokens[i + 1]
+
+    if (isFrom(token)) {
+      foundFrom = true
+      fromIndex = i
+      break
+    }
 
     if (token === ',') continue
 
@@ -79,56 +86,55 @@ function select (tokens, sql) {
       continue
     }
 
-    if (isFrom(token)) {
-      foundFrom = true
-      fromIndex = i
-    } else {
-      if (isStringNumber(token)) {
-        json.SELECT.push(parseFloat(token))
-        continue
-      }
+    if (isStringNumber(token)) {
+      json.SELECT.push(parseFloat(token))
+      continue
+    }
 
-      if (isCount(token)) {
-        foundRightParenthesis = false
-        countExpression = {}
+    if (isCount(token)) {
+      foundRightParenthesis = false
+      countExpression = {}
 
-        nextToken = tokens[i + 1]
-        if (nextToken !== '(') throw error.invalidSQL(sql)
+      if (nextToken !== '(') throw error.invalidSQL(sql)
 
-        for (j = i + 1; j < numTokens; j++) {
-          currentToken = tokens[j]
-          nextToken = tokens[j + 1]
+      for (j = i + 1; j < numTokens; j++) {
+        token = tokens[j]
+        nextToken = tokens[j + 1]
+        afterNextToken = tokens[j + 2]
 
-          if (currentToken === ')') {
-            foundRightParenthesis = true
+        if (token === ')') {
+          foundRightParenthesis = true
 
-            if (isAs(nextToken)) {
-              countExpression.AS = tokens[j + 2]
-              i = j + 2
-            } else {
-              i = j
+          if (isAs(nextToken)) {
+            if (isDoubleQuotedString(afterNextToken)) {
+              afterNextToken = removeFirstAndLastChar(afterNextToken)
             }
 
-            break
+            countExpression.AS = afterNextToken
+            i = j + 2
+          } else {
+            i = j
           }
 
-          // TODO complex count expressions
-          if (isStringNumber(currentToken)) {
-            countExpression.COUNT = parseFloat(currentToken)
-          } else {
-            countExpression.COUNT = currentToken
-          }
+          break
         }
 
-        if (!foundRightParenthesis) throw error.invalidSQL(sql)
-
-        json.SELECT.push(countExpression)
-
-        continue
+        // TODO complex count expressions
+        if (isStringNumber(token)) {
+          countExpression.COUNT = parseFloat(token)
+        } else {
+          countExpression.COUNT = token
+        }
       }
 
-      json.SELECT.push(token)
+      if (!foundRightParenthesis) throw error.invalidSQL(sql)
+
+      json.SELECT.push(countExpression)
+
+      continue
     }
+
+    json.SELECT.push(token)
   }
 
   // FROM

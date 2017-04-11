@@ -14,6 +14,7 @@ var isSetOperator = require('../util/isSetOperator')
 var isSelect = isKeyword('SELECT')
 
 var comparison = require('./comparison')
+var removeFirstAndLastChar = require('../util/removeFirstAndLastChar')
 
 var isAnd = isLogicalOperator('AND')
 var isOr = isLogicalOperator('OR')
@@ -181,8 +182,7 @@ function whereCondition (tokens, startIndex, select, sql) {
 
           if ((nextToken === ',') || (nextToken === ')')) {
             if (isSingleQuotedString(currentToken)) {
-              // Remove quotes, that are first and last characters.
-              rightOperand.push(currentToken.substring(1, currentToken.length - 1))
+              rightOperand.push(removeFirstAndLastChar(currentToken))
             }
 
             if (isStringNumber(currentToken)) {
