@@ -1,10 +1,12 @@
 var countExpression = require('./countExpression')
 var isDataType = require('../util/isDataType')
 var isFieldName = require('../util/isFieldName')
+// var isMathOperator = require('../util/isMathOperator')
 var isNumber = require('../util/isNumber')
 var isObject = require('../util/isObject')
 var isSingleQuotedString = require('../util/isSingleQuotedString')
 var isStringNumber = require('../util/isStringNumber')
+// var isStringOperator = require('../util/isStringOperator')
 var isStar = require('../util/isStar')
 var isString = require('../util/isString')
 
@@ -17,6 +19,12 @@ var isString = require('../util/isString')
  */
 
 function selectField (field) {
+  // Check if field is a math or string expression.
+  if (Array.isArray(field)) {
+    // TODO improve this using isMathOperator and isStringOperator
+    return field.join(' ')
+  }
+
   if (isStar(field)) return field
 
   if (isNumber(field)) return field
