@@ -7,7 +7,7 @@
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "lint": "standard",
     "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
-    "test": "NODE_PATH=. tape test/*.js test/*/*js | tap-spec"
+    "test": "NODE_PATH=. tape test/*.js test/*/*js"
   },
   "pre-commit": [
     "lint",
@@ -38,7 +38,6 @@
     "nyc": "^10.2.0",
     "pre-commit": "^1.2.2",
     "standard": "^9.0.2",
-    "tap-spec": "^4.1.1",
     "tape": "^4.6.3"
   }
 }

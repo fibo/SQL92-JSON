@@ -1,8 +1,12 @@
 var error = require('../error')
 
 var isKeyword = require('../util/isKeyword')
-var isStringNumber = require('../util/isStringNumber')
+var isMathOperator = require('../util/isMathOperator')
 var isDoubleQuotedString = require('../util/isDoubleQuotedString')
+var isStar = require('../util/isStar')
+var isString = require('../util/isString')
+var isStringNumber = require('../util/isStringNumber')
+var isStringOperator = require('../util/isStringOperator')
 var isTableName = require('../util/isTableName')
 var removeFirstAndLastChar = require('../util/removeFirstAndLastChar')
 
@@ -72,6 +76,7 @@ function select (tokens, sql) {
   for (i = 1; i < numTokens; i++) {
     token = tokens[i]
     nextToken = tokens[i + 1]
+    afterNextToken = tokens[i + 2]
 
     if (isFrom(token)) {
       foundFrom = true
@@ -86,8 +91,17 @@ function select (tokens, sql) {
       continue
     }
 
+    // Math expressions.
+
     if (isStringNumber(token)) {
-      json.SELECT.push(parseFloat(token))
+      if (isMathOperator(nextToken)) {
+        // TODO for loop to get more complex math expressions
+        json.SELECT.push([parseFloat(token), nextToken, parseFloat(afterNextToken)])
+        i = i + 2
+      } else {
+        json.SELECT.push(parseFloat(token))
+      }
+
       continue
     }
 
@@ -134,7 +148,21 @@ function select (tokens, sql) {
       continue
     }
 
-    json.SELECT.push(token)
+    // String concatenation.
+
+    if (isString(token)) {
+      if (isStringOperator(nextToken)) {
+        // TODO for loop to get larger string concatenations.
+        json.SELECT.push([token, nextToken, afterNextToken])
+        i = i + 2
+      } else {
+        json.SELECT.push(token)
+      }
+
+      continue
+    }
+
+    if (isStar(token)) json.SELECT.push(token)
   }
 
   // FROM
