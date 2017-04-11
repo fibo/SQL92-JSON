@@ -17,7 +17,6 @@ test('parse', function (t) {
       // TODO Restrict tests by now, until completion.
       if (filename === 'select.0027') return
       if (filename === 'select.0028') return
-      if (filename === 'select.0029') return
       if (filename === '_readme.select') return
 
       if (extension === '.sql') {
