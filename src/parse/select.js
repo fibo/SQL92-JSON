@@ -43,6 +43,7 @@ function select (tokens, sql) {
   var firstToken = tokens[0]
   var foundRightParenthesis = false
   var nextToken
+  var numOpenParenthesis
   var numTokens = tokens.length
   var subQueryTokens
   var token
@@ -101,7 +102,6 @@ function select (tokens, sql) {
     }
 
     if (isStringNumber(token)) {
-      console.log(token)
       json.SELECT.push(parseFloat(token))
 
       continue
@@ -207,17 +207,24 @@ function select (tokens, sql) {
       if (token === ',') continue
 
       if (token === '(') {
-        // A sub query must start with a SELECT.
         firstToken = tokens[i + 1]
+        foundRightParenthesis = false
+        numOpenParenthesis = 1
+
+        // A sub query must start with a SELECT.
         if (!isSelect(firstToken)) throw error.invalidSQL(sql)
 
-        foundRightParenthesis = false
         subQueryTokens = []
 
         for (j = i + 1; j < numTokens; j++) {
+          if (foundRightParenthesis) continue
+
           token = tokens[j]
 
-          if (token === ')') {
+          if (token === '(') numOpenParenthesis++
+          if (token === ')') numOpenParenthesis--
+
+          if (numOpenParenthesis === 0) {
             foundRightParenthesis = true
             i = j
             json.FROM.push(select(subQueryTokens, sql))

@@ -82,6 +82,7 @@ function whereCondition (tokens, startIndex, select, sql) {
       if (!foundRightParenthesis) throw error.invalidSQL(sql)
 
       var logicalExpression = whereCondition(subConditionTokens, 0, select, sql)
+
       if (andCondition) {
         andCondition.AND = logicalExpression
         json = json.concat(andCondition)
@@ -95,13 +96,23 @@ function whereCondition (tokens, startIndex, select, sql) {
       }
     }
 
-    // Common condition can be OR, AND, IN, BETWEEN.
+    // Common condition can be OR, AND, BETWEEN.
 
     if (isBetween(nextToken)) {
       try {
         comparisonExpression = between(token, tokens[i + 2], tokens[i + 3], tokens[i + 4])
 
-        json = json.concat(comparisonExpression)
+        if (andCondition) {
+          andCondition.AND = comparisonExpression
+          json = json.concat(andCondition)
+          andCondition = null
+        } else if (orCondition) {
+          orCondition.OR = comparisonExpression
+          json = json.concat(orCondition)
+          orCondition = null
+        } else {
+          json = json.concat(comparisonExpression)
+        }
       } catch (err) { throw err }
     }
 
