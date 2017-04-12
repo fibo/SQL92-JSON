@@ -14,10 +14,7 @@ test('parse', function (t) {
       var extension = path.extname(file)
       var filename = path.parse(file).name
 
-      // TODO Restrict tests by now, until completion.
-//      if (filename === 'select.0027') return
-      if (filename === 'select.0028') return
-      if (filename === '_readme.select') return
+      if (filename !== '_readme.select') return
 
       if (extension === '.sql') {
         var jsonFile = path.join(examplesDir, `${filename}.json`)

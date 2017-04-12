@@ -6,6 +6,7 @@
   "IS",
   "JOIN",
   "LEFT",
+  "NOT",
   "ORDER",
   "RIGHT"
 ]

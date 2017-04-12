@@ -10,16 +10,16 @@ var isComparisonOperator = require('../util/isComparisonOperator')
 var isKeywordOrOperator = require('../util/isKeywordOrOperator')
 var isLogicalOperator = require('../util/isLogicalOperator')
 var isSetOperator = require('../util/isSetOperator')
-
-var isSelect = isKeyword('SELECT')
-
 var comparison = require('./comparison')
 var removeFirstAndLastChar = require('../util/removeFirstAndLastChar')
+
+var isSelect = isKeyword('SELECT')
 
 var isAnd = isLogicalOperator('AND')
 var isOr = isLogicalOperator('OR')
 
 var isBetween = isSetOperator('BETWEEN')
+var isNotBetween = isSetOperator('NOT BETWEEN')
 var isIn = isSetOperator('IN')
 
 function whereCondition (tokens, startIndex, select, sql) {
@@ -41,6 +41,7 @@ function whereCondition (tokens, startIndex, select, sql) {
   var rightOperand
 
   var j
+  var not
 
   for (var i = startIndex; i < numTokens; i++) {
     token = tokens[i]
@@ -48,20 +49,15 @@ function whereCondition (tokens, startIndex, select, sql) {
     afterNextToken = tokens[i + 2]
     var numOpenParenthesis
 
+    if (isAnd(token)) andCondition = { AND: [] }
+    if (isOr(token)) orCondition = { OR: [] }
+
     // Iterate over sub conditions.
 
     if ((!isIn(token)) && (nextToken === '(')) {
       foundRightParenthesis = false
       numOpenParenthesis = 1
       var subConditionTokens = []
-
-      if (isAnd(token)) {
-        andCondition = {}
-      }
-
-      if (isOr(token)) {
-        orCondition = {}
-      }
 
       for (j = i + 2; j < numTokens; j++) {
         if (foundRightParenthesis) continue
@@ -96,11 +92,13 @@ function whereCondition (tokens, startIndex, select, sql) {
       }
     }
 
-    // Common condition can be OR, AND, BETWEEN.
+    // Common condition can be OR, AND, BETWEEN, NOT BETWEEN.
 
-    if (isBetween(nextToken)) {
+    if (isBetween(nextToken) || isNotBetween(nextToken)) {
       try {
-        comparisonExpression = between(token, tokens[i + 2], tokens[i + 3], tokens[i + 4])
+        if (isNotBetween(nextToken)) not = true
+
+        comparisonExpression = between(token, tokens[i + 2], tokens[i + 3], tokens[i + 4], not)
 
         if (andCondition) {
           andCondition.AND = comparisonExpression
@@ -113,17 +111,9 @@ function whereCondition (tokens, startIndex, select, sql) {
         } else {
           json = json.concat(comparisonExpression)
         }
+
+        i = i + 4
       } catch (err) { throw err }
-    }
-
-    if (isAnd(token)) {
-      andCondition = {}
-      andCondition.AND = []
-    }
-
-    if (isOr(token)) {
-      orCondition = {}
-      orCondition.OR = []
     }
 
     if (isComparisonOperator(nextToken)) {
@@ -148,6 +138,7 @@ function whereCondition (tokens, startIndex, select, sql) {
       } catch (err) { throw err }
     }
 
+    // TODO There is another isIn conditions in this file and both can be merged.
     if (isIn(token)) {
       leftOperand = tokens[i - 1]
       nextToken = tokens[i + 1]

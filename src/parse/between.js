@@ -6,9 +6,12 @@ var isStringNumber = require('../util/isStringNumber')
 
 var isAnd = isLogicalOperator('AND')
 
-function between (item, left, and, right) {
+function between (item, left, and, right, not) {
   var json = []
-  var interval = { BETWEEN: [] }
+  var interval = {}
+
+  if (not) interval['NOT BETWEEN'] = []
+  else interval.BETWEEN = []
 
   if (!isAnd(and)) throw error.invalidSQL()
 
@@ -24,7 +27,8 @@ function between (item, left, and, right) {
     right = parseFloat(right)
   }
 
-  interval.BETWEEN.push(left, right)
+  if (not) interval['NOT BETWEEN'].push(left, right)
+  else interval.BETWEEN.push(left, right)
 
   json.push(item)
   json.push(interval)
