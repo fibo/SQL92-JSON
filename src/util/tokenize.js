@@ -148,6 +148,16 @@ function tokenize (sql) {
     if (isPartialKeyword(token)) {
       var TOKEN = token.toUpperCase()
 
+      if (TOKEN === 'CREATE') {
+        if ([
+          'DATABASE', 'SCHEMA', 'SEQUENCE',
+          'TABLE', 'USER', 'VIEW'
+        ].indexOf(NEXT_TOKEN) > -1) {
+          joinedTokens.push(token + ' ' + nextToken)
+          i = i + 1
+        }
+      }
+
       if ((TOKEN === 'GROUP') || (TOKEN === 'ORDER')) {
         if (NEXT_TOKEN === 'BY') {
           joinedTokens.push(token + ' ' + nextToken)

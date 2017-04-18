@@ -9,6 +9,7 @@ var hasOrderBy = require('./hasOrderBy')
 var hasUnion = require('./hasUnion')
 var hasWhere = require('./hasWhere')
 var orderByCondition = require('./orderByCondition')
+var isCreateTable = require('./isCreateTable')
 var isSelect = require('./isSelect')
 var resultSet = require('./resultSet')
 var selectField = require('./selectField')
@@ -22,7 +23,21 @@ var selectField = require('./selectField')
  */
 
 function stringify (json) {
-  var sql = null
+  var sql
+
+  if (isCreateTable(json)) {
+    sql = 'CREATE TABLE ' + json['CREATE TABLE'].name + ' ('
+
+    json['CREATE TABLE'].fields.forEach(function (field, index, fields) {
+      sql += field[0] + ' ' + field[1]
+
+      if (index === fields.length - 1) {
+        sql += ')'
+      } else {
+        sql += ', '
+      }
+    })
+  }
 
   if (isSelect(json)) {
     if (sql) sql += ' SELECT '
@@ -31,38 +46,38 @@ function stringify (json) {
     if (json.DISTINCT) sql += 'DISTINCT '
 
     sql += json.SELECT.map(selectField).join(', ')
-  }
 
-  if (hasFrom(json)) {
-    sql += ' FROM ' + json.FROM.map(resultSet(stringify)).join(' ')
-  }
-
-  if (hasWhere(json)) {
-    sql += ' WHERE ' + conditions(stringify)(json.WHERE)
-  }
-
-  if (hasGroupBy(json)) {
-    sql += ' GROUP BY ' + json['GROUP BY'].map(groupByCondition).join(', ')
-
-    if (hasHaving(json)) {
-      sql += ' HAVING ' + conditions(stringify)(json.HAVING)
+    if (hasFrom(json)) {
+      sql += ' FROM ' + json.FROM.map(resultSet(stringify)).join(' ')
     }
-  }
 
-  if (hasOrderBy(json)) {
-    sql += ' ORDER BY ' + json['ORDER BY'].map(orderByCondition).join(', ')
-  }
+    if (hasWhere(json)) {
+      sql += ' WHERE ' + conditions(stringify)(json.WHERE)
+    }
 
-  if (hasLimit(json)) {
-    sql += ' LIMIT ' + json.LIMIT
-  }
+    if (hasGroupBy(json)) {
+      sql += ' GROUP BY ' + json['GROUP BY'].map(groupByCondition).join(', ')
 
-  if (hasOffset(json)) {
-    sql += ' OFFSET ' + json.OFFSET
-  }
+      if (hasHaving(json)) {
+        sql += ' HAVING ' + conditions(stringify)(json.HAVING)
+      }
+    }
 
-  if (hasUnion(json)) {
-    sql += ' UNION ' + stringify(json.UNION)
+    if (hasOrderBy(json)) {
+      sql += ' ORDER BY ' + json['ORDER BY'].map(orderByCondition).join(', ')
+    }
+
+    if (hasLimit(json)) {
+      sql += ' LIMIT ' + json.LIMIT
+    }
+
+    if (hasOffset(json)) {
+      sql += ' OFFSET ' + json.OFFSET
+    }
+
+    if (hasUnion(json)) {
+      sql += ' UNION ' + stringify(json.UNION)
+    }
   }
 
   return sql

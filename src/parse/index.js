@@ -1,8 +1,12 @@
 var error = require('../error')
+
 var isKeyword = require('../util/isKeyword')
-var select = require('./select')
 var tokenize = require('../util/tokenize')
 
+var createTable = require('./createTable')
+var select = require('./select')
+
+var isCreateTable = isKeyword('CREATE TABLE')
 var isDelete = isKeyword('DELETE')
 var isDrop = isKeyword('DROP')
 var isInsert = isKeyword('INSERT')
@@ -26,6 +30,7 @@ function parse (sql) {
 
   function serialize (json, tokens) {
     var firstTokenIsValid = (
+      isCreateTable(firstToken) ||
       isDelete(firstToken) ||
       isDrop(firstToken) ||
       isInsert(firstToken) ||
@@ -36,6 +41,7 @@ function parse (sql) {
 
     if (!firstTokenIsValid) throw error.invalidSQL(sql)
 
+    if (isCreateTable(firstToken)) return createTable(tokens, sql)
     if (isSelect(firstToken)) return select(tokens, sql)
   }
 

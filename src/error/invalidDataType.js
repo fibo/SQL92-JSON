@@ -1,4 +1,4 @@
-function errorDataType (dataType) {
+function invalidDataType (dataType) {
   var message = 'Invalid data type'
   if (dataType) message += ': ' + dataType
 
@@ -8,4 +8,4 @@ function errorDataType (dataType) {
   return error
 }
 
-module.exports = errorDataType
+module.exports = invalidDataType

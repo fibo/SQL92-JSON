@@ -1,0 +1,8 @@
+{
+  "CREATE TABLE": {
+    "name": "x",
+    "fields": [
+      [ "ok", "BOOLEAN" ]
+    ]
+  }
+}

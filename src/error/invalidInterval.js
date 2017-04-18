@@ -1,4 +1,4 @@
-function errorInterval (left, right) {
+function invalidInterval (left, right) {
   var message = 'invalid interval'
   if (left || right) message += ':'
   if (left) message += ' ' + left
@@ -11,4 +11,4 @@ function errorInterval (left, right) {
   return error
 }
 
-module.exports = errorInterval
+module.exports = invalidInterval

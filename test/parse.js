@@ -14,8 +14,6 @@ test('parse', function (t) {
       var extension = path.extname(file)
       var filename = path.parse(file).name
 
-      if (filename !== '_readme.select') return
-
       if (extension === '.sql') {
         var jsonFile = path.join(examplesDir, `${filename}.json`)
         var sqlFile = path.join(examplesDir, `${filename}${extension}`)

@@ -1,4 +1,4 @@
-function errorOperand (operand) {
+function invalidOperand (operand) {
   var message = 'Invalid operand'
   if (operand) message += ': ' + operand
 
@@ -8,4 +8,4 @@ function errorOperand (operand) {
   return error
 }
 
-module.exports = errorOperand
+module.exports = invalidOperand
