@@ -1,7 +1,9 @@
 [
   "BETWEEN",
   "DISTINCT",
+  "EXISTS",
   "IN",
   "NOT BETWEEN",
+  "NOT EXISTS",
   "UNION"
 ]
