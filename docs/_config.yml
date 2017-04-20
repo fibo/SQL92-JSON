@@ -1,2 +1,10 @@
 gems:
   - jekyll-sitemap
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: page
