@@ -27,3 +27,5 @@ SELECT name, color, quantity, when_eat
 FROM fruit
 ```
 
+TODO: case when it is a `select * from` do a limit 1 to get the header.
+
