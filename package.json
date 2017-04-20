@@ -5,6 +5,7 @@
   "main": "sql92-json.js",
   "scripts": {
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "homepage": "echo \"---\ntitle: $npm_package_name\n---\" > docs/index.md; cat README.md >> docs/index.md",
     "lint": "standard",
     "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
     "test": "NODE_PATH=. tape test/*.js test/*/*js"
