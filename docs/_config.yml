@@ -1,3 +1,5 @@
+markdown: kramdown
+
 gems:
   - jekyll-sitemap
 
@@ -7,4 +9,4 @@ defaults:
       path: ""
       type: "pages"
     values:
-      layout: page
+      layout: common/page
