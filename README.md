@@ -9,6 +9,7 @@ Adding INSERT and other DMLs statementes as well as DDLs is on the roadmap.
 [Installation](#installation) |
 [API](#api) |
 [Examples](#examples) |
+[Recipes](#recipes) |
 [References](#references) |
 [License](#license)
 
@@ -57,6 +58,10 @@ FROM revenue
                         //   FROM: ['revenue']
                         // }
 ```
+
+## Recipes
+
+* [Spool header](g14n.info/SQL92-JSON/recipes/spool-header/)
 
 ## Examples
 

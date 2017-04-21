@@ -85,6 +85,12 @@ function select (tokens, sql) {
       break
     }
 
+    if (isUnion(token)) {
+      foundUnion = true
+      unionIndex = i
+      break
+    }
+
     if (token === ',') continue
 
     if (isDistinct(token)) {
@@ -368,13 +374,13 @@ function select (tokens, sql) {
         throw error.invalidSQL(sql)
       }
     }
+  }
 
-    // UNION
-    // ////////////////////////////////////////////////////////////////////
+  // UNION
+  // ////////////////////////////////////////////////////////////////////
 
-    if (foundUnion) {
-      json.UNION = select(tokens.splice(unionIndex + 1), sql)
-    }
+  if (foundUnion) {
+    json.UNION = select(tokens.splice(unionIndex + 1), sql)
   }
 
   return json

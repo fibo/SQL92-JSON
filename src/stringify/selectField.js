@@ -37,12 +37,12 @@ function selectField (field) {
     var fieldName = field.split('::')[0]
     var dataType = field.split('::')[1]
 
-    if (dataType) {
-      var fieldNameIsValid = isStringNumber(fieldName) || isSingleQuotedString(fieldName) || isFieldName(fieldName)
+    var fieldNameIsValid = isStringNumber(fieldName) || isSingleQuotedString(fieldName) || isFieldName(fieldName)
 
+    if (dataType) {
       if (fieldNameIsValid && isDataType(dataType)) return field
     } else {
-      if (isFieldName(fieldName)) return field
+      if (fieldNameIsValid) return field
     }
   }
 

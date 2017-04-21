@@ -1,3 +1,5 @@
+var error = require('../error')
+
 /**
  * Check that expression has a SELECT.
  *
@@ -11,7 +13,15 @@
 function hasFrom (json) {
   var FROM = json.FROM
 
-  return Array.isArray(FROM) && FROM.length > 0
+  if (FROM) {
+    if (Array.isArray(FROM) && FROM.length > 0) {
+      return true
+    } else {
+      throw error.invalidJSONData({ FROM: FROM })
+    }
+  } else {
+    return false
+  }
 }
 
 module.exports = hasFrom
