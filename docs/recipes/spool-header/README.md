@@ -35,9 +35,9 @@ To transform the first statement into the second one you can do
 const sql2json = require('sql92-json').parse
 const json2sql = require('sql92-json').stringify
 
-const addHeader = (fields, query) => {
+const addHeader = (header, query) => {
   return {
-    SELECT: fields,
+    SELECT: header,
     UNION: query
   }
 }
@@ -51,9 +51,9 @@ FROM fruit
 const query = sql2json(sql)
 
 // Enclose fields with single quotes.
-const fields = query.SELECT.map((field) => "'" + field + "'")
+const header = query.SELECT.map((field) => "'" + field + "'")
 
-const queryWithHeader = addHeader(fields, query)
+const queryWithHeader = addHeader(header, query)
 
 // Stringify the generated JSON back into SQL.
 const sqlWithHeader = json2sql(queryWithHeader)
@@ -104,7 +104,7 @@ GZIP
 A generic solution to this use case is to fetch the fields from a query
 like `SELECT * FROM fruit LIMIT 1`, then apply the previous transformation
 to get a statement that returns an header in the first row.
-This is as easy as the following snippet.
+This is as easy as the following snippet
 
 ```javascript
 const sqlStar = `
@@ -122,3 +122,23 @@ console.log(json2sql(queryStar))
 // LIMIT 1
 ```
 
+Finally, since all fields in a `UNION` must have the same cardinality and
+data type, it is necessary to cast all fields to `VARCHAR`.
+
+```javascript
+const fields = [ 'name', 'color', 'quantity', 'when_eat' ]
+
+const spool = {
+  SELECT: fields.map((field) => `'${field}'`),
+  UNION: {
+    SELECT: fields.map((field) => `${field}::VARCHAR`)
+    FROM: ['fruit']
+  }
+}
+
+console.log(json2sql(spool))
+// SELECT 'name', 'color', 'quantity', 'when_eat'
+// UNION
+// SELECT name::VARCHAR, color::VARCHAR, quantity::VARCHAR, when_eat::VARCHAR
+// FROM fruit
+```

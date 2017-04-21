@@ -1,5 +1,7 @@
 [
   "BOOLEAN",
+  "DATE",
   "INTEGER",
+  "TIME",
   "VARCHAR"
 ]
