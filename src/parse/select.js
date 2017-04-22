@@ -37,6 +37,7 @@ var whereCondition = require('./whereCondition')
 function select (tokens, sql) {
   var json = { SELECT: [] }
 
+  var aliasExpression
   var countExpression
 
   var afterNextToken
@@ -95,6 +96,31 @@ function select (tokens, sql) {
 
     if (isDistinct(token)) {
       json.DISTINCT = true
+      continue
+    }
+
+    // Check for aliases first, since it is found looking at next token.
+
+    if (isAs(nextToken)) {
+      aliasExpression = { AS: {} }
+
+      if (!isString(afterNextToken)) throw error.invalidSQL(sql)
+
+      if (isDoubleQuotedString(afterNextToken)) {
+        afterNextToken = removeFirstAndLastChar(afterNextToken)
+      }
+
+      // TODO a math expression could have an alias?
+      // SELECT 1 + 2 AS sum
+
+      if (isStringNumber(token)) token = parseFloat(token)
+
+      aliasExpression.AS[afterNextToken] = token
+
+      json.SELECT.push(aliasExpression)
+
+      i = j + 2
+
       continue
     }
 

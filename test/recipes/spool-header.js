@@ -5,7 +5,7 @@ const normalizeSQL = require('src/util/normalizeSQL')
 const sql2json = require('sql92-json').parse
 const json2sql = require('sql92-json').stringify
 
-const addHeader = (header, query) => {
+function addHeader (header, query) {
   return {
     SELECT: header,
     UNION: query
@@ -35,10 +35,14 @@ FROM fruit
 LIMIT 1
 `
 const sqlSpool = `
-SELECT 'name', 'color', 'quantity', 'when_eat'
-UNION
-SELECT name::VARCHAR, color::VARCHAR, quantity::VARCHAR, when_eat::VARCHAR
-FROM fruit
+SELECT name, color, quantity, when_eat
+FROM (
+  SELECT 1 AS i, 'name', 'color', 'quantity', 'when_eat'
+  UNION
+  SELECT 2 AS i, name::VARCHAR, color::VARCHAR, quantity::VARCHAR, when_eat::VARCHAR
+  FROM fruit
+)
+ORDER BY i
 `
 
 test('recipe spool-header', function (t) {
@@ -63,16 +67,23 @@ test('recipe spool-header', function (t) {
 
   // Cast to VARCHAR to make UNION data types compatible.
   const fields = [ 'name', 'color', 'quantity', 'when_eat' ]
+  const table = 'fruit'
 
-  const spool = {
-    SELECT: fields.map((field) => `'${field}'`),
-    UNION: {
-      SELECT: fields.map((field) => `${field}::VARCHAR`),
-      FROM: ['fruit']
+  function spool (table, fields) {
+    return {
+      SELECT: fields,
+      FROM: [{
+        SELECT: [{ AS: { i: 1 } }].concat(fields.map((field) => `'${field}'`)),
+        UNION: {
+          SELECT: [{ AS: { i: 2 } }].concat(fields.map((field) => `${field}::VARCHAR`)),
+          FROM: [table]
+        }
+      }],
+      'ORDER BY': ['i']
     }
   }
 
-  t.equal(normalizeSQL(sqlSpool), json2sql(spool), 'cast to VARCHAR')
+  t.equal(normalizeSQL(sqlSpool), json2sql(spool(table, fields)), 'spool')
 
   t.end()
 })

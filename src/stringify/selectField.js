@@ -1,14 +1,14 @@
+var error = require('../error')
+
+var aliasExpression = require('./aliasExpression')
 var countExpression = require('./countExpression')
-var isDataType = require('../util/isDataType')
-var isFieldName = require('../util/isFieldName')
 // var isMathOperator = require('../util/isMathOperator')
 var isNumber = require('../util/isNumber')
 var isObject = require('../util/isObject')
-var isSingleQuotedString = require('../util/isSingleQuotedString')
-var isStringNumber = require('../util/isStringNumber')
 // var isStringOperator = require('../util/isStringOperator')
 var isStar = require('../util/isStar')
 var isString = require('../util/isString')
+var stringField = require('./stringField')
 
 /**
  * Map columns in a SELECT.
@@ -30,35 +30,21 @@ function selectField (field) {
   if (isNumber(field)) return field
 
   if (isString(field)) {
-    // Consider that a field could be casted, for example
-    //
-    // SELECT 1::VARCHAR
-
-    var fieldName = field.split('::')[0]
-    var dataType = field.split('::')[1]
-
-    var fieldNameIsValid = isStringNumber(fieldName) || isSingleQuotedString(fieldName) || isFieldName(fieldName)
-
-    if (dataType) {
-      if (fieldNameIsValid && isDataType(dataType)) return field
-    } else {
-      if (fieldNameIsValid) return field
-    }
+    return stringField(field)
   }
 
   if (isObject(field)) {
     if (field.COUNT) {
       return countExpression(field)
     }
+
+    if (field.AS) {
+      return aliasExpression(field)
+    }
   }
 
   // Should not arrive here.
-
-  var message = 'Could not parse select field'
-  if (field) message = message + ' ' + field
-  var error = new TypeError(message)
-  error.field = field
-  throw error
+  throw error.couldNotParseSelectField(field)
 }
 
 module.exports = selectField

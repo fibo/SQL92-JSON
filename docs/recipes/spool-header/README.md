@@ -35,7 +35,7 @@ To transform the first statement into the second one you can do
 const sql2json = require('sql92-json').parse
 const json2sql = require('sql92-json').stringify
 
-const addHeader = (header, query) => {
+function addHeader (header, query) {
   return {
     SELECT: header,
     UNION: query
@@ -122,23 +122,51 @@ console.log(json2sql(queryStar))
 // LIMIT 1
 ```
 
-Finally, since all fields in a `UNION` must have the same cardinality and
-data type, it is necessary to cast all fields to `VARCHAR`.
+Since all fields in a `UNION` must have the same cardinality and data
+type, it is necessary to cast all fields to `VARCHAR`. Furthermore the
+header could appear not in the first row.
+See [this answer on Stack Overflow](http://stackoverflow.com/a/27863648/1217468)
+the statement we need is something like the following
+
+```sql
+SELECT foo, bar
+FROM (
+  SELECT 1 AS i, 'foo', 'bar'
+  UNION
+  SELECT 2 AS i, foo, bar
+  FROM mytable
+)
+ORDER BY i
+```
+
+Assuming that we know the fields involved, the final solution is the
+following.
 
 ```javascript
 const fields = [ 'name', 'color', 'quantity', 'when_eat' ]
+const table = 'fruit'
 
-const spool = {
-  SELECT: fields.map((field) => `'${field}'`),
-  UNION: {
-    SELECT: fields.map((field) => `${field}::VARCHAR`)
-    FROM: ['fruit']
+function spool (table, fields) {
+  return {
+    SELECT: fields,
+    FROM: [{
+      SELECT: [{ AS: { i: 1 } }].concat(fields.map((field) => `'${field}'`)),
+      UNION: {
+        SELECT: [{ AS: { i: 2 } }].concat(fields.map((field) => `${field}::VARCHAR`)),
+        FROM: [table]
+      }
+    }],
+    'ORDER BY': ['i']
   }
 }
 
-console.log(json2sql(spool))
+console.log(json2sql(spool(table, fields)))
 // SELECT 'name', 'color', 'quantity', 'when_eat'
-// UNION
-// SELECT name::VARCHAR, color::VARCHAR, quantity::VARCHAR, when_eat::VARCHAR
-// FROM fruit
+// FROM (
+//   SELECT 1 AS i, 'name', 'color', 'quantity', 'when_eat'
+//   UNION
+//   SELECT 2 AS i, name::VARCHAR, color::VARCHAR, quantity::VARCHAR, when_eat::VARCHAR
+//   FROM fruit
+// )
+// ORDER BY i
 ```

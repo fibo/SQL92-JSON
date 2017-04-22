@@ -61,7 +61,7 @@ FROM revenue
 
 ## Recipes
 
-* [Spool header](g14n.info/SQL92-JSON/recipes/spool-header/)
+* [Spool header](http://g14n.info/SQL92-JSON/recipes/spool-header/)
 
 ## Examples
 

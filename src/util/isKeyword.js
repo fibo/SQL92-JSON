@@ -16,11 +16,14 @@ var allKeywords = keywords.concat(functions).concat(setOperators)
  * isCount('Count') => true
  * isCount('MAX') => false
  * isCount('foo') => false
+ * isCount() => false
  */
 
 function isKeyword (keyword) {
   if (keyword) {
     return function (token) {
+      if (!token) return false
+
       var TOKEN = token.toUpperCase()
 
       if (allKeywords.indexOf(TOKEN) === -1) return false

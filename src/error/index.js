@@ -1,4 +1,6 @@
 module.exports = {
+  couldNotParseSelectField: require('./couldNotParseSelectField'),
+  invalidAlias: require('./invalidAlias'),
   invalidDataType: require('./invalidDataType'),
   invalidInterval: require('./invalidInterval'),
   invalidJSONData: require('./invalidJSONData'),
