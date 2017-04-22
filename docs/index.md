@@ -5,7 +5,7 @@ title: sql92-json
 
 > can stringify a JSON into an SQL and viceversa parse an SQL and serialize it into a JSON
 
-🚧 **STATUS**: Right now the test suite contains 32 SELECT statements that
+🚧 **STATUS**: Right now the test suite contains 34 SELECT statements (and 1 CREATE) that
 are serialized into JSON and viceversa parsed back into SQL successfully.
 Adding INSERT and other DMLs statementes as well as DDLs is on the roadmap.
 
@@ -64,7 +64,7 @@ FROM revenue
 
 ## Recipes
 
-* [Spool header](g14n.info/SQL92-JSON/recipes/spool-header/)
+* [Spool header](http://g14n.info/SQL92-JSON/recipes/spool-header/)
 
 ## Examples
 
