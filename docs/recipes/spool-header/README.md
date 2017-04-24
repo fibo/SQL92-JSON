@@ -131,7 +131,7 @@ the statement we need is something like the following
 ```sql
 SELECT foo, bar
 FROM (
-  SELECT 1 AS i, 'foo', 'bar'
+  SELECT 1 AS i, 'foo' AS foo, 'bar' AS bar
   UNION
   SELECT 2 AS i, foo, bar
   FROM mytable
@@ -147,10 +147,16 @@ const fields = [ 'name', 'color', 'quantity', 'when_eat' ]
 const table = 'fruit'
 
 function spool (table, fields) {
+  const header = fields.map((field) => {
+    var alias = { AS: {} }
+    alias.AS[field] = `'${field}'`
+    return alias
+  })
+
   return {
     SELECT: fields,
     FROM: [{
-      SELECT: [{ AS: { i: 1 } }].concat(fields.map((field) => `'${field}'`)),
+      SELECT: [{ AS: { i: 1 } }].concat(header),
       UNION: {
         SELECT: [{ AS: { i: 2 } }].concat(fields.map((field) => `${field}::VARCHAR`)),
         FROM: [table]
@@ -163,7 +169,7 @@ function spool (table, fields) {
 console.log(json2sql(spool(table, fields)))
 // SELECT 'name', 'color', 'quantity', 'when_eat'
 // FROM (
-//   SELECT 1 AS i, 'name', 'color', 'quantity', 'when_eat'
+//   SELECT 1 AS i, 'name' AS name, 'color' AS color, 'quantity' AS quantity, 'when_eat' AS when_eat
 //   UNION
 //   SELECT 2 AS i, name::VARCHAR, color::VARCHAR, quantity::VARCHAR, when_eat::VARCHAR
 //   FROM fruit

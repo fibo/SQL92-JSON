@@ -37,7 +37,7 @@ LIMIT 1
 const sqlSpool = `
 SELECT name, color, quantity, when_eat
 FROM (
-  SELECT 1 AS i, 'name', 'color', 'quantity', 'when_eat'
+  SELECT 1 AS i, 'name' AS name, 'color' AS color, 'quantity' AS quantity, 'when_eat' AS when_eat
   UNION
   SELECT 2 AS i, name::VARCHAR, color::VARCHAR, quantity::VARCHAR, when_eat::VARCHAR
   FROM fruit
@@ -70,10 +70,16 @@ test('recipe spool-header', function (t) {
   const table = 'fruit'
 
   function spool (table, fields) {
+    const header = fields.map((field) => {
+      var alias = { AS: {} }
+      alias.AS[field] = `'${field}'`
+      return alias
+    })
+
     return {
       SELECT: fields,
       FROM: [{
-        SELECT: [{ AS: { i: 1 } }].concat(fields.map((field) => `'${field}'`)),
+        SELECT: [{ AS: { i: 1 } }].concat(header),
         UNION: {
           SELECT: [{ AS: { i: 2 } }].concat(fields.map((field) => `${field}::VARCHAR`)),
           FROM: [table]
