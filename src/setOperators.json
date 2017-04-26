@@ -3,7 +3,9 @@
   "DISTINCT",
   "EXISTS",
   "IN",
+  "INTERSECT",
   "NOT BETWEEN",
   "NOT EXISTS",
-  "UNION"
+  "UNION",
+  "UNION ALL"
 ]
