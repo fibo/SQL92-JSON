@@ -32,6 +32,8 @@ function isKeyword (keyword) {
     }
   } else {
     return function (token) {
+      if (!token) return false
+
       var TOKEN = token.toUpperCase()
 
       return allKeywords.indexOf(TOKEN) > -1

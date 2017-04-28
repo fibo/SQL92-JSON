@@ -16,6 +16,8 @@ var isDistinct = isKeyword('DISTINCT')
 var isFrom = isKeyword('FROM')
 var isGroupBy = isKeyword('GROUP BY')
 var isHaving = isKeyword('HAVING')
+var isJoin = isKeyword('JOIN')
+var isLeftJoin = isKeyword('LEFT JOIN')
 var isLimit = isKeyword('LIMIT')
 var isOffset = isKeyword('OFFSET')
 var isOrderBy = isKeyword('ORDER BY')
@@ -39,6 +41,7 @@ function select (tokens, sql) {
 
   var aliasExpression
   var countExpression
+  var table
 
   var afterNextToken
   var firstToken = tokens[0]
@@ -62,8 +65,9 @@ function select (tokens, sql) {
   var foundWhere = false
 
   var fromIndex
-  var havingIndex
   var groupByIndex
+  var havingIndex
+  var joinIndex
   var limitIndex
   var offsetIndex
   var orderByIndex
@@ -208,6 +212,12 @@ function select (tokens, sql) {
     for (i = fromIndex + 1; i < numTokens; i++) {
       token = tokens[i]
 
+      if (i < numTokens - 1) {
+        nextToken = tokens[i + 1]
+      } else {
+        nextToken = null
+      }
+
       if (isWhere(token)) {
         foundWhere = true
         whereIndex = i
@@ -273,8 +283,70 @@ function select (tokens, sql) {
       }
 
       if (isTableName(token)) {
-        json.FROM.push(token)
+        table = token
+
+        // TODO
+        // select countryid, name from dim.campaign as c join dim.campaign_country as d on c.id = d.campaignid
+        // {
+        //   select: [countryid, name],
+        //   from: [
+        //     {
+        //       as: { c: dim.campaign }
+        //       on: { c.id: { =: {campaign.id} } }
+        //     }
+        //   ]
+        // }
+        //
+        // if (isAs(nextToken)) {
+        //
+        // }
+
+        var nextTokenIsNotKeyword = (!isKeyword()(nextToken))
+        console.log('nextTokenIsNotKeyword', nextTokenIsNotKeyword, token, nextToken)
+        var nextTokenIsAlias = (isString(nextToken) && nextTokenIsNotKeyword)
+
+        var afterNextTokenIsNotJoin = (
+          (!isJoin(afterNextToken)) ||
+          (!isLeftJoin(afterNextToken))
+        )
+
+        if (nextTokenIsAlias) {
+          table = {}
+          table[nextToken] = token
+
+          if (afterNextTokenIsNotJoin) {
+            json.FROM.push(table)
+            i = i + 2
+            continue
+          } else {
+            joinIndex = i + 2
+
+            if (isJoin(afterNextToken)) {
+              table.JOIN = tokens[joinIndex + 1]
+            }
+
+            // TODO if next token === (
+            // get parenthesis expression
+
+            // TODO is isLeftJoin is outer, inner, full outer join, etc.
+
+            for (j = joinIndex + 1; j < numTokens; j++) {
+              token = tokens[j]
+              console.log(token)
+            }
+          }
+        }
+
+        // If it is a common table name, add it to FROM list.
+        json.FROM.push(table)
       }
+
+      // TODO more complex JOIN expressions
+      //
+      // full, right, left, outer join, etc
+      // join without alias, etc
+      //
+
     }
 
     // WHERE

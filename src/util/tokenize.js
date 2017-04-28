@@ -132,17 +132,23 @@ function tokenize (sql) {
 
   for (var i = 0; i < numTokens; i++) {
     var token = tokens[i]
+
     var isNotLastToken = i < numTokens - 1
-    // var isNotSecondToLastToken = i < numTokens - 2
     var nextToken
     var NEXT_TOKEN
 
     if (isNotLastToken) {
       nextToken = tokens[i + 1]
       NEXT_TOKEN = nextToken.toUpperCase()
-    } else {
-      nextToken = null
-      NEXT_TOKEN = null
+    }
+
+    var isNotSecondToLastToken = i < numTokens - 2
+    var afterNextToken
+    var AFTER_NEXT_TOKEN
+
+    if (isNotSecondToLastToken) {
+      afterNextToken = tokens[i + 2]
+      AFTER_NEXT_TOKEN = afterNextToken.toUpperCase()
     }
 
     if (isPartialKeyword(token)) {
@@ -165,7 +171,29 @@ function tokenize (sql) {
         }
       }
 
-      // TODO: left join, left outer join, right join, full outer join
+      if ((TOKEN === 'LEFT') || (TOKEN === 'RIGHT')) {
+        if ((NEXT_TOKEN === 'OUTER') && (AFTER_NEXT_TOKEN === 'JOIN')) {
+          joinedTokens.push(token + ' ' + nextToken + ' ' + afterNextToken)
+          i = i + 2
+        }
+
+        if (NEXT_TOKEN === 'JOIN') {
+          joinedTokens.push(token + ' ' + nextToken)
+          i = i + 1
+        }
+      }
+
+      if ((TOKEN === 'INNER') || (TOKEN === 'CROSS')) {
+        if (NEXT_TOKEN === 'JOIN') {
+          joinedTokens.push(token + ' ' + nextToken)
+          i = i + 1
+        }
+      }
+
+      if ((TOKEN === 'FULL') && (NEXT_TOKEN === 'OUTER') && (AFTER_NEXT_TOKEN === 'JOIN')) {
+        joinedTokens.push(token + ' ' + nextToken + ' ' + afterNextToken)
+        i = i + 2
+      }
     } else {
       joinedTokens.push(token)
     }
