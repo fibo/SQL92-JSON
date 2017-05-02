@@ -346,7 +346,6 @@ function select (tokens, sql) {
       // full, right, left, outer join, etc
       // join without alias, etc
       //
-
     }
 
     // WHERE
