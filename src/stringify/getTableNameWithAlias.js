@@ -20,7 +20,10 @@ function getTableNameWithAlias (statement) {
 
     if (isKeyword(token)) continue
 
-    alias = token
+    alias = {}
+
+    alias[token] = statement[token]
+
     break
   }
 
