@@ -1,33 +1,47 @@
+var getTableNameAlias = require('./getTableNameAlias')
 var isKeyword = require('../util/isKeyword')
+var isAs = isKeyword('AS')
 
 /**
- * Extract tablename with alias.
+ * Extract table name with alias.
  *
  * { t: 'mytable', JOIN: {} } => { t: 'mytable' }
+ * { AS: { t: 'mytable' }, JOIN: {} } => { AS: { t: 'mytable' } }
  *
- * @param {Object} json
+ * @param {Object} statement
  *
- * @returns {Object}
+ * @returns {Object|undefined}
  */
 
 function getTableNameWithAlias (statement) {
   var keys = Object.keys(statement)
+  var tableObj
+  var tableName
 
-  var alias = null
+  var alias = getTableNameAlias(statement)
 
-  for (var i = 0; i < keys.length; i++) {
-    var token = keys[i]
+  if (alias) {
+    tableObj = {}
+    tableName = statement[alias]
+    tableObj[alias] = tableName
+  } else {
+    for (var i = 0; i < keys.length; i++) {
+      var token = keys[i]
 
-    if (isKeyword(token)) continue
+      if (isAs(token)) {
+        alias = getTableNameAlias(statement[token])
 
-    alias = {}
-
-    alias[token] = statement[token]
-
-    break
+        if (alias) {
+          tableObj = { AS: statement[token] }
+          break
+        } else {
+          return
+        }
+      }
+    }
   }
 
-  return alias
+  return tableObj
 }
 
 module.exports = getTableNameWithAlias

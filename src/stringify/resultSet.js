@@ -32,6 +32,7 @@ function resultSet (stringify) {
     var tableNameWithAlias = getTableNameWithAlias(statement)
 
     if (tableNameWithAlias) {
+      console.log(tableNameWithAlias)
       // TODO check if there is a JOIN
       return tableNameWithAlias
     }
