@@ -302,13 +302,14 @@ function select (tokens, sql) {
         // }
 
         var nextTokenIsNotKeyword = (!isKeyword()(nextToken))
-        console.log('nextTokenIsNotKeyword', nextTokenIsNotKeyword, token, nextToken)
         var nextTokenIsAlias = (isString(nextToken) && nextTokenIsNotKeyword)
 
         var afterNextTokenIsNotJoin = (
           (!isJoin(afterNextToken)) ||
           (!isLeftJoin(afterNextToken))
         )
+
+        console.log(afterNextTokenIsNotJoin, token)
 
         if (nextTokenIsAlias) {
           table = {}
@@ -332,7 +333,6 @@ function select (tokens, sql) {
 
             for (j = joinIndex + 1; j < numTokens; j++) {
               token = tokens[j]
-              console.log(token)
             }
           }
         }

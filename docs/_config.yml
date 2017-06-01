@@ -3,10 +3,6 @@ markdown: kramdown
 gems:
   - jekyll-sitemap
 
-nav:
-  Home: //g14n.info/SQL92-JSON
-  Code: https://github.com/fibo/SQL92-JSON
-
 defaults:
   -
     scope:
