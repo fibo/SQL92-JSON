@@ -22,6 +22,7 @@ var isLimit = isKeyword('LIMIT')
 var isOffset = isKeyword('OFFSET')
 var isOrderBy = isKeyword('ORDER BY')
 var isSelect = isKeyword('SELECT')
+var isSum = isKeyword('SUM')
 var isUnion = isKeyword('UNION')
 var isWhere = isKeyword('WHERE')
 
@@ -41,6 +42,7 @@ function select (tokens, sql) {
 
   var aliasExpression
   var countExpression
+  var sumExpression
   var table
 
   var afterNextToken
@@ -182,6 +184,49 @@ function select (tokens, sql) {
       if (!foundRightParenthesis) throw error.invalidSQL(sql)
 
       json.SELECT.push(countExpression)
+
+      continue
+    }
+
+    if (isSum(token)) {
+      foundRightParenthesis = false
+      sumExpression = {}
+
+      if (nextToken !== '(') throw error.invalidSQL(sql)
+
+      for (j = i + 1; j < numTokens; j++) {
+        token = tokens[j]
+        nextToken = tokens[j + 1]
+        afterNextToken = tokens[j + 2]
+
+        if (token === ')') {
+          foundRightParenthesis = true
+
+          if (isAs(nextToken)) {
+            if (isDoubleQuotedString(afterNextToken)) {
+              afterNextToken = removeFirstAndLastChar(afterNextToken)
+            }
+
+            sumExpression.AS = afterNextToken
+            i = j + 2
+          } else {
+            i = j
+          }
+
+          break
+        }
+
+        // TODO complex sum expressions
+        if (isStringNumber(token)) {
+          sumExpression.SUM = parseFloat(token)
+        } else {
+          sumExpression.SUM = token
+        }
+      }
+
+      if (!foundRightParenthesis) throw error.invalidSQL(sql)
+
+      json.SELECT.push(sumExpression)
 
       continue
     }

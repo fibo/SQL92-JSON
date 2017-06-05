@@ -9,6 +9,7 @@ var isObject = require('../util/isObject')
 var isStar = require('../util/isStar')
 var isString = require('../util/isString')
 var stringField = require('./stringField')
+var sumExpression = require('./sumExpression')
 
 /**
  * Map columns in a SELECT.
@@ -36,6 +37,10 @@ function selectField (field) {
   if (isObject(field)) {
     if (field.COUNT) {
       return countExpression(field)
+    }
+
+    if (field.SUM) {
+      return sumExpression(field)
     }
 
     if (field.AS) {

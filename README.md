@@ -2,7 +2,7 @@
 
 > can stringify a JSON into an SQL and viceversa parse an SQL and serialize it into a JSON
 
-🚧 **STATUS**: Right now the test suite contains 34 SELECT statements (and 1 CREATE) that
+🚧 **STATUS**: Right now the test suite contains 41 SELECT statements (and 1 CREATE) that
 are serialized into JSON and viceversa parsed back into SQL successfully.
 Adding INSERT and other DMLs statementes as well as DDLs is on the roadmap.
 
