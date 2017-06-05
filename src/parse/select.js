@@ -309,8 +309,6 @@ function select (tokens, sql) {
           (!isLeftJoin(afterNextToken))
         )
 
-        console.log(afterNextTokenIsNotJoin, token)
-
         if (nextTokenIsAlias) {
           table = {}
           table[nextToken] = token
