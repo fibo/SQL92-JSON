@@ -1,0 +1,16 @@
+{
+  "SELECT": [
+    "t.day",
+    "c.name",
+    "t.num"
+  ],
+  "FROM": [
+    {
+      "t": "dwh.revenue",
+      "JOIN": {
+        "c": "dim.campaign",
+        "ON": [ "c.id", { "=": "t.campaignid" } ]
+      }
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 var encloseWithParenthesis = require('../util/encloseWithParenthesis')
+var getTableNameWithAlias = require('./getTableNameWithAlias')
 var isTableName = require('../util/isTableName')
 var isSelect = require('./isSelect')
 
@@ -26,6 +27,13 @@ function resultSet (stringify) {
 
     if (isSelect(statement)) {
       return encloseWithParenthesis(stringify(statement))
+    }
+
+    var tableNameWithAlias = getTableNameWithAlias(statement)
+
+    if (tableNameWithAlias) {
+      // TODO check if there is a JOIN
+      return tableNameWithAlias
     }
   }
 }

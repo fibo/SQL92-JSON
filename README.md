@@ -20,6 +20,8 @@ Adding INSERT and other DMLs statementes as well as DDLs is on the roadmap.
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
+[![NPM](https://nodei.co/npm-dl/SQL92-JSON.png)](https://nodei.co/npm-dl/SQL92-JSON/)
+
 ## Installation
 
 With [npm](https://npmjs.org/) do

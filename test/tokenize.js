@@ -16,6 +16,12 @@ test('tokenize', function (t) {
   t.deepEqual(tokenize('ORDER by'), ['ORDER by'], 'ORDER BY')
   t.deepEqual(tokenize('COUNT(*)'), ['COUNT', '(', '*', ')'], 'COUNT(*)')
   t.deepEqual(tokenize('1::VARCHAR'), ['1::VARCHAR'], 'cast')
+  t.deepEqual(tokenize('join'), ['join'], 'JOIN')
+  t.deepEqual(tokenize(' right   jOin'), ['right jOin'], 'RIGHT JOIN')
+  t.deepEqual(tokenize('  Left    join '), ['Left join'], 'LEFT JOIN')
+  t.deepEqual(tokenize('cross Join'), ['cross Join'], 'CROSS JOIN')
+  t.deepEqual(tokenize('INNeR Join'), ['INNeR Join'], 'INNER JOIN')
+  t.deepEqual(tokenize('full outer join'), ['full outer join'], 'FULL OUTER JOIN')
 
   t.deepEqual(tokenize(`
 SELECT COUNT(    *) AS num
