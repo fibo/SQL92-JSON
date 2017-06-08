@@ -22,6 +22,7 @@ test('tokenize', function (t) {
   t.deepEqual(tokenize('cross Join'), ['cross Join'], 'CROSS JOIN')
   t.deepEqual(tokenize('INNeR Join'), ['INNeR Join'], 'INNER JOIN')
   t.deepEqual(tokenize('full outer join'), ['full outer join'], 'FULL OUTER JOIN')
+  t.deepEqual(tokenize('20170701::VARCHAR::DATE'), ['20170701::VARCHAR::DATE'], 'double cast')
 
   t.deepEqual(tokenize(`
 SELECT COUNT(    *) AS num

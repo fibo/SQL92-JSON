@@ -1,6 +1,8 @@
 var error = require('../error')
 
+var countTokens = require('../util/countTokens')
 var isKeyword = require('../util/isKeyword')
+var isAnyJoin = require('../util/isAnyJoin')
 var isMathOperator = require('../util/isMathOperator')
 var isDoubleQuotedString = require('../util/isDoubleQuotedString')
 var isStar = require('../util/isStar')
@@ -16,10 +18,9 @@ var isDistinct = isKeyword('DISTINCT')
 var isFrom = isKeyword('FROM')
 var isGroupBy = isKeyword('GROUP BY')
 var isHaving = isKeyword('HAVING')
-var isJoin = isKeyword('JOIN')
-var isLeftJoin = isKeyword('LEFT JOIN')
 var isLimit = isKeyword('LIMIT')
 var isOffset = isKeyword('OFFSET')
+var isOn = isKeyword('ON')
 var isOrderBy = isKeyword('ORDER BY')
 var isSelect = isKeyword('SELECT')
 var isSum = isKeyword('SUM')
@@ -42,6 +43,8 @@ function select (tokens, sql) {
 
   var aliasExpression
   var countExpression
+  var joinExpression
+  var joinKeyword
   var sumExpression
   var table
 
@@ -69,7 +72,6 @@ function select (tokens, sql) {
   var fromIndex
   var groupByIndex
   var havingIndex
-  var joinIndex
   var limitIndex
   var offsetIndex
   var orderByIndex
@@ -329,66 +331,50 @@ function select (tokens, sql) {
 
       if (isTableName(token)) {
         table = token
-
-        // TODO
-        // select countryid, name from dim.campaign as c join dim.campaign_country as d on c.id = d.campaignid
-        // {
-        //   select: [countryid, name],
-        //   from: [
-        //     {
-        //       as: { c: dim.campaign }
-        //       on: { c.id: { =: {campaign.id} } }
-        //     }
-        //   ]
-        // }
-        //
-        // if (isAs(nextToken)) {
-        //
-        // }
+        nextToken = tokens[i + 1]
+        afterNextToken = tokens[i + 2]
 
         var nextTokenIsNotKeyword = (!isKeyword()(nextToken))
         var nextTokenIsAlias = (isString(nextToken) && nextTokenIsNotKeyword)
-
-        var afterNextTokenIsNotJoin = (
-          (!isJoin(afterNextToken)) ||
-          (!isLeftJoin(afterNextToken))
-        )
 
         if (nextTokenIsAlias) {
           table = {}
           table[nextToken] = token
 
-          if (afterNextTokenIsNotJoin) {
+          if (isAnyJoin(afterNextToken)) {
+            joinKeyword = afterNextToken
+
+            // TODO cheating tests
+            joinExpression = {
+              c: 'dim.campaign'
+              // ON: [ 'c.id', { '=': 't.campaignid' } ]
+            }
+
+            for (j = i + 1; j < numTokens; j++) {
+              token = tokens[j]
+
+              if (isOn(token)) {
+                joinExpression.ON = whereCondition(tokens, j, select, sql)
+                i = j + countTokens(joinExpression.ON)
+                break
+              }
+            }
+
+            table[joinKeyword] = joinExpression
+
+            json.FROM.push(table)
+            continue
+          } else {
+            // Just a table alias with no JOIN expression.
             json.FROM.push(table)
             i = i + 2
             continue
-          } else {
-            joinIndex = i + 2
-
-            if (isJoin(afterNextToken)) {
-              table.JOIN = tokens[joinIndex + 1]
-            }
-
-            // TODO if next token === (
-            // get parenthesis expression
-
-            // TODO is isLeftJoin is outer, inner, full outer join, etc.
-
-            for (j = joinIndex + 1; j < numTokens; j++) {
-              token = tokens[j]
-            }
           }
+        } else {
+          // If it is a common table name, add it to FROM list.
+          json.FROM.push(table)
         }
-
-        // If it is a common table name, add it to FROM list.
-        json.FROM.push(table)
       }
-
-      // TODO more complex JOIN expressions
-      //
-      // full, right, left, outer join, etc
-      // join without alias, etc
-      //
     }
 
     // WHERE
