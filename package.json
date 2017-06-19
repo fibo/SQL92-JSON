@@ -35,8 +35,8 @@
   "homepage": "http://g14n.info/SQL92-JSON",
   "devDependencies": {
     "coveralls": "^2.13.0",
-    "dot-editorconfig": "^0.4.0",
-    "nyc": "^10.2.2",
+    "dot-editorconfig": "^1.0.1",
+    "nyc": "^11.0.2",
     "pre-commit": "^1.2.2",
     "standard": "^10.0.2",
     "tape": "^4.6.3"
