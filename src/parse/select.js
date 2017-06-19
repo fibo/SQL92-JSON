@@ -127,7 +127,7 @@ function select (tokens, sql) {
 
       json.SELECT.push(aliasExpression)
 
-      i = j + 2
+      i += 2
 
       continue
     }
@@ -344,19 +344,21 @@ function select (tokens, sql) {
           if (isAnyJoin(afterNextToken)) {
             joinKeyword = afterNextToken
 
-            // TODO cheating tests
-            joinExpression = {
-              c: 'dim.campaign'
-              // ON: [ 'c.id', { '=': 't.campaignid' } ]
-            }
+            joinExpression = {}
 
-            for (j = i + 1; j < numTokens; j++) {
+            for (j = i + 3; j < numTokens; j++) {
               token = tokens[j]
+              nextToken = tokens[j + 1]
 
               if (isOn(token)) {
                 joinExpression.ON = whereCondition(tokens, j, select, sql)
                 i = j + countTokens(joinExpression.ON)
                 break
+              }
+
+              if (isTableName(token)) {
+                joinExpression[nextToken] = token
+                j++
               }
             }
 

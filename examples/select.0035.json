@@ -1,7 +1,6 @@
 {
   "SELECT": [
     "t.day",
-    "co.isocode",
     "ca.name",
     "t.num"
   ],
@@ -10,11 +9,7 @@
       "t": "dwh.revenue",
       "JOIN": {
         "ca": "dim.campaign",
-        "ON": [ "ca.id", { "=": "t.campaignid" } ],
-        "JOIN": {
-          "co": "dim.country",
-          "ON": [ "co.id", { "=": "t.countryid" } ]
-        }
+        "ON": [ "ca.id", { "=": "t.campaignid" } ]
       }
     }
   ]
