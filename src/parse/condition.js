@@ -6,6 +6,7 @@ var isKeyword = require('../util/isKeyword')
 var isSingleQuotedString = require('../util/isSingleQuotedString')
 var isStringNumber = require('../util/isStringNumber')
 
+var isAnyJoin = require('../util/isAnyJoin')
 var isComparisonOperator = require('../util/isComparisonOperator')
 var isKeywordOrOperator = require('../util/isKeywordOrOperator')
 var isLogicalOperator = require('../util/isLogicalOperator')
@@ -22,7 +23,11 @@ var isBetween = isSetOperator('BETWEEN')
 var isNotBetween = isSetOperator('NOT BETWEEN')
 var isIn = isSetOperator('IN')
 
-function whereCondition (tokens, startIndex, select, sql) {
+/**
+ * Parse a filter condition, like a JOIN, WHERE or HAVING clause.
+ */
+
+function condition (tokens, startIndex, select, sql) {
   var json = []
   var numTokens = tokens.length
 
@@ -48,6 +53,9 @@ function whereCondition (tokens, startIndex, select, sql) {
     nextToken = tokens[i + 1]
     afterNextToken = tokens[i + 2]
     var numOpenParenthesis
+
+    // Stop if some join is found.
+    if (isAnyJoin(token)) break
 
     if (isAnd(token)) andCondition = { AND: [] }
     if (isOr(token)) orCondition = { OR: [] }
@@ -77,7 +85,7 @@ function whereCondition (tokens, startIndex, select, sql) {
 
       if (!foundRightParenthesis) throw error.invalidSQL(sql)
 
-      var logicalExpression = whereCondition(subConditionTokens, 0, select, sql)
+      var logicalExpression = condition(subConditionTokens, 0, select, sql)
 
       if (andCondition) {
         andCondition.AND = logicalExpression
@@ -238,4 +246,4 @@ function whereCondition (tokens, startIndex, select, sql) {
   return json
 }
 
-module.exports = whereCondition
+module.exports = condition

@@ -1,10 +1,10 @@
 var error = require('../error')
 
 var countTokens = require('../util/countTokens')
-var isKeyword = require('../util/isKeyword')
 var isAnyJoin = require('../util/isAnyJoin')
-var isMathOperator = require('../util/isMathOperator')
 var isDoubleQuotedString = require('../util/isDoubleQuotedString')
+var isKeyword = require('../util/isKeyword')
+var isMathOperator = require('../util/isMathOperator')
 var isStar = require('../util/isStar')
 var isString = require('../util/isString')
 var isStringNumber = require('../util/isStringNumber')
@@ -20,14 +20,14 @@ var isGroupBy = isKeyword('GROUP BY')
 var isHaving = isKeyword('HAVING')
 var isLimit = isKeyword('LIMIT')
 var isOffset = isKeyword('OFFSET')
-var isOn = isKeyword('ON')
 var isOrderBy = isKeyword('ORDER BY')
 var isSelect = isKeyword('SELECT')
 var isSum = isKeyword('SUM')
 var isUnion = isKeyword('UNION')
 var isWhere = isKeyword('WHERE')
 
-var whereCondition = require('./whereCondition')
+var condition = require('./condition')
+var join = require('./join')
 
 /**
  * Parse and serialize a SELECT statement.
@@ -43,7 +43,6 @@ function select (tokens, sql) {
 
   var aliasExpression
   var countExpression
-  var joinExpression
   var joinKeyword
   var sumExpression
   var table
@@ -344,27 +343,12 @@ function select (tokens, sql) {
           if (isAnyJoin(afterNextToken)) {
             joinKeyword = afterNextToken
 
-            joinExpression = {}
-
-            for (j = i + 3; j < numTokens; j++) {
-              token = tokens[j]
-              nextToken = tokens[j + 1]
-
-              if (isOn(token)) {
-                joinExpression.ON = whereCondition(tokens, j, select, sql)
-                i = j + countTokens(joinExpression.ON)
-                break
-              }
-
-              if (isTableName(token)) {
-                joinExpression[nextToken] = token
-                j++
-              }
-            }
-
-            table[joinKeyword] = joinExpression
+            table[joinKeyword] = join(tokens, i + 3, select, sql)
 
             json.FROM.push(table)
+
+            i += countTokens(table[joinKeyword]) + 3
+
             continue
           } else {
             // Just a table alias with no JOIN expression.
@@ -387,7 +371,7 @@ function select (tokens, sql) {
       // have more al least 3 tokens: leftOperand, operator, rightOperand.
       if (whereIndex === numTokens - 3) throw error.invalidSQL(sql)
 
-      json.WHERE = whereCondition(tokens, whereIndex, select, sql)
+      json.WHERE = condition(tokens, whereIndex, select, sql)
     }
 
     // GROUP BY
@@ -420,7 +404,7 @@ function select (tokens, sql) {
       // have more al least 3 tokens: leftOperand, operator, rightOperand.
       if (havingIndex === numTokens - 3) throw error.invalidSQL(sql)
 
-      json.HAVING = whereCondition(tokens, havingIndex, select, sql)
+      json.HAVING = condition(tokens, havingIndex, select, sql)
     }
 
     // ORDER BY
