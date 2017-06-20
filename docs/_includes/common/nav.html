@@ -1,11 +1,13 @@
 
 {% assign nav = page.nav | default: site.nav  %}
 
-<nav role="navigation">
+<nav>
   <ul>
+    <li><a href="{{ site.github.url }}" onclick="toggleNav()">{{ site.github.project_title }}</a></li>
   {% for item in nav %}
     <li><a href="{{ item[1] }}" onclick="toggleNav()">{{ item[0] }}</a></li>
   {% endfor %}
+    <li><a href="{{ site.github.repository_url }}" target="_blank">Code</a></li>
     <li id="hamburgericon" onclick="toggleNav()">
       <span></span>
       <span></span>
@@ -16,9 +18,5 @@
     </li>
   </ul>
   <script>
-    function toggleNav () {
-      document.querySelector('nav[role=navigation] ul').classList.toggle('responsive')
-      document.getElementById('hamburgericon').classList.toggle('open')
-    }
   </script>
 </nav>

@@ -4,7 +4,7 @@
 
 ## Setup
 
-Assuming that the content of the *gh-pages* branch is under the *docs/* folder, do
+Assuming that you are using the *docs/* folder for GitHub Pages, do
 
 1. [Add remote](#add-remote)
 2. [Add subtree](#add-subtree)
@@ -45,7 +45,7 @@ Contains Google Analytics tag.
 
 ### footer.html
 
-**TODO** add common footer.
+Copyright, license.
 
 ### meta.html
 
@@ -57,7 +57,8 @@ Requires `page.title` and *_data/package.json* file with the following entries:
 
 ### nav.html
 
-Implments nav bar, requires `page.nav` or `site.nav` variable like
+Implments nav bar: project `repository_url` and `url` are grabbed from [github-metadata].
+It looks into `page.nav` or `site.nav` variable, if any, for example
 
 ```yaml
 nav:
@@ -65,6 +66,11 @@ nav:
   Mafia: '#mafia'
   Mandolino: //g14n.info
 ```
+
+### js-bundle.html
+
+Includes `g14n.info/js/bundle.js` that implements common features across
+website, like nav toggle.
 
 ### style.html
 
@@ -84,3 +90,4 @@ Comes from [GitHub corners](http://tholman.com/github-corners/).
 
 > The minimal amount of CSS to replicate the GitHub Markdown style
 
+[github-metadata]: https://github.com/jekyll/github-metadata "a.k.a. site.github"
