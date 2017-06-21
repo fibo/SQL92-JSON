@@ -13,8 +13,10 @@ var isTableName = require('../util/isTableName')
 var removeFirstAndLastChar = require('../util/removeFirstAndLastChar')
 
 var isAs = isKeyword('AS')
+var isAsc = isKeyword('ASC')
 var isAvg = isKeyword('AVG')
 var isCount = isKeyword('COUNT')
+var isDesc = isKeyword('DESC')
 var isDistinct = isKeyword('DISTINCT')
 var isFrom = isKeyword('FROM')
 var isGroupBy = isKeyword('GROUP BY')
@@ -458,6 +460,7 @@ function select (tokens, sql) {
 
       for (i = orderByIndex + 1; i < numTokens; i++) {
         token = tokens[i]
+        nextToken = tokens[i + 1]
 
         if (token === ',') continue
 
@@ -466,6 +469,18 @@ function select (tokens, sql) {
 
         if (isStringNumber(token)) {
           token = parseFloat(token)
+        }
+
+        if (isDesc(nextToken)) {
+          json['ORDER BY'].push({ DESC: token })
+          i++
+          continue
+        }
+
+        if (isAsc(nextToken)) {
+          json['ORDER BY'].push({ ASC: token })
+          i++
+          continue
         }
 
         json['ORDER BY'].push(token)

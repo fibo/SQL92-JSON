@@ -12,6 +12,7 @@ var isObject = require('../util/isObject')
  */
 
 function orderByCondition (condition) {
+  console.log(condition)
   if (isNumberOrString(condition)) return condition
 
   if (isObject(condition)) {

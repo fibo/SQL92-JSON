@@ -62,7 +62,6 @@ function resultSet (stringify) {
           var nextJoinStatement = {}
           notFirstJoin = true
           nextJoinStatement[nextJoinKeyword] = joinJSON[nextJoinKeyword]
-          console.log(nextJoinStatement)
           result += ' ' + stringifyResultSet(joinJSON, notFirstJoin)
         }
       }

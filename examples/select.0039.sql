@@ -1,0 +1,3 @@
+SELECT *
+FROM mytable
+ORDER BY 1 DESC
