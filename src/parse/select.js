@@ -185,7 +185,7 @@ function select (tokens, sql) {
 
       if (!foundRightParenthesis) throw error.invalidSQL(sql)
 
-      json.SELECT.push(countExpression)
+      json.SELECT.push(avgExpression)
 
       continue
     }
