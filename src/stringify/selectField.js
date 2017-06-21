@@ -1,6 +1,7 @@
 var error = require('../error')
 
 var aliasExpression = require('./aliasExpression')
+var avgExpression = require('./avgExpression')
 var countExpression = require('./countExpression')
 // var isMathOperator = require('../util/isMathOperator')
 var isNumber = require('../util/isNumber')
@@ -35,6 +36,10 @@ function selectField (field) {
   }
 
   if (isObject(field)) {
+    if (field.AVG) {
+      return avgExpression(field)
+    }
+
     if (field.COUNT) {
       return countExpression(field)
     }

@@ -13,6 +13,7 @@ var isTableName = require('../util/isTableName')
 var removeFirstAndLastChar = require('../util/removeFirstAndLastChar')
 
 var isAs = isKeyword('AS')
+var isAvg = isKeyword('AVG')
 var isCount = isKeyword('COUNT')
 var isDistinct = isKeyword('DISTINCT')
 var isFrom = isKeyword('FROM')
@@ -42,6 +43,7 @@ function select (tokens, sql) {
   var json = { SELECT: [] }
 
   var aliasExpression
+  var avgExpression
   var countExpression
   var joinKeyword
   var sumExpression
@@ -146,6 +148,47 @@ function select (tokens, sql) {
       continue
     }
 
+    if (isAvg(token)) {
+      foundRightParenthesis = false
+      avgExpression = {}
+
+      if (nextToken !== '(') throw error.invalidSQL(sql)
+
+      for (j = i + 1; j < numTokens; j++) {
+        token = tokens[j]
+        nextToken = tokens[j + 1]
+        afterNextToken = tokens[j + 2]
+
+        if (token === ')') {
+          foundRightParenthesis = true
+
+          if (isAs(nextToken)) {
+            if (isDoubleQuotedString(afterNextToken)) {
+              afterNextToken = removeFirstAndLastChar(afterNextToken)
+            }
+
+            avgExpression.AS = afterNextToken
+            i = j + 2
+          } else {
+            i = j
+          }
+
+          break
+        }
+
+        if (isStringNumber(token)) {
+          avgExpression.AVG = parseFloat(token)
+        } else {
+          avgExpression.AVG = token
+        }
+      }
+
+      if (!foundRightParenthesis) throw error.invalidSQL(sql)
+
+      json.SELECT.push(countExpression)
+
+      continue
+    }
     if (isCount(token)) {
       foundRightParenthesis = false
       countExpression = {}
