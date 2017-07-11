@@ -1,0 +1,38 @@
+{
+  "SELECT": [
+    "t.time",
+    { "AS": { "yyyymmdd": "t.time::date" } },
+    "t.tid",
+    "t.device_idfa",
+    "t.appid",
+    "t.campaignid",
+    { "AS": { "campaign_name": "c.name" } },
+    "t.postbackid",
+    { "AS": { "postback_name": "c.name" } },
+    { "COUNT": "*", "AS": "num_conversions" }
+  ],
+  "FROM": [
+    {
+      "t": "trk.postback",
+      "LEFT JOIN": {
+        "c": "dim.campaign",
+        "ON": [ "c.id", { "=": "t.campaignid" } ],
+        "LEFT JOIN": {
+          "p": "dim.postback",
+          "ON": [ "p.id", { "=": "t.postbackid" } ]
+        }
+      }
+    }
+  ],
+  "GROUP BY": [
+    "t.time",
+    "t.tid",
+    "t.device_idfa",
+    "t.appid",
+    "t.campaignid",
+    "c.name",
+    "t.postbackid",
+    "c.name"
+  ],
+  "ORDER BY": [1]
+}

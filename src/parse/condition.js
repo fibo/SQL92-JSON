@@ -25,6 +25,12 @@ var isIn = isSetOperator('IN')
 
 /**
  * Parse a filter condition, like a JOIN, WHERE or HAVING clause.
+ *
+ * @param {Array} tokens
+ * @param {Number} startIndex
+ * @param {String} sql
+ *
+ * @returns {Array} json
  */
 
 function condition (tokens, startIndex, select, sql) {

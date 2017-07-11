@@ -392,7 +392,7 @@ function select (tokens, sql) {
 
             json.FROM.push(table)
 
-            i += countTokens(table[joinKeyword]) + 3
+            i += countTokens(table[joinKeyword]) + 2
 
             continue
           } else {

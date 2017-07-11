@@ -10,6 +10,7 @@ var isOn = isKeyword('ON')
 function join (tokens, startIndex, select, sql) {
   var numTokens = tokens.length
   var joinExpression = {}
+  var foundTable = false
 
   for (var j = startIndex; j < numTokens; j++) {
     var token = tokens[j]
@@ -20,15 +21,18 @@ function join (tokens, startIndex, select, sql) {
       break
     }
 
-    if (isOn(token)) {
-      joinExpression.ON = condition(tokens, j, select, sql)
-      j += countTokens(joinExpression.ON)
-      continue
-    }
-
-    if (isTableName(token)) {
-      joinExpression[nextToken] = token
-      j++
+    if (foundTable) {
+      if (isOn(token)) {
+        joinExpression.ON = condition(tokens, j, select, sql)
+        j += countTokens(joinExpression.ON)
+        continue
+      }
+    } else {
+      if (isTableName(token)) {
+        foundTable = true
+        joinExpression[nextToken] = token
+        j++
+      }
     }
   }
 
