@@ -154,41 +154,31 @@ function select (tokens, sql) {
     }
 
     if (isAvg(token)) {
-      foundRightParenthesis = false
       avgExpression = {}
 
-      if (nextToken !== '(') throw error.invalidSQL(sql)
+      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token) {
+        i++
 
-      for (j = i + 1; j < numTokens; j++) {
-        token = tokens[j]
-        nextToken = tokens[j + 1]
-        afterNextToken = tokens[j + 2]
-
-        if (token === ')') {
-          foundRightParenthesis = true
-
-          if (isAs(nextToken)) {
-            if (isDoubleQuotedString(afterNextToken)) {
-              afterNextToken = removeFirstAndLastChar(afterNextToken)
-            }
-
-            avgExpression.AS = afterNextToken
-            i = j + 2
-          } else {
-            i = j
-          }
-
-          break
-        }
+        if (['(', ',', ')'].indexOf(token) > -1) return
 
         if (isStringNumber(token)) {
           avgExpression.AVG = parseFloat(token)
         } else {
           avgExpression.AVG = token
         }
-      }
+      })
 
-      if (!foundRightParenthesis) throw error.unclosedParenthesisExpression(tokens)
+      nextToken = tokens[i + 1]
+      afterNextToken = tokens[i + 2]
+
+      if (isAs(nextToken)) {
+        if (isDoubleQuotedString(afterNextToken)) {
+          afterNextToken = removeFirstAndLastChar(afterNextToken)
+        }
+
+        avgExpression.AS = afterNextToken
+        i = i + 2
+      }
 
       json.SELECT.push(avgExpression)
 
@@ -196,42 +186,31 @@ function select (tokens, sql) {
     }
 
     if (isCount(token)) {
-      foundRightParenthesis = false
       countExpression = {}
 
-      if (nextToken !== '(') throw error.invalidSQL(sql)
+      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token) {
+        i++
 
-      for (j = i + 1; j < numTokens; j++) {
-        token = tokens[j]
-        nextToken = tokens[j + 1]
-        afterNextToken = tokens[j + 2]
+        if (['(', ',', ')'].indexOf(token) > -1) return
 
-        if (token === ')') {
-          foundRightParenthesis = true
-
-          if (isAs(nextToken)) {
-            if (isDoubleQuotedString(afterNextToken)) {
-              afterNextToken = removeFirstAndLastChar(afterNextToken)
-            }
-
-            countExpression.AS = afterNextToken
-            i = j + 2
-          } else {
-            i = j
-          }
-
-          break
-        }
-
-        // TODO complex count expressions
         if (isStringNumber(token)) {
           countExpression.COUNT = parseFloat(token)
         } else {
           countExpression.COUNT = token
         }
-      }
+      })
 
-      if (!foundRightParenthesis) throw error.unclosedParenthesisExpression(tokens)
+      nextToken = tokens[i + 1]
+      afterNextToken = tokens[i + 2]
+
+      if (isAs(nextToken)) {
+        if (isDoubleQuotedString(afterNextToken)) {
+          afterNextToken = removeFirstAndLastChar(afterNextToken)
+        }
+
+        countExpression.AS = afterNextToken
+        i = i + 2
+      }
 
       json.SELECT.push(countExpression)
 
@@ -241,7 +220,7 @@ function select (tokens, sql) {
     if (isNvl(token)) {
       nvlExpression = { NVL: [] }
 
-      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token, j, tokens) {
+      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token) {
         i++
 
         if (['(', ',', ')'].indexOf(token) > -1) return
@@ -273,7 +252,7 @@ function select (tokens, sql) {
     if (isSum(token)) {
       sumExpression = {}
 
-      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token, j, tokens) {
+      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token) {
         i++
 
         if (['(', ',', ')'].indexOf(token) > -1) return
