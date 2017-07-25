@@ -1,7 +1,15 @@
 [
   "BOOLEAN",
+  "CHARACTER",
+  "CHARACTER VARYING",
   "DATE",
+  "DECIMAL",
+  "FLOAT",
   "INTEGER",
+  "INTERVAL",
+  "NUMERIC",
+  "SMALLINT",
   "TIME",
+  "TIMESTAMP",
   "VARCHAR"
 ]

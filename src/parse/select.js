@@ -11,6 +11,7 @@ var isStringNumber = require('../util/isStringNumber')
 var isStringOperator = require('../util/isStringOperator')
 var isTableName = require('../util/isTableName')
 var removeFirstAndLastChar = require('../util/removeFirstAndLastChar')
+var tokensEnclosedByParenthesis = require('../util/tokensEnclosedByParenthesis')
 
 var isAs = isKeyword('AS')
 var isAsc = isKeyword('ASC')
@@ -187,7 +188,7 @@ function select (tokens, sql) {
         }
       }
 
-      if (!foundRightParenthesis) throw error.invalidSQL(sql)
+      if (!foundRightParenthesis) throw error.unclosedParenthesisExpression(tokens)
 
       json.SELECT.push(avgExpression)
 
@@ -230,7 +231,7 @@ function select (tokens, sql) {
         }
       }
 
-      if (!foundRightParenthesis) throw error.invalidSQL(sql)
+      if (!foundRightParenthesis) throw error.unclosedParenthesisExpression(tokens)
 
       json.SELECT.push(countExpression)
 
@@ -238,44 +239,31 @@ function select (tokens, sql) {
     }
 
     if (isNvl(token)) {
-      foundRightParenthesis = false
       nvlExpression = { NVL: [] }
 
-      if (nextToken !== '(') throw error.invalidSQL(sql)
+      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token, j, tokens) {
+        i++
 
-      for (j = i + 1; j < numTokens; j++) {
-        token = tokens[j]
-        nextToken = tokens[j + 1]
-        afterNextToken = tokens[j + 2]
-
-        if (token === '(') continue
-        if (token === ',') continue
-
-        if (token === ')') {
-          foundRightParenthesis = true
-
-          if (isAs(nextToken)) {
-            if (isDoubleQuotedString(afterNextToken)) {
-              afterNextToken = removeFirstAndLastChar(afterNextToken)
-            }
-
-            nvlExpression.AS = afterNextToken
-            i = j + 2
-          } else {
-            i = j
-          }
-
-          break
-        }
+        if (['(', ',', ')'].indexOf(token) > -1) return
 
         if (isStringNumber(token)) {
           nvlExpression.NVL.push(parseFloat(token))
         } else {
           nvlExpression.NVL.push(token)
         }
-      }
+      })
 
-      if (!foundRightParenthesis) throw error.invalidSQL(sql)
+      nextToken = tokens[i + 1]
+      afterNextToken = tokens[i + 2]
+
+      if (isAs(nextToken)) {
+        if (isDoubleQuotedString(afterNextToken)) {
+          afterNextToken = removeFirstAndLastChar(afterNextToken)
+        }
+
+        nvlExpression.AS = afterNextToken
+        i = i + 2
+      }
 
       json.SELECT.push(nvlExpression)
 
@@ -283,8 +271,8 @@ function select (tokens, sql) {
     }
 
     if (isSum(token)) {
-      foundRightParenthesis = false
       sumExpression = {}
+      foundRightParenthesis = false
 
       if (nextToken !== '(') throw error.invalidSQL(sql)
 
@@ -318,7 +306,7 @@ function select (tokens, sql) {
         }
       }
 
-      if (!foundRightParenthesis) throw error.invalidSQL(sql)
+      if (!foundRightParenthesis) throw error.unclosedParenthesisExpression(tokens)
 
       json.SELECT.push(sumExpression)
 

@@ -89,7 +89,7 @@ function condition (tokens, startIndex, select, sql) {
         }
       }
 
-      if (!foundRightParenthesis) throw error.invalidSQL(sql)
+      if (!foundRightParenthesis) throw error.unclosedParenthesisExpression(tokens)
 
       var logicalExpression = condition(subConditionTokens, 0, select, sql)
 

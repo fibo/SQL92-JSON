@@ -6,5 +6,6 @@ module.exports = {
   invalidJSONData: require('./invalidJSONData'),
   invalidOperand: require('./invalidOperand'),
   invalidSQL: require('./invalidSQL'),
-  invalidTableName: require('./invalidTableName')
+  invalidTableName: require('./invalidTableName'),
+  unclosedParenthesisExpression: require('./unclosedParenthesisExpression')
 }
