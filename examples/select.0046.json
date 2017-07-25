@@ -1,0 +1,10 @@
+{
+  "SELECT": [
+    "yyyymmdd",
+    "campaignid",
+    { "NVL": [ "click", 0 ] },
+    { "AS": "conversion", "NVL": [ "conversion", 0 ] }
+  ],
+  "FROM": [ "dwh.campaign_dd" ],
+  "WHERE": [ "yyyymmdd", { "=": 20170610 } ]
+}

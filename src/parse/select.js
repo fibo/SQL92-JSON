@@ -22,6 +22,7 @@ var isFrom = isKeyword('FROM')
 var isGroupBy = isKeyword('GROUP BY')
 var isHaving = isKeyword('HAVING')
 var isLimit = isKeyword('LIMIT')
+var isNvl = isKeyword('NVL')
 var isOffset = isKeyword('OFFSET')
 var isOrderBy = isKeyword('ORDER BY')
 var isSelect = isKeyword('SELECT')
@@ -48,6 +49,7 @@ function select (tokens, sql) {
   var avgExpression
   var countExpression
   var joinKeyword
+  var nvlExpression
   var sumExpression
   var table
 
@@ -191,6 +193,7 @@ function select (tokens, sql) {
 
       continue
     }
+
     if (isCount(token)) {
       foundRightParenthesis = false
       countExpression = {}
@@ -230,6 +233,51 @@ function select (tokens, sql) {
       if (!foundRightParenthesis) throw error.invalidSQL(sql)
 
       json.SELECT.push(countExpression)
+
+      continue
+    }
+
+    if (isNvl(token)) {
+      foundRightParenthesis = false
+      nvlExpression = { NVL: [] }
+
+      if (nextToken !== '(') throw error.invalidSQL(sql)
+
+      for (j = i + 1; j < numTokens; j++) {
+        token = tokens[j]
+        nextToken = tokens[j + 1]
+        afterNextToken = tokens[j + 2]
+
+        if (token === '(') continue
+        if (token === ',') continue
+
+        if (token === ')') {
+          foundRightParenthesis = true
+
+          if (isAs(nextToken)) {
+            if (isDoubleQuotedString(afterNextToken)) {
+              afterNextToken = removeFirstAndLastChar(afterNextToken)
+            }
+
+            nvlExpression.AS = afterNextToken
+            i = j + 2
+          } else {
+            i = j
+          }
+
+          break
+        }
+
+        if (isStringNumber(token)) {
+          nvlExpression.NVL.push(parseFloat(token))
+        } else {
+          nvlExpression.NVL.push(token)
+        }
+      }
+
+      if (!foundRightParenthesis) throw error.invalidSQL(sql)
+
+      json.SELECT.push(nvlExpression)
 
       continue
     }
