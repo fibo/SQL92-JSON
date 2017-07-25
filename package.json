@@ -40,13 +40,12 @@
   "devDependencies": {
     "browserify": "^14.4.0",
     "coveralls": "^2.13.0",
-    "uglify-js": "^3.0.26",
     "dot-editorconfig": "^1.0.1",
     "nyc": "^11.0.2",
     "pre-commit": "^1.2.2",
-    "tape": "^4.7.0"
+    "standa": "^1.0.0",
+    "tape": "^4.7.0",
+    "uglify-js": "^3.0.26"
   },
-  "dependencies": {
-    "standa": "github:fibo/standa"
-  }
+  "dependencies": {}
 }

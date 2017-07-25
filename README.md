@@ -26,10 +26,20 @@ Adding INSERT and other DMLs statements as well as DDLs is on the roadmap.
 
 ## Installation
 
+### Using npm
+
 With [npm](https://npmjs.org/) do
 
 ```bash
 npm install sql92-json
+```
+
+### Using a CDN
+
+Adding this to your HTML page
+
+```html
+<script src="https://unpkg.com/sql92-json/dist/sql92-json.min.js"></script>
 ```
 
 ## API
