@@ -6,3 +6,6 @@ docs/_site
 # Test coverage
 .coveralls.yml
 .nyc_output/
+
+# Build
+dist/sql92-json.js

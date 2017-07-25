@@ -4,9 +4,13 @@
   "description": "can stringify a JSON into an SQL and viceversa parse an SQL and serialize it into a JSON",
   "main": "sql92-json.js",
   "scripts": {
+    "browserify": "browserify -r ./${npm_package_main}:${npm_package_name} -o dist/${npm_package_name}.js",
+    "build": "npm run browserify && npm run minify",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "homepage": "echo \"---\ntitle: $npm_package_name\n---\" > docs/index.md; cat README.md >> docs/index.md",
-    "lint": "standard",
+    "lint": "standa",
+    "minify": "cd dist; uglifyjs ${npm_package_name}.js --source-map --output ${npm_package_name}.min.js --compress --mangle -b beautify=false,preamble='\"// http://g14n.info/SQL92-JSON\"'; cd -",
+    "preversion": "npm run build",
     "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
     "test": "NODE_PATH=. tape test/*.js test/*/*js"
   },
@@ -34,12 +38,15 @@
   },
   "homepage": "http://g14n.info/SQL92-JSON",
   "devDependencies": {
+    "browserify": "^14.4.0",
     "coveralls": "^2.13.0",
+    "uglify-js": "^3.0.26",
     "dot-editorconfig": "^1.0.1",
     "nyc": "^11.0.2",
     "pre-commit": "^1.2.2",
-    "standard": "^10.0.2",
     "tape": "^4.7.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "standa": "github:fibo/standa"
+  }
 }

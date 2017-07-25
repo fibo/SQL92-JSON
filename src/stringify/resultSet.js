@@ -15,7 +15,7 @@ var isSelect = require('./isSelect')
  */
 
 function resultSet (stringify) {
- /**
+  /**
   * Stringify resultset
   *
   * @param {String|Object} statement

@@ -16,7 +16,7 @@ var comparisonOperators = require('../comparisonOperators')
  */
 
 function filter (stringify) {
- /**
+  /**
   *
   * @param {Object} filter
   *

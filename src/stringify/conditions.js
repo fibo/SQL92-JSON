@@ -9,7 +9,7 @@ var filter = require('./filter')
  */
 
 function conditions (stringify) {
- /**
+  /**
   * @param {Array} conditions
   *
   * @returns {String} result
