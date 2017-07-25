@@ -272,41 +272,30 @@ function select (tokens, sql) {
 
     if (isSum(token)) {
       sumExpression = {}
-      foundRightParenthesis = false
 
-      if (nextToken !== '(') throw error.invalidSQL(sql)
+      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token, j, tokens) {
+        i++
 
-      for (j = i + 1; j < numTokens; j++) {
-        token = tokens[j]
-        nextToken = tokens[j + 1]
-        afterNextToken = tokens[j + 2]
+        if (['(', ',', ')'].indexOf(token) > -1) return
 
-        if (token === ')') {
-          foundRightParenthesis = true
-
-          if (isAs(nextToken)) {
-            if (isDoubleQuotedString(afterNextToken)) {
-              afterNextToken = removeFirstAndLastChar(afterNextToken)
-            }
-
-            sumExpression.AS = afterNextToken
-            i = j + 2
-          } else {
-            i = j
-          }
-
-          break
-        }
-
-        // TODO complex sum expressions
         if (isStringNumber(token)) {
           sumExpression.SUM = parseFloat(token)
         } else {
           sumExpression.SUM = token
         }
-      }
+      })
 
-      if (!foundRightParenthesis) throw error.unclosedParenthesisExpression(tokens)
+      nextToken = tokens[i + 1]
+      afterNextToken = tokens[i + 2]
+
+      if (isAs(nextToken)) {
+        if (isDoubleQuotedString(afterNextToken)) {
+          afterNextToken = removeFirstAndLastChar(afterNextToken)
+        }
+
+        sumExpression.AS = afterNextToken
+        i = i + 2
+      }
 
       json.SELECT.push(sumExpression)
 
