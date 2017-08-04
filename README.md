@@ -121,7 +121,7 @@ FROM (
 
 ## References
 
-[sql1992.txt](./sql1992.txt) was downloaded from http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt
+[sql1992.txt](https://github.com/fibo/SQL92-JSON/blob/master/sql1992.txt) was downloaded from http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt
 
 ## License
 
