@@ -5,7 +5,7 @@
   "main": "sql92-json.js",
   "scripts": {
     "browserify": "browserify -r ./${npm_package_main}:${npm_package_name} -o dist/${npm_package_name}.js",
-    "build": "npm run browserify && npm run minify",
+    "build": "npm run homepage; npm run browserify; npm run minify",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "homepage": "echo \"---\ntitle: $npm_package_name\n---\" > docs/index.md; cat README.md >> docs/index.md",
     "lint": "standa",

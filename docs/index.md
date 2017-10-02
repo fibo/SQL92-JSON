@@ -25,8 +25,6 @@ Adding INSERT and other DMLs statements as well as DDLs is on the roadmap.
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
-[![NPM](https://nodei.co/npm-dl/sql92-json.png)](https://nodei.co/npm-dl/sql92-json/)
-
 ## Installation
 
 ### Using npm
@@ -54,10 +52,11 @@ Adding this to your HTML page
 ```javascript
 var json2sql = require('sql92-json').stringify
 
-console.log(json2sql({  //
-  SELECT: ['*'],        // SELECT *
-  FROM: ['revenue']     // FROM revenue
-}))                     //
+console.log(json2sql({ SELECT: ['*'], FROM: ['revenue'] }))
+//
+// SELECT *
+// FROM revenue
+//
 ```
 
 ### `parse`
@@ -67,13 +66,11 @@ console.log(json2sql({  //
 ```javascript
 var sql2json = require('sql92-json').parse
 
-console.log(sql2json(`
-SELECT *
-FROM revenue
-`)                      // {
-                        //   SELECT: ['*'],
-                        //   FROM: ['revenue']
-                        // }
+console.log(sql2json('SELECT * FROM revenue')
+// {
+//   SELECT: ['*'],
+//   FROM: ['revenue']
+// }
 ```
 
 ## Recipes
@@ -124,7 +121,7 @@ FROM (
 
 ## References
 
-[sql1992.txt](./sql1992.txt) was downloaded from http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt
+[sql1992.txt](https://github.com/fibo/SQL92-JSON/blob/master/sql1992.txt) was downloaded from http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt
 
 ## License
 
