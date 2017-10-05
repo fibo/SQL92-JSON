@@ -1,9 +1,9 @@
-const test = require('tape')
+var test = require('tape')
 
-const normalizeSQL = require('src/util/normalizeSQL')
+var normalizeSQL = require('src/util/normalizeSQL')
 
-const sql2json = require('sql92-json').parse
-const json2sql = require('sql92-json').stringify
+var sql2json = require('sql92-json').parse
+var json2sql = require('sql92-json').stringify
 
 function addHeader (header, query) {
   return {
@@ -12,29 +12,29 @@ function addHeader (header, query) {
   }
 }
 
-const sql = `
+var sql = `
 SELECT name, color, quantity, when_eat
 FROM fruit
 `
 
-const expectedSqlWithHeader = `
+var expectedSqlWithHeader = `
 SELECT 'name', 'color', 'quantity', 'when_eat'
 UNION
 SELECT name, color, quantity, when_eat
 FROM fruit
 `
 
-const sqlStar = `
+var sqlStar = `
 SELECT *
 FROM fruit
 `
 
-const sqlWithLimit = `
+var sqlWithLimit = `
 SELECT *
 FROM fruit
 LIMIT 1
 `
-const sqlSpool = `
+var sqlSpool = `
 SELECT name, color, quantity, when_eat
 FROM (
   SELECT 1 AS i, 'name' AS name, 'color' AS color, 'quantity' AS quantity, 'when_eat' AS when_eat
@@ -47,30 +47,30 @@ ORDER BY i
 
 test('recipe spool-header', function (t) {
   // Parse SQL and serialize it to JSON.
-  const query = sql2json(sql)
+  var query = sql2json(sql)
 
   // Enclose fields with single quotes.
-  const header = query.SELECT.map((field) => `'${field}'`)
+  var header = query.SELECT.map((field) => `'${field}'`)
 
-  const queryWithHeader = addHeader(header, query)
+  var queryWithHeader = addHeader(header, query)
 
   // Stringify the generated JSON back into SQL.
-  const sqlWithHeader = json2sql(queryWithHeader)
+  var sqlWithHeader = json2sql(queryWithHeader)
 
   t.equal(normalizeSQL(expectedSqlWithHeader), sqlWithHeader, 'add header')
 
   // Add LIMIT clause.
-  const queryStar = sql2json(sqlStar)
+  var queryStar = sql2json(sqlStar)
   queryStar.LIMIT = 1
 
   t.equal(normalizeSQL(sqlWithLimit), json2sql(queryStar), 'add limit')
 
   // Cast to VARCHAR to make UNION data types compatible.
-  const fields = [ 'name', 'color', 'quantity', 'when_eat' ]
-  const table = 'fruit'
+  var fields = [ 'name', 'color', 'quantity', 'when_eat' ]
+  var table = 'fruit'
 
   function spool (table, fields) {
-    const header = fields.map((field) => {
+    var header = fields.map((field) => {
       var alias = { AS: {} }
       alias.AS[field] = `'${field}'`
       return alias

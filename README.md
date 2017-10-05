@@ -72,6 +72,7 @@ console.log(sql2json('SELECT * FROM revenue')
 ## Recipes
 
 * [Spool header](http://g14n.info/SQL92-JSON/recipes/spool-header/)
+* [Resultset count](http://g14n.info/SQL92-JSON/recipes/resultset-count/)
 
 ## Examples
 

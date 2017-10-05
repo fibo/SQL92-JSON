@@ -32,8 +32,8 @@ FROM fruit
 To transform the first statement into the second one you can do
 
 ```javascript
-const sql2json = require('sql92-json').parse
-const json2sql = require('sql92-json').stringify
+var sql2json = require('sql92-json').parse
+var json2sql = require('sql92-json').stringify
 
 function addHeader (header, query) {
   return {
@@ -48,15 +48,15 @@ FROM fruit
 `
 
 // Serialize query.
-const query = sql2json(sql)
+var query = sql2json(sql)
 
 // Enclose fields with single quotes.
-const header = query.SELECT.map((field) => "'" + field + "'")
+var header = query.SELECT.map((field) => "'" + field + "'")
 
-const queryWithHeader = addHeader(header, query)
+var queryWithHeader = addHeader(header, query)
 
 // Stringify the generated JSON back into SQL.
-const sqlWithHeader = json2sql(queryWithHeader)
+var sqlWithHeader = json2sql(queryWithHeader)
 
 console.log(sqlWithHeader)
 // SELECT 'name', 'color', 'quantity', 'when_eat'
@@ -74,19 +74,19 @@ possible to read the first row and get the fields.
 I am using the following function to generate the `UNLOAD` statement.
 
 ```javascript
-const json2sql = require('sql92-json').stringify
+var json2sql = require('sql92-json').stringify
 
 function generateUnloadSQL (s3File, queryJSON) {
-  const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY
-  const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID
+  var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY
+  var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID
 
-  const credentials = `'aws_access_key_id=${AWS_ACCESS_KEY_ID};aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}'`
+  var credentials = `'aws_access_key_id=${AWS_ACCESS_KEY_ID};aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}'`
 
-  const querySQL = json2sql(queryJSON).replace(/'/g, "\\'")
+  var querySQL = json2sql(queryJSON).replace(/'/g, "\\'")
 
-  const s3Bucket = s3File.Bucket
+  var s3Bucket = s3File.Bucket
   // The unload command appends a '000.gz', hence it must be stripped.
-  const s3FileKey = s3File.Key.replace(/\.000\.gz$/, '')
+  var s3FileKey = s3File.Key.replace(/\.000\.gz$/, '')
 
   return `
 UNLOAD('${querySQL}')
@@ -107,13 +107,13 @@ to get a statement that returns an header in the first row.
 This is as easy as the following snippet
 
 ```javascript
-const sqlStar = `
+var sqlStar = `
 SELECT *
 FROM fruit
 `
 
 // Add LIMIT clause.
-const queryStar = sql2json(sqlStar)
+var queryStar = sql2json(sqlStar)
 queryStar.LIMIT = 1
 
 console.log(json2sql(queryStar))
@@ -143,11 +143,11 @@ Assuming that we know the fields involved, the final solution is the
 following.
 
 ```javascript
-const fields = [ 'name', 'color', 'quantity', 'when_eat' ]
-const table = 'fruit'
+var fields = [ 'name', 'color', 'quantity', 'when_eat' ]
+var table = 'fruit'
 
 function spool (table, fields) {
-  const header = fields.map((field) => {
+  var header = fields.map((field) => {
     var alias = { AS: {} }
     alias.AS[field] = `'${field}'`
     return alias
