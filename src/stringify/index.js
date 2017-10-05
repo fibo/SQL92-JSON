@@ -7,6 +7,7 @@ var hasGroupBy = require('./hasGroupBy')
 var hasHaving = require('./hasHaving')
 var hasOrderBy = require('./hasOrderBy')
 var hasUnion = require('./hasUnion')
+var hasUnionAll = require('./hasUnionAll')
 var hasWhere = require('./hasWhere')
 var orderByCondition = require('./orderByCondition')
 var isCreateTable = require('./isCreateTable')
@@ -77,6 +78,10 @@ function stringify (json) {
 
     if (hasUnion(json)) {
       sql += ' UNION ' + stringify(json.UNION)
+    }
+
+    if (hasUnionAll(json)) {
+      sql += ' UNION ALL ' + stringify(json['UNION ALL'])
     }
   }
 

@@ -29,6 +29,7 @@ var isOrderBy = isKeyword('ORDER BY')
 var isSelect = isKeyword('SELECT')
 var isSum = isKeyword('SUM')
 var isUnion = isKeyword('UNION')
+var isUnionAll = isKeyword('UNION ALL')
 var isWhere = isKeyword('WHERE')
 
 var condition = require('./condition')
@@ -73,6 +74,7 @@ function select (tokens, sql) {
   var foundOffset = false
   var foundOrderBy = false
   var foundUnion = false
+  var foundUnionAll = false
   var foundWhere = false
 
   var fromIndex
@@ -81,6 +83,7 @@ function select (tokens, sql) {
   var limitIndex
   var offsetIndex
   var orderByIndex
+  var unionAllIndex
   var unionIndex
   var whereIndex
 
@@ -103,6 +106,12 @@ function select (tokens, sql) {
     if (isUnion(token)) {
       foundUnion = true
       unionIndex = i
+      break
+    }
+
+    if (isUnionAll(token)) {
+      foundUnionAll = true
+      unionAllIndex = i
       break
     }
 
@@ -339,6 +348,12 @@ function select (tokens, sql) {
         break
       }
 
+      if (isUnionAll(token)) {
+        foundUnionAll = true
+        unionAllIndex = i
+        break
+      }
+
       if (foundWhere || foundGroupBy || foundHaving || foundOrderBy) continue
 
       if (token === ',') continue
@@ -550,11 +565,15 @@ function select (tokens, sql) {
     }
   }
 
-  // UNION
+  // UNION and UNION ALL
   // ////////////////////////////////////////////////////////////////////
 
   if (foundUnion) {
     json.UNION = select(tokens.splice(unionIndex + 1), sql)
+  }
+
+  if (foundUnionAll) {
+    json['UNION ALL'] = select(tokens.splice(unionAllIndex + 1), sql)
   }
 
   return json

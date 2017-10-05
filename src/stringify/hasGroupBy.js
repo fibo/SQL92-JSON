@@ -3,7 +3,8 @@ var isNumberOrString = require('../util/isNumberOrString')
 /**
  * Check that expression has a GROUP BY.
  *
- * { GROUP: [1] } => true
+ * { 'GROUP BY': [1] } => true
+ * { 'GROUP BY': ['name'] } => true
  *
  * @param {Object} json
  *
@@ -11,9 +12,9 @@ var isNumberOrString = require('../util/isNumberOrString')
  */
 
 function hasGroupBy (json) {
-  var GROUPBY = json['GROUP BY']
+  var GROUP_BY = json['GROUP BY']
 
-  return Array.isArray(GROUPBY) && GROUPBY.length > 0 && GROUPBY.filter(isNumberOrString).length === GROUPBY.length
+  return Array.isArray(GROUP_BY) && GROUP_BY.length > 0 && GROUP_BY.filter(isNumberOrString).length === GROUP_BY.length
 }
 
 module.exports = hasGroupBy

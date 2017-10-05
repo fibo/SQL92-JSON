@@ -8,5 +8,6 @@
   "LEFT",
   "NOT",
   "ORDER",
-  "RIGHT"
+  "RIGHT",
+  "UNION"
 ]

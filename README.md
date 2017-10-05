@@ -19,8 +19,7 @@ Adding INSERT and other DMLs statements as well as DDLs is on the roadmap.
 [![Badge size](https://badge-size.herokuapp.com/fibo/sql92-json/master/dist/sql92-json.min.js)](https://github.com/fibo/sql92-json/blob/master/dist/sql92-json.min.js)
 [![Dependency Status](https://gemnasium.com/fibo/static-props.svg)](https://gemnasium.com/fibo/static-props)
 [![Coverage Status](https://coveralls.io/repos/fibo/SQL92-JSON/badge.svg?branch=master)](https://coveralls.io/r/fibo/SQL92-JSON?branch=master)
-
-[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Installation
 
@@ -118,7 +117,7 @@ FROM (
 
 ## References
 
-[sql1992.txt](https://github.com/fibo/SQL92-JSON/blob/master/sql1992.txt) was downloaded from http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt
+[sql1992.txt](https://github.com/fibo/SQL92-JSON/blob/master/sql1992.txt) was downloaded from [here](http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt).
 
 ## License
 

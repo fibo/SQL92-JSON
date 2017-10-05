@@ -2,7 +2,7 @@
 
 var test = require('tape')
 
-var tokenize = require('../src/util/tokenize')
+var tokenize = require('../../src/util/tokenize')
 
 test('tokenize', function (t) {
   t.deepEqual(tokenize('select'), ['select'])
@@ -23,6 +23,7 @@ test('tokenize', function (t) {
   t.deepEqual(tokenize('cross Join'), ['cross Join'], 'CROSS JOIN')
   t.deepEqual(tokenize('INNeR Join'), ['INNeR Join'], 'INNER JOIN')
   t.deepEqual(tokenize('full outer join'), ['full outer join'], 'FULL OUTER JOIN')
+  t.deepEqual(tokenize('union all'), ['union all'], 'UNION ALL')
   t.deepEqual(tokenize('20170701::VARCHAR::DATE'), ['20170701::VARCHAR::DATE'], 'double cast')
 
   t.deepEqual(tokenize(`

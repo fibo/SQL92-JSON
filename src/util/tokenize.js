@@ -194,6 +194,15 @@ function tokenize (sql) {
         joinedTokens.push(token + ' ' + nextToken + ' ' + afterNextToken)
         i = i + 2
       }
+
+      if (TOKEN === 'UNION') {
+        if (NEXT_TOKEN === 'ALL') {
+          joinedTokens.push(token + ' ' + nextToken)
+          i = i + 1
+        } else {
+          joinedTokens.push(token)
+        }
+      }
     } else {
       joinedTokens.push(token)
     }
