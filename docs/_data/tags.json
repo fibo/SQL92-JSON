@@ -1,0 +1,137 @@
+[
+  {
+    "name": "v0.15.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.15.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.15.0",
+    "commit": {
+      "sha": "85b6fb1245c2016f7eae116413fb5ec087784c95",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/85b6fb1245c2016f7eae116413fb5ec087784c95"
+    }
+  },
+  {
+    "name": "v0.14.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.14.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.14.0",
+    "commit": {
+      "sha": "696d185fcb5de9ce0593e298d9638cd40ee92d07",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/696d185fcb5de9ce0593e298d9638cd40ee92d07"
+    }
+  },
+  {
+    "name": "v0.13.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.13.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.13.0",
+    "commit": {
+      "sha": "b97d7385f8b6e87649569c4f7422b0a307710ac0",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/b97d7385f8b6e87649569c4f7422b0a307710ac0"
+    }
+  },
+  {
+    "name": "v0.12.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.12.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.12.0",
+    "commit": {
+      "sha": "dd76fa8a35d5d0545a78621804ff1b9ae2494530",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/dd76fa8a35d5d0545a78621804ff1b9ae2494530"
+    }
+  },
+  {
+    "name": "v0.11.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.11.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.11.0",
+    "commit": {
+      "sha": "d88ab2c0e533bcec775e4a932e7f6372540b3d5e",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/d88ab2c0e533bcec775e4a932e7f6372540b3d5e"
+    }
+  },
+  {
+    "name": "v0.10.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.10.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.10.0",
+    "commit": {
+      "sha": "e82842429ac9b1cf6a609fb7015ee7a91ad031e8",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/e82842429ac9b1cf6a609fb7015ee7a91ad031e8"
+    }
+  },
+  {
+    "name": "v0.9.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.9.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.9.0",
+    "commit": {
+      "sha": "f9d0b28c82c717768de23924d53c676aaf922486",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/f9d0b28c82c717768de23924d53c676aaf922486"
+    }
+  },
+  {
+    "name": "v0.8.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.8.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.8.0",
+    "commit": {
+      "sha": "3c9bfec81418810c133ba878af138823aafaacc4",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/3c9bfec81418810c133ba878af138823aafaacc4"
+    }
+  },
+  {
+    "name": "v0.7.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.7.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.7.0",
+    "commit": {
+      "sha": "75464118e65436097d1a82324dae49ebc765c0f9",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/75464118e65436097d1a82324dae49ebc765c0f9"
+    }
+  },
+  {
+    "name": "v0.6.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.6.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.6.0",
+    "commit": {
+      "sha": "8f7c8d91fd116835c7e80eeec9a415c539dfc657",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/8f7c8d91fd116835c7e80eeec9a415c539dfc657"
+    }
+  },
+  {
+    "name": "v0.5.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.5.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.5.0",
+    "commit": {
+      "sha": "277dd5ed44a42f9f437fee563394632964871aa8",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/277dd5ed44a42f9f437fee563394632964871aa8"
+    }
+  },
+  {
+    "name": "v0.4.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.4.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.4.0",
+    "commit": {
+      "sha": "72a9139117104aa4f37907f84e5d834a83e69034",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/72a9139117104aa4f37907f84e5d834a83e69034"
+    }
+  },
+  {
+    "name": "v0.3.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.3.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.3.0",
+    "commit": {
+      "sha": "92e36fe73acc1204cb2987b64efb389b1238c866",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/92e36fe73acc1204cb2987b64efb389b1238c866"
+    }
+  },
+  {
+    "name": "v0.2.1",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.2.1",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.2.1",
+    "commit": {
+      "sha": "ecd1968db19d2d1133100ef3f0cb1e586b4979a9",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/ecd1968db19d2d1133100ef3f0cb1e586b4979a9"
+    }
+  },
+  {
+    "name": "v0.2.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.2.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.2.0",
+    "commit": {
+      "sha": "7a5f8e17eae9be3791b4b6e71a737ce39f3614ed",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/7a5f8e17eae9be3791b4b6e71a737ce39f3614ed"
+    }
+  }
+]
