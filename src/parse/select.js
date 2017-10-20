@@ -23,6 +23,8 @@ var isFrom = isKeyword('FROM')
 var isGroupBy = isKeyword('GROUP BY')
 var isHaving = isKeyword('HAVING')
 var isLimit = isKeyword('LIMIT')
+var isMax = isKeyword('MAX')
+var isMin = isKeyword('MIN')
 var isNvl = isKeyword('NVL')
 var isOffset = isKeyword('OFFSET')
 var isOrderBy = isKeyword('ORDER BY')
@@ -51,6 +53,8 @@ function select (tokens, sql) {
   var avgExpression
   var countExpression
   var joinKeyword
+  var maxExpression
+  var minExpression
   var nvlExpression
   var sumExpression
   var table
@@ -222,6 +226,70 @@ function select (tokens, sql) {
       }
 
       json.SELECT.push(countExpression)
+
+      continue
+    }
+
+    if (isMax(token)) {
+      maxExpression = {}
+
+      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token) {
+        i++
+
+        if (['(', ',', ')'].indexOf(token) > -1) return
+
+        if (isStringNumber(token)) {
+          maxExpression.MAX = parseFloat(token)
+        } else {
+          maxExpression.MAX = token
+        }
+      })
+
+      nextToken = tokens[i + 1]
+      afterNextToken = tokens[i + 2]
+
+      if (isAs(nextToken)) {
+        if (isDoubleQuotedString(afterNextToken)) {
+          afterNextToken = removeFirstAndLastChar(afterNextToken)
+        }
+
+        maxExpression.AS = afterNextToken
+        i = i + 2
+      }
+
+      json.SELECT.push(maxExpression)
+
+      continue
+    }
+
+    if (isMin(token)) {
+      minExpression = {}
+
+      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token) {
+        i++
+
+        if (['(', ',', ')'].indexOf(token) > -1) return
+
+        if (isStringNumber(token)) {
+          minExpression.MIN = parseFloat(token)
+        } else {
+          minExpression.MIN = token
+        }
+      })
+
+      nextToken = tokens[i + 1]
+      afterNextToken = tokens[i + 2]
+
+      if (isAs(nextToken)) {
+        if (isDoubleQuotedString(afterNextToken)) {
+          afterNextToken = removeFirstAndLastChar(afterNextToken)
+        }
+
+        minExpression.AS = afterNextToken
+        i = i + 2
+      }
+
+      json.SELECT.push(minExpression)
 
       continue
     }

@@ -3,13 +3,15 @@ var error = require('../error')
 var aliasExpression = require('./aliasExpression')
 var avgExpression = require('./avgExpression')
 var countExpression = require('./countExpression')
-var nvlExpression = require('./nvlExpression')
 // var isMathOperator = require('../util/isMathOperator')
 var isNumber = require('../util/isNumber')
 var isObject = require('../util/isObject')
 // var isStringOperator = require('../util/isStringOperator')
 var isStar = require('../util/isStar')
 var isString = require('../util/isString')
+var maxExpression = require('./maxExpression')
+var minExpression = require('./minExpression')
+var nvlExpression = require('./nvlExpression')
 var stringField = require('./stringField')
 var sumExpression = require('./sumExpression')
 
@@ -43,6 +45,14 @@ function selectField (field) {
 
     if (field.COUNT) {
       return countExpression(field)
+    }
+
+    if (field.MAX) {
+      return maxExpression(field)
+    }
+
+    if (field.MIN) {
+      return minExpression(field)
     }
 
     if (field.NVL) {

@@ -7,8 +7,8 @@ Adding INSERT and other DMLs statements as well as DDLs is on the roadmap.
 The following keywords are already implemented and tested:
 
 > `SELECT` `COUNT` `FROM` `GROUP BY` `ORDER BY` `UNION` `UNION ALL`
-> `AND` `OR` `JOIN` `AS` `HAVING` `LEFT JOIN` `WHERE` `SUM` `BETWEEN`
-> `MIN` `MAX`
+> `AND` `OR` `JOIN` `AS` `HAVING` `LEFT JOIN` `WHERE` `BETWEEN`
+> `MIN` `MAX` `AVG` `SUM`
 
 [Installation](#installation) |
 [API](#api) |
