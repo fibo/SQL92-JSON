@@ -5,10 +5,13 @@ title: sql92-json
 
 > can stringify a JSON into an SQL and viceversa parse an SQL and serialize it into a JSON
 
-🚧 **STATUS**: Right now the test suite contains many SELECT
-statements (and few CREATEs) that are serialized into JSON and
-viceversa parsed back into SQL successfully.
+🚧 **STATUS**: Right now the test suite contains many SELECT statements (and few CREATEs) that are serialized into JSON and viceversa parsed back into SQL successfully.
 Adding INSERT and other DMLs statements as well as DDLs is on the roadmap.
+The following keywords are already implemented and tested:
+
+> `SELECT` `COUNT` `FROM` `GROUP BY` `ORDER BY` `UNION` `UNION ALL`
+> `AND` `OR` `JOIN` `AS` `HAVING` `LEFT JOIN` `WHERE` `BETWEEN`
+> `MIN` `MAX` `AVG` `SUM`
 
 [Installation](#installation) |
 [API](#api) |
