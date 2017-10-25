@@ -8,7 +8,7 @@ The following keywords are already implemented and tested:
 
 > `SELECT` `COUNT` `FROM` `GROUP BY` `ORDER BY` `UNION` `UNION ALL`
 > `AND` `OR` `JOIN` `AS` `HAVING` `LEFT JOIN` `WHERE` `BETWEEN`
-> `MIN` `MAX` `AVG` `SUM`
+> `MIN` `MAX` `AVG` `SUM` `DISTINCT`
 
 [Installation](#installation) |
 [API](#api) |
