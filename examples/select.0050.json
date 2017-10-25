@@ -1,0 +1,22 @@
+{
+  "SELECT": [
+    "t.country",
+    "t.hair_color",
+    {
+      "AS": { "num":
+        {
+          "SELECT": [ { "COUNT": "hair_color", "DISTINCT": true } ],
+          "FROM": [ { "u": "people" } ],
+          "WHERE": [ "u.country", { "=": "t.country" } ]
+        }
+      }
+    }
+  ],
+  "FROM": [
+    {
+      "SELECT": ["country", "hair_color"],
+      "DISTINCT": true,
+      "FROM": [ "people" ]
+    }
+  ]
+}

@@ -1,11 +1,10 @@
 {
-
-"SELECT": ["*"],
-      "FROM": ["myschema.mytable"],
-      "WHERE": [
-        "campaign", { "IN": ["bcnv"] },
-        {
-          "AND": [ "yyyymmdd", { "BETWEEN": [ 20170101, 20170228 ] } ]
-        }
-      ]
+  "SELECT": ["*"],
+  "FROM": ["myschema.mytable"],
+  "WHERE": [
+   "campaign", { "IN": ["bcnv"] },
+   {
+     "AND": [ "yyyymmdd", { "BETWEEN": [ 20170101, 20170228 ] } ]
+   }
+ ]
 }

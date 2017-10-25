@@ -17,7 +17,14 @@ function countExpression (json) {
 
   if (isStar(COUNT)) result = 'COUNT(*)'
   if (COUNT === 1) result = 'COUNT(1)'
-  if (isString(COUNT)) result = 'COUNT(' + COUNT + ')'
+
+  if (isString(COUNT)) {
+    if (json.DISTINCT) {
+      result = 'COUNT(DISTINCT ' + COUNT + ')'
+    } else {
+      result = 'COUNT(' + COUNT + ')'
+    }
+  }
 
   return result + aliasExpression(json)
 }
