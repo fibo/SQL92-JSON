@@ -12,7 +12,7 @@
 [![NPM version](https://badge.fury.io/js/sql92-json.svg)](http://badge.fury.io/js/sql92-json)
 [![Build Status](https://travis-ci.org/fibo/SQL92-JSON.svg?branch=master)](https://travis-ci.org/fibo/SQL92-JSON?branch=master)
 [![Badge size](https://badge-size.herokuapp.com/fibo/sql92-json/master/dist/sql92-json.min.js)](https://github.com/fibo/sql92-json/blob/master/dist/sql92-json.min.js)
-[![Dependency Status](https://gemnasium.com/fibo/static-props.svg)](https://gemnasium.com/fibo/static-props)
+[![Dependency Status](https://gemnasium.com/fibo/sql92-json.svg)](https://gemnasium.com/fibo/sql92-json)
 [![Coverage Status](https://coveralls.io/repos/fibo/SQL92-JSON/badge.svg?branch=master)](https://coveralls.io/r/fibo/SQL92-JSON?branch=master)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
