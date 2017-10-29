@@ -3,12 +3,12 @@ var filter = require('./filter')
 /**
  * Extract filter conditions.
  *
- * @param {Function} stringify
+ * @param {Function} select
  *
  * @returns {Function} stringifyConditions
  */
 
-function conditions (stringify) {
+function conditions (select) {
   /**
   * @param {Array} conditions
   *
@@ -19,7 +19,7 @@ function conditions (stringify) {
     var firstField = conditions.shift()
     var firstFilter = conditions.shift()
 
-    var strinfigyFilter = filter(stringify)
+    var strinfigyFilter = filter(select)
 
     var result = firstField + ' ' + strinfigyFilter(firstFilter)
 

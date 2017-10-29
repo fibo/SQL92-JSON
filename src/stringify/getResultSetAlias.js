@@ -1,28 +1,28 @@
 var isKeyword = require('../util/isKeyword')
-var isTableName = require('../util/isTableName')
+var isSelect = require('./isSelect')
 
 /**
- * Extract table name alias and check that table name is valid.
+ * Extract result set alias, and check that result set is a SELECT.
  *
- * { t: 'mytable' } => t
+ * { t: { SELECT: ['foo'], FROM ['mytable'] } } => t
  *
  * @param {Object} json
  *
  * @returns {String|undefined} alias
  */
 
-function getTableNameAlias (json) {
+function getResultSetAlias (json) {
   var keys = Object.keys(json)
-  var tableName
+  var resultSet
 
   for (var i = 0; i < keys.length; i++) {
     var token = keys[i]
 
     if (isKeyword()(token)) continue
 
-    tableName = json[token]
+    resultSet = json[token]
 
-    if (isTableName(tableName)) {
+    if (isSelect(resultSet)) {
       return token
     } else {
       return
@@ -30,4 +30,4 @@ function getTableNameAlias (json) {
   }
 }
 
-module.exports = getTableNameAlias
+module.exports = getResultSetAlias

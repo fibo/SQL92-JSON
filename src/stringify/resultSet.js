@@ -2,24 +2,26 @@ var conditions = require('./conditions')
 var encloseWithParenthesis = require('../util/encloseWithParenthesis')
 var getTableNameAlias = require('./getTableNameAlias')
 var getTableNameWithAlias = require('./getTableNameWithAlias')
+var getResultSetAlias = require('./getResultSetAlias')
+var getResultSetWithAlias = require('./getResultSetWithAlias')
 var getJoinKeyword = require('./getJoinKeyword')
 var isTableName = require('../util/isTableName')
 var isSelect = require('./isSelect')
 
 /**
- * A result set is given by a table name or a SQL statement.
+ * A result set is given by a table name or a SELECT statement.
  *
- * @param {Function} stringify
+ * @param {Function} select
  *
  * @returns {Function} stringifyResultSet
  */
 
-function resultSet (stringify) {
+function resultSet (select) {
   /**
   * Stringify resultset
   *
   * @param {String|Object} statement
-  * @param {Boolean} notFirstJoin
+  * @param {Boolean} [notFirstJoin]
   *
   * @returns {String} result
   */
@@ -30,7 +32,22 @@ function resultSet (stringify) {
     }
 
     if (isSelect(statement)) {
-      return encloseWithParenthesis(stringify(statement))
+      return encloseWithParenthesis(select(statement))
+    }
+
+    var result = ''
+
+    var resultSetWithAlias = getResultSetWithAlias(statement)
+
+    if (resultSetWithAlias) {
+      var resultSetAlias = getResultSetAlias(resultSetWithAlias)
+      var resultSetObj = resultSetWithAlias[resultSetAlias]
+
+      result = encloseWithParenthesis(select(resultSetObj)) + ' ' + resultSetAlias
+
+      // TODO implement JOIN also here
+
+      return result
     }
 
     var tableNameWithAlias = getTableNameWithAlias(statement)
@@ -38,12 +55,12 @@ function resultSet (stringify) {
     if (tableNameWithAlias) {
       var tableAlias = getTableNameAlias(tableNameWithAlias)
       var tableName = tableNameWithAlias[tableAlias]
-      var result = notFirstJoin ? '' : tableName + ' ' + tableAlias + ' '
-
       var joinKeyword = getJoinKeyword(statement)
       var joinJSON = statement[joinKeyword]
 
       if (joinKeyword) {
+        result = notFirstJoin ? '' : tableName + ' ' + tableAlias + ' '
+
         var joinTableNameWithAlias = getTableNameWithAlias(joinJSON)
 
         if (joinTableNameWithAlias) {
@@ -52,9 +69,11 @@ function resultSet (stringify) {
           var onCondition = joinJSON.ON.slice(0)
 
           result += [joinKeyword, joinTableName, joinTableAlias].join(' ')
-          result += ' ON ' + conditions(stringify)(onCondition)
+          result += ' ON ' + conditions(select)(onCondition)
         }
+
         // TODO statement like JOIN (select * from table) t
+        // use getResultSetWithAlias()
 
         var nextJoinKeyword = getJoinKeyword(joinJSON)
 
@@ -64,6 +83,9 @@ function resultSet (stringify) {
           nextJoinStatement[nextJoinKeyword] = joinJSON[nextJoinKeyword]
           result += ' ' + stringifyResultSet(joinJSON, notFirstJoin)
         }
+      } else {
+        // No JOIN found.
+        result = tableName + ' ' + tableAlias
       }
 
       return result

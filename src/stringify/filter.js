@@ -10,12 +10,12 @@ var comparisonOperators = require('../comparisonOperators')
 /**
  * Extract filter.
  *
- * @param {Function} stringify
+ * @param {Function} select
  *
  * @returns {Function} stringifyFilter
  */
 
-function filter (stringify) {
+function filter (select) {
   /**
   *
   * @param {Object} filter
@@ -43,7 +43,7 @@ function filter (stringify) {
       }
 
       if (isSelect(IN)) {
-        return 'IN ' + encloseWithParenthesis(stringify(IN))
+        return 'IN ' + encloseWithParenthesis(select(IN))
       }
     }
 

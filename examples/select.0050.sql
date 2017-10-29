@@ -10,5 +10,3 @@ FROM (
 	SELECT DISTINCT country, hair_color
 	FROM people
 ) t
-;
-

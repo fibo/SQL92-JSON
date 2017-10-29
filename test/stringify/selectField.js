@@ -1,5 +1,6 @@
 var test = require('tape')
 
+var select = require('src/stringify/select')
 var selectField = require('src/stringify/selectField')
 
 test('selectField', function (t) {
@@ -11,6 +12,7 @@ test('selectField', function (t) {
   t.equal(selectField('1::VARCHAR'), '1::VARCHAR', 'cast')
   t.equal(selectField({ AS: { num: 1 } }), '1 AS num', 'number AS alias')
   t.equal(selectField({ AS: { day: 'yyyymmdd::VARCHAR::DATE' } }), 'yyyymmdd::VARCHAR::DATE AS day', 'cast expression AS alias')
+  t.equal(selectField({ SELECT: ['foo'], FROM: ['bar'] }, select), '(SELECT foo FROM bar)', 'subquery')
 
   t.end()
 })

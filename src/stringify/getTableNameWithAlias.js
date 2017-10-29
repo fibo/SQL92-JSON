@@ -8,31 +8,31 @@ var isAs = isKeyword('AS')
  * { t: 'mytable', JOIN: {} } => { t: 'mytable' }
  * { AS: { t: 'mytable' }, JOIN: {} } => { AS: { t: 'mytable' } }
  *
- * @param {Object} statement
+ * @param {Object} json
  *
  * @returns {Object|undefined}
  */
 
-function getTableNameWithAlias (statement) {
-  var keys = Object.keys(statement)
+function getTableNameWithAlias (json) {
+  var keys = Object.keys(json)
   var tableObj
   var tableName
 
-  var alias = getTableNameAlias(statement)
+  var alias = getTableNameAlias(json)
 
   if (alias) {
     tableObj = {}
-    tableName = statement[alias]
+    tableName = json[alias]
     tableObj[alias] = tableName
   } else {
     for (var i = 0; i < keys.length; i++) {
       var token = keys[i]
 
       if (isAs(token)) {
-        alias = getTableNameAlias(statement[token])
+        alias = getTableNameAlias(json[token])
 
         if (alias) {
-          tableObj = { AS: statement[token] }
+          tableObj = { AS: json[token] }
           break
         } else {
           return

@@ -56,20 +56,20 @@ function select (tokens, sql) {
   var maxExpression
   var minExpression
   var nvlExpression
+  var subQueryExpression
   var sumExpression
   var table
 
   var afterNextToken
   var firstToken = tokens[0]
-  var foundRightParenthesis = false
   var nextToken
-  var numOpenParenthesis
+  var nextTokenIsNotKeyword
+  var nextTokenIsAlias
   var numTokens = tokens.length
   var subQueryTokens
   var token
 
   var i
-  var j
 
   var foundFrom = false
   var foundLimit = false
@@ -205,6 +205,11 @@ function select (tokens, sql) {
         i++
 
         if (['(', ',', ')'].indexOf(token) > -1) return
+
+        if (isDistinct(token)) {
+          countExpression.DISTINCT = true
+          return
+        }
 
         if (isStringNumber(token)) {
           countExpression.COUNT = parseFloat(token)
@@ -373,6 +378,38 @@ function select (tokens, sql) {
     }
 
     if (isStar(token)) json.SELECT.push(token)
+
+    // After looking for functions and other keywords, check if it is
+    // an expression enclosed by parenthesis, it could be a sub query.
+
+    if ((token === '(') && (isSelect(nextToken))) {
+      subQueryExpression = {}
+      subQueryTokens = tokensEnclosedByParenthesis(tokens, i)
+
+      i = i + subQueryTokens.length
+
+      nextToken = tokens[i]
+      afterNextToken = tokens[i + 1]
+
+      // Remove left and right parenthesis
+      subQueryTokens.shift()
+      subQueryTokens.pop()
+
+      if (isAs(nextToken)) {
+        if (isDoubleQuotedString(afterNextToken)) {
+          afterNextToken = removeFirstAndLastChar(afterNextToken)
+        }
+
+        subQueryExpression.AS = {}
+        subQueryExpression.AS[afterNextToken] = select(subQueryTokens, sql)
+
+        json.SELECT.push(subQueryExpression)
+
+        i = i + 1
+      } else {
+        json.SELECT.push(select(subQueryTokens, sql))
+      }
+    }
   }
 
   // FROM
@@ -427,35 +464,51 @@ function select (tokens, sql) {
       if (token === ',') continue
 
       if (token === '(') {
-        firstToken = tokens[i + 1]
-        foundRightParenthesis = false
-        numOpenParenthesis = 1
+        subQueryExpression = {}
+        subQueryTokens = tokensEnclosedByParenthesis(tokens, i)
 
-        // A sub query must start with a SELECT.
-        if (!isSelect(firstToken)) throw error.invalidSQL(sql)
+        // Remove left and right parenthesis
+        subQueryTokens.shift()
+        subQueryTokens.pop()
 
-        subQueryTokens = []
+        i = i + subQueryTokens.length + 1
 
-        for (j = i + 1; j < numTokens; j++) {
-          if (foundRightParenthesis) continue
+        nextToken = tokens[i + 1]
+        afterNextToken = tokens[i + 2]
 
-          token = tokens[j]
+        nextTokenIsNotKeyword = (!isKeyword()(nextToken))
+        nextTokenIsAlias = (isString(nextToken) && nextTokenIsNotKeyword)
 
-          if (token === '(') numOpenParenthesis++
-          if (token === ')') numOpenParenthesis--
+        if (isSelect(subQueryTokens[0])) {
+          if (nextTokenIsAlias) {
+            if (isAnyJoin(afterNextToken)) {
+              // TODO implement JOIN as below
+              // test the following commented code.
+              // joinKeyword = afterNextToken
 
-          if (numOpenParenthesis === 0) {
-            foundRightParenthesis = true
-            i = j
-            json.FROM.push(select(subQueryTokens, sql))
+              // subQueryExpression[joinKeyword] = join(tokens, i + 3, select, sql)
+
+              // json.FROM.push(subQueryExpression)
+
+              // i += countTokens(subQueryExpression[joinKeyword]) + 2
+
+              // continue
+            } else {
+              subQueryExpression[nextToken] = select(subQueryTokens, sql)
+
+              json.FROM.push(subQueryExpression)
+
+              i = i + 2
+
+              continue
+            }
           } else {
-            subQueryTokens.push(token)
-          }
-        }
+            json.FROM.push(select(subQueryTokens, sql))
 
-        if (foundRightParenthesis) {
-          foundRightParenthesis = false
+            continue
+          }
         } else {
+          // A sub query must start with a SELECT.
           throw error.invalidSQL(sql)
         }
       }
@@ -465,8 +518,8 @@ function select (tokens, sql) {
         nextToken = tokens[i + 1]
         afterNextToken = tokens[i + 2]
 
-        var nextTokenIsNotKeyword = (!isKeyword()(nextToken))
-        var nextTokenIsAlias = (isString(nextToken) && nextTokenIsNotKeyword)
+        nextTokenIsNotKeyword = (!isKeyword()(nextToken))
+        nextTokenIsAlias = (isString(nextToken) && nextTokenIsNotKeyword)
 
         if (nextTokenIsAlias) {
           table = {}
@@ -485,12 +538,13 @@ function select (tokens, sql) {
           } else {
             // Just a table alias with no JOIN expression.
             json.FROM.push(table)
-            i = i + 2
+            i = i + 1
             continue
           }
         } else {
           // If it is a common table name, add it to FROM list.
           json.FROM.push(table)
+          continue
         }
       }
     }

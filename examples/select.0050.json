@@ -14,9 +14,11 @@
   ],
   "FROM": [
     {
-      "SELECT": ["country", "hair_color"],
-      "DISTINCT": true,
-      "FROM": [ "people" ]
+      "t": {
+        "SELECT": ["country", "hair_color"],
+        "DISTINCT": true,
+        "FROM": [ "people" ]
+      }
     }
   ]
 }

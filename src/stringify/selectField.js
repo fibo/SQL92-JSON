@@ -4,9 +4,11 @@ var aliasExpression = require('./aliasExpression')
 var avgExpression = require('./avgExpression')
 var countExpression = require('./countExpression')
 // var isMathOperator = require('../util/isMathOperator')
+var encloseWithParenthesis = require('../util/encloseWithParenthesis')
 var isNumber = require('../util/isNumber')
 var isObject = require('../util/isObject')
 // var isStringOperator = require('../util/isStringOperator')
+var isSelect = require('./isSelect')
 var isStar = require('../util/isStar')
 var isString = require('../util/isString')
 var maxExpression = require('./maxExpression')
@@ -19,11 +21,22 @@ var sumExpression = require('./sumExpression')
  * Map columns in a SELECT.
  *
  * @param {Number|String|Object} field
+ * @param {Function} [select]
  *
  * @returns {String} result
  */
 
-function selectField (field) {
+function selectField (field, select) {
+  // Field could be a subquery.
+
+  if (isSelect(field)) {
+    if (typeof select === 'function') {
+      return encloseWithParenthesis(select(field))
+    } else {
+      throw error.functionRequired('select')
+    }
+  }
+
   // Check if field is a math or string expression.
   if (Array.isArray(field)) {
     // TODO improve this using isMathOperator and isStringOperator
@@ -65,8 +78,9 @@ function selectField (field) {
 
     // Check if it is an alias. This must be the last check since
     // other expressions can contain aliases.
+    // I could also be an aliased sub query.
     if (field.AS) {
-      return aliasExpression(field)
+      return aliasExpression(field, select)
     }
   }
 
