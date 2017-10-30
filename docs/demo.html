@@ -1,0 +1,50 @@
+---
+title: Demo
+---
+
+<style>
+  .flexbox-container {
+    display: -webkit-flex;
+    display:     -ms-flex;
+    display:         flex;
+  }
+
+  .flexbox-container > div {
+    width: 50%;
+  }
+
+  textarea {
+    display: none;
+  }
+</style>
+
+<link rel="stylesheet" href="https://unpkg.com/codemirror/lib/codemirror.css">
+<script src="https://unpkg.com/sql92-json/dist/sql92-json.min.js"></script>
+<script src="https://unpkg.com/codemirror/lib/codemirror.js"></script>
+<script src="https://unpkg.com/codemirror/mode/sql/sql.js"></script>
+<script src="https://unpkg.com/codemirror/mode/javascript/javascript.js"></script>
+
+<div class="flexbox-container">
+  <div>
+    <textarea>SELECT * FROM revenue</textarea>
+  </div>
+  <div>
+    <textarea>{ "SELECT": ["*"], "FROM": ["revenue"] }</textarea>
+  </div>
+</div>
+
+<script>
+  var myTextAreas = document.querySelectorAll('textarea')
+
+  var sqlEditor = CodeMirror.fromTextArea(myTextAreas[0], {
+    lineNumbers: true,
+    mode: 'sql',
+    readOnly: false
+  })
+
+  var jsonEditor = CodeMirror.fromTextArea(myTextAreas[1], {
+    lineNumbers: true,
+    mode: {name: 'javascript', json: true},
+    readOnly: false
+  })
+</script>

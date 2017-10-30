@@ -1,7 +1,7 @@
 {
   "name": "sql92-json",
-  "version": "0.16.0",
-  "description": "can stringify a JSON into an SQL and viceversa parse an SQL and serialize it into a JSON",
+  "version": "0.17.0",
+  "description": "can stringify a JSON into a SQL and viceversa parse a SQL statement and serialize it into a JSON",
   "main": "sql92-json.js",
   "scripts": {
     "browserify": "browserify -r ./${npm_package_main}:${npm_package_name} -o dist/${npm_package_name}.js",

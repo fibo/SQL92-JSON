@@ -10,3 +10,6 @@ defaults:
       type: "pages"
     values:
       layout: common/page
+
+nav:
+  Demo: ../demo
