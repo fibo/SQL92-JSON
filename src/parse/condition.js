@@ -1,6 +1,7 @@
 var error = require('../error')
 
 var between = require('./between')
+var like = require('./like')
 
 var isKeyword = require('../util/isKeyword')
 var isSingleQuotedString = require('../util/isSingleQuotedString')
@@ -20,7 +21,9 @@ var isAnd = isLogicalOperator('AND')
 var isOr = isLogicalOperator('OR')
 
 var isBetween = isSetOperator('BETWEEN')
+var isLike = isSetOperator('LIKE')
 var isNotBetween = isSetOperator('NOT BETWEEN')
+var isNotLike = isSetOperator('NOT LIKE')
 var isIn = isSetOperator('IN')
 
 /**
@@ -106,7 +109,7 @@ function condition (tokens, startIndex, select, sql) {
       }
     }
 
-    // Common condition can be OR, AND, BETWEEN, NOT BETWEEN.
+    // Common condition can be OR, AND, BETWEEN, NOT BETWEEN, LIKE, NOT LIKE.
 
     if (isBetween(nextToken) || isNotBetween(nextToken)) {
       try {
@@ -127,6 +130,26 @@ function condition (tokens, startIndex, select, sql) {
         }
 
         i = i + 4
+      } catch (err) { throw err }
+    }
+
+    if (isLike(nextToken) || isNotLike(nextToken)) {
+      try {
+        comparisonExpression = like(nextToken, afterNextToken)
+
+        if (andCondition) {
+          andCondition.AND = comparisonExpression
+          json = json.concat(andCondition)
+          andCondition = null
+        } else if (orCondition) {
+          orCondition.OR = comparisonExpression
+          json = json.concat(orCondition)
+          orCondition = null
+        } else {
+          json = json.concat(comparisonExpression)
+        }
+
+        i = i + 2
       } catch (err) { throw err }
     }
 

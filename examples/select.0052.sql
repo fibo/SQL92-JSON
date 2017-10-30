@@ -1,0 +1,3 @@
+SELECT *
+FROM products
+WHERE price NOT BETWEEN 10 AND 20

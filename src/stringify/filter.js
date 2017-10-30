@@ -1,5 +1,10 @@
+var error = require('../error')
+
 var encloseWithParenthesis = require('../util/encloseWithParenthesis')
 var isBetween = require('./isBetween')
+var isLike = require('./isLike')
+var isNotLike = require('./isNotLike')
+var isNotBetween = require('./isNotBetween')
 var isSelect = require('./isSelect')
 var quoteIfString = require('../util/quoteIfString')
 
@@ -43,7 +48,11 @@ function filter (select) {
       }
 
       if (isSelect(IN)) {
-        return 'IN ' + encloseWithParenthesis(select(IN))
+        if (typeof select === 'function') {
+          return 'IN ' + encloseWithParenthesis(select(IN))
+        } else {
+          throw error.functionRequired('select')
+        }
       }
     }
 
@@ -67,6 +76,24 @@ function filter (select) {
 
     if (isBetween(filter)) {
       return 'BETWEEN ' + BETWEEN.join(' AND ')
+    }
+
+    var NOT_BETWEEN = filter['NOT BETWEEN']
+
+    if (isNotBetween(filter)) {
+      return 'NOT BETWEEN ' + NOT_BETWEEN.join(' AND ')
+    }
+
+    var LIKE = filter.LIKE
+
+    if (isLike(filter)) {
+      return 'LIKE ' + LIKE
+    }
+
+    var NOT_LIKE = filter['NOT LIKE']
+
+    if (isLike(filter)) {
+      return 'NOT LIKE ' + NOT_LIKE
     }
 
     var OR = filter.OR
