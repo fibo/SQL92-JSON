@@ -92,7 +92,7 @@ function filter (select) {
 
     var NOT_LIKE = filter['NOT LIKE']
 
-    if (isLike(filter)) {
+    if (isNotLike(filter)) {
       return 'NOT LIKE ' + NOT_LIKE
     }
 

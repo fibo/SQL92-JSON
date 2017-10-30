@@ -21,10 +21,10 @@ var isAnd = isLogicalOperator('AND')
 var isOr = isLogicalOperator('OR')
 
 var isBetween = isSetOperator('BETWEEN')
-var isLike = isSetOperator('LIKE')
+var isLike = isKeyword('LIKE')
 var isNotBetween = isSetOperator('NOT BETWEEN')
-var isNotLike = isSetOperator('NOT LIKE')
-var isIn = isSetOperator('IN')
+var isNotLike = isKeyword('NOT LIKE')
+var isIn = isKeyword('IN')
 
 /**
  * Parse a filter condition, like a JOIN, WHERE or HAVING clause.
@@ -135,7 +135,7 @@ function condition (tokens, startIndex, select, sql) {
 
     if (isLike(nextToken) || isNotLike(nextToken)) {
       try {
-        comparisonExpression = like(nextToken, afterNextToken)
+        comparisonExpression = like(token, nextToken, afterNextToken)
 
         if (andCondition) {
           andCondition.AND = comparisonExpression

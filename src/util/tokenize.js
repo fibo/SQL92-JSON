@@ -69,7 +69,6 @@ function tokenize (sql) {
       // The currentToken, after trimmed, could start with a double quote
       //
       // select 'select' "select"
-      //
 
       currentValue = currentValue.trim()
       var isDoubleQuoted = currentValue[0] === '"'
@@ -201,6 +200,13 @@ function tokenize (sql) {
           i = i + 1
         } else {
           joinedTokens.push(token)
+        }
+      }
+
+      if (TOKEN === 'NOT') {
+        if ((NEXT_TOKEN === 'LIKE') || (NEXT_TOKEN === 'BETWEEN')) {
+          joinedTokens.push(token + ' ' + nextToken)
+          i = i + 1
         }
       }
     } else {

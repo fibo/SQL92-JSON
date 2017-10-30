@@ -23,6 +23,8 @@ test('tokenize', function (t) {
   t.deepEqual(tokenize('cross Join'), ['cross Join'], 'CROSS JOIN')
   t.deepEqual(tokenize('INNeR Join'), ['INNeR Join'], 'INNER JOIN')
   t.deepEqual(tokenize('full outer join'), ['full outer join'], 'FULL OUTER JOIN')
+  t.deepEqual(tokenize('not between'), ['not between'], 'NOT BETWEEN')
+  t.deepEqual(tokenize('NOT like'), ['NOT like'], 'NOT LIKE')
   t.deepEqual(tokenize('union all'), ['union all'], 'UNION ALL')
   t.deepEqual(tokenize('20170701::VARCHAR::DATE'), ['20170701::VARCHAR::DATE'], 'double cast')
 
