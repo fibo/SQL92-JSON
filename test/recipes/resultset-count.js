@@ -5,7 +5,7 @@ var normalizeSQL = require('src/util/normalizeSQL')
 var sql2json = require('sql92-json').parse
 var json2sql = require('sql92-json').stringify
 
-test('recipe resultset-count', function (t) {
+test('recipe resultset-count', (t) => {
   var query = sql2json('SELECT name FROM cities WHERE population > 10000')
 
   var expectedSql = `

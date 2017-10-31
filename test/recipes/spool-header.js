@@ -45,7 +45,7 @@ FROM (
 ORDER BY i
 `
 
-test('recipe spool-header', function (t) {
+test('recipe spool-header', (t) => {
   // Parse SQL and serialize it to JSON.
   var query = sql2json(sql)
 
