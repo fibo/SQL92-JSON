@@ -19,7 +19,7 @@ title: sql92-json
 [![Coverage Status](https://coveralls.io/repos/fibo/SQL92-JSON/badge.svg?branch=master)](https://coveralls.io/r/fibo/SQL92-JSON?branch=master)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-[![Demo](http://g14n.info/SQL92-JSON/demo.png)](http://g14n.info/SQL92-JSON/demo)
+[![Demo](//g14n.info/SQL92-JSON/demo.png)](//g14n.info/SQL92-JSON/demo)
 
 🚧 **STATUS**: Right now the test suite contains many SELECT statements (and few CREATEs) that are serialized into JSON and viceversa parsed back into SQL successfully.
 Adding INSERT and other DMLs statements as well as DDLs is on the roadmap.
