@@ -1,6 +1,7 @@
 node_modules
 npm-debug.log
 *.*.swp
+.DS_Store
 docs/_site
 
 # Test coverage
