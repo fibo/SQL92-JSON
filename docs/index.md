@@ -29,7 +29,7 @@ The following keywords are already implemented and tested:
 > `SELECT` `COUNT` `FROM` `GROUP BY` `ORDER BY` `UNION` `UNION ALL`
 > `AND` `OR` `JOIN` `AS` `HAVING` `LEFT JOIN` `WHERE` `BETWEEN` `NOT BETWEEN` `IN`
 > `MIN` `MAX` `AVG` `SUM` `DISTINCT` `LIMIT` `OFFSET` `DESC` `ASC`, `NVL`
-> `LIKE` `NOT LIKE`
+> `LIKE` `NOT LIKE` `CREATE TABLE` `CREATE TABLE foo AS`
 
 ## Installation
 
@@ -81,8 +81,9 @@ console.log(sql2json('SELECT * FROM revenue')
 
 ## Recipes
 
-* [Spool header](http://g14n.info/SQL92-JSON/recipes/spool-header/)
 * [Resultset count](http://g14n.info/SQL92-JSON/recipes/resultset-count/)
+* [Spool header](http://g14n.info/SQL92-JSON/recipes/spool-header/)
+* [Table list](http://g14n.info/SQL92-JSON/recipes/table-list/): (To be completed)
 
 ## Examples
 
