@@ -2,7 +2,9 @@ var error = require('../error')
 
 var isKeyword = require('../util/isKeyword')
 var isTableName = require('../util/isTableName')
+var select = require('./select')
 
+var isAs = isKeyword('AS')
 var isCreateTable = isKeyword('CREATE TABLE')
 
 /**
@@ -19,10 +21,6 @@ function createTable (tokens, sql) {
 
   var firstToken = tokens[0]
   var tableName = tokens[1]
-  var numTokens = tokens.length
-
-  var token
-  var nextToken
 
   if (!isCreateTable(firstToken)) throw error.invalidSQL(sql)
 
@@ -30,19 +28,22 @@ function createTable (tokens, sql) {
 
   json.name = tableName
 
-  // TODO cheating tests, implement it for real!
-  json.fields = []
+  if (isAs(tokens[2])) {
+    json.AS = select(tokens.slice(3))
+  } else {
+    json.fields = []
 
-  for (var i = 2; i < numTokens; i++) {
-    token = tokens[i]
-    nextToken = tokens[i + 1]
+    for (var i = 2; i < tokens.length; i++) {
+      var token = tokens[i]
+      var nextToken = tokens[i + 1]
 
-    if (token === '(') continue
-    if (token === ',') continue
-    if (token === ')') continue
+      if (token === '(') continue
+      if (token === ',') continue
+      if (token === ')') continue
 
-    json.fields.push([token, nextToken])
-    i++
+      json.fields.push([token, nextToken])
+      i++
+    }
   }
 
   return { 'CREATE TABLE': json }

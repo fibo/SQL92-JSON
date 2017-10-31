@@ -1,0 +1,10 @@
+{
+  "CREATE TABLE": {
+    "name": "foo",
+    "AS": {
+      "SELECT": ["*"],
+      "FROM": ["bar"],
+      "WHERE": [1, { "=": 0 }]
+    }
+  }
+}

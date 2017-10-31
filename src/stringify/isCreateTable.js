@@ -1,5 +1,6 @@
 var isDataType = require('../util/isDataType')
 var isTableName = require('../util/isTableName')
+var isSelect = require('./isSelect')
 var isValidName = require('../util/isValidName')
 
 /**
@@ -13,32 +14,42 @@ var isValidName = require('../util/isValidName')
  *     ]
  * } => true
  *
+ * {
+ *   'CREATE TABLE': {
+ *     name: 'mytable',
+ *     AS: { SELECT ['*'], FROM: ['foo'] }
+ * } => true
+ *
  * @param {Object} json
  *
  * @returns {Boolean}
  */
 
 function isCreateTable (json) {
-  var CREATETABLE = json['CREATE TABLE']
+  var CREATE_TABLE = json['CREATE TABLE']
 
-  if (!CREATETABLE) return false
+  if (!CREATE_TABLE) return false
 
-  if (!isTableName(CREATETABLE.name)) return false
+  if (!isTableName(CREATE_TABLE.name)) return false
 
-  if (!Array.isArray(CREATETABLE.fields)) return false
+  if (Array.isArray(CREATE_TABLE.fields)) {
+    var numFields = CREATE_TABLE.fields.length
 
-  var numFields = CREATETABLE.fields.length
+    if (numFields === 0) return false
 
-  if (numFields === 0) return false
+    for (var i = 0; i < numFields; i++) {
+      var field = CREATE_TABLE.fields[i]
 
-  for (var i = 0; i < numFields; i++) {
-    var field = CREATETABLE.fields[i]
+      if (!isValidName(field[0])) return false
+      if (!isDataType(field[1])) return false
+    }
 
-    if (!isValidName(field[0])) return false
-    if (!isDataType(field[1])) return false
+    return true
   }
 
-  return true
+  if (isSelect(CREATE_TABLE.AS)) return true
+
+  return false
 }
 
 module.exports = isCreateTable

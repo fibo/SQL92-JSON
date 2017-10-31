@@ -44,6 +44,7 @@
   "UNION ALL",
   "UPDATE",
   "USER",
+  "VALUES",
   "VIEW",
   "WHERE",
   "WITH"

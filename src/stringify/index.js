@@ -14,17 +14,27 @@ function stringify (json) {
   var sql = ''
 
   if (isCreateTable(json)) {
-    sql = 'CREATE TABLE ' + json['CREATE TABLE'].name + ' ('
+    var CREATE_TABLE = json['CREATE TABLE']
 
-    json['CREATE TABLE'].fields.forEach(function (field, index, fields) {
-      sql += field[0] + ' ' + field[1]
+    sql = 'CREATE TABLE ' + CREATE_TABLE.name
 
-      if (index === fields.length - 1) {
-        sql += ')'
-      } else {
-        sql += ', '
-      }
-    })
+    var tableFields = CREATE_TABLE.fields
+
+    if (tableFields) {
+      sql += ' ('
+
+      tableFields.forEach(function (field, index, fields) {
+        sql += field[0] + ' ' + field[1]
+
+        if (index === fields.length - 1) {
+          sql += ')'
+        } else {
+          sql += ', '
+        }
+      })
+    }
+
+    if (CREATE_TABLE.AS) sql += ' AS ' + stringify(CREATE_TABLE.AS)
   }
 
   if (isSelect(json)) {
