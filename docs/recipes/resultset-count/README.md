@@ -5,13 +5,14 @@ permalink: /recipes/resultset-count/
 
 # Result set count
 
-[source test](https://github.com/fibo/SQL92-JSON/blob/master/test/recipes/resultset-count.js)
+[test source](https://github.com/fibo/SQL92-JSON/blob/master/test/recipes/resultset-count.js)
 
-In a report webapp you have calendar filters and drills to configure your data
-exploration which will be transalted into an SQL query. Suppose you want to
-feedback user with the resultset cardinality, it will be easy to transform the
-JSON representing the query to extract data into a JSON that represents a query
-that counts how many rows would be returned.
+In a report webapp you have calendar filters and drills to configure your
+data exploration which will be transalted into an SQL query.
+
+Suppose you want to feedback user with the resultset cardinality, it will
+be easy to transform the JSON representing the query to extract data into
+a JSON that represents a query that counts how many rows would be returned.
 
 ```javascript
 function countRows (query) {

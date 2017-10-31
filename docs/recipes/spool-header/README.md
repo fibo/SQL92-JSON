@@ -5,7 +5,7 @@ permalink: /recipes/spool-header/
 
 # Spool header
 
-[source test](https://github.com/fibo/SQL92-JSON/blob/master/test/recipes/spool-header.js)
+[test source](https://github.com/fibo/SQL92-JSON/blob/master/test/recipes/spool-header.js)
 
 When downloading data of a result set into a file (action known also as *spool*)
 for example into a CSV file, it is useful to add an *header*, i.e. write

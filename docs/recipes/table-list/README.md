@@ -5,7 +5,7 @@ permalink: /recipes/table-list/
 
 # Table list
 
-[source test](https://github.com/fibo/SQL92-JSON/blob/master/test/recipes/table-list.js)
+[test source](https://github.com/fibo/SQL92-JSON/blob/master/test/recipes/table-list.js)
 
 Suppose you have a complicated query, or a set of queries and you want to
 know which tables are involved. For example you could create a copy of
