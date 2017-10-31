@@ -1,0 +1,58 @@
+---
+title: Demo
+---
+
+<style>
+  .flexbox-container {
+    display: -webkit-flex;
+    display:     -ms-flex;
+    display:         flex;
+  }
+
+  .flexbox-container > div {
+    width: 50%;
+  }
+</style>
+
+<link rel="stylesheet" href="https://unpkg.com/codemirror@5.31.0/lib/codemirror.css">
+<script src="https://unpkg.com/codemirror@5.31.0/lib/codemirror.js"></script>
+<script src="https://unpkg.com/codemirror@5.31.0/mode/sql/sql.js"></script>
+<script src="https://unpkg.com/codemirror@5.31.0/mode/javascript/javascript.js"></script>
+
+<script src="https://unpkg.com/sql92-json/dist/sql92-json.min.js"></script>
+
+<div class="flexbox-container">
+  <div><textarea></textarea></div>
+  <div><textarea></textarea></div>
+</div>
+
+<div class="paper info">You can edit SQL code on the left and see JSON result on the right. Althought SQL92-JSON can parse JSON into SQL, this demo is really basic and only shows how SQL is transformed into JSON, so the right editor is set as <em>read only</em>.</div>
+
+<script>
+  var json2sql = require('sql92-json').stringify
+  var sql2json = require('sql92-json').parse
+
+  var myTextAreas = document.querySelectorAll('textarea')
+
+  var sqlEditor = CodeMirror.fromTextArea(myTextAreas[0], {
+    lineNumbers: true,
+    mode: 'sql'
+  })
+
+  var jsonEditor = CodeMirror.fromTextArea(myTextAreas[1], {
+    lineNumbers: true,
+    mode: {name: 'javascript', json: true},
+    readOnly: 'nocursor'
+  })
+
+  sqlEditor.on('change', function (editor) {
+    try {
+      var sql = editor.getValue()
+      var json = sql2json(sql)
+      console.log(json)
+      jsonEditor.setValue(JSON.stringify(json, null, '  '))
+    } catch(ignore) {}
+  })
+
+  sqlEditor.setValue('SELECT *\nFROM revenue')
+</script>
