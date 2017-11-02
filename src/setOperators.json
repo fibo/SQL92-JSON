@@ -1,11 +1,6 @@
 [
-  "BETWEEN",
-  "DISTINCT",
-  "EXISTS",
-  "IN",
+  "EXCEPT",
   "INTERSECT",
-  "NOT BETWEEN",
-  "NOT EXISTS",
   "UNION",
   "UNION ALL"
 ]

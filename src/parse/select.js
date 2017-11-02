@@ -5,6 +5,7 @@ var isAnyJoin = require('../util/isAnyJoin')
 var isDoubleQuotedString = require('../util/isDoubleQuotedString')
 var isKeyword = require('../util/isKeyword')
 var isMathOperator = require('../util/isMathOperator')
+var isSetOperator = require('../util/isSetOperator')
 var isStar = require('../util/isStar')
 var isString = require('../util/isString')
 var isStringNumber = require('../util/isStringNumber')
@@ -31,8 +32,6 @@ var isOffset = isKeyword('OFFSET')
 var isOrderBy = isKeyword('ORDER BY')
 var isSelect = isKeyword('SELECT')
 var isSum = isKeyword('SUM')
-var isUnion = isKeyword('UNION')
-var isUnionAll = isKeyword('UNION ALL')
 var isUpper = isKeyword('UPPER')
 var isWhere = isKeyword('WHERE')
 
@@ -64,6 +63,7 @@ function select (tokens, sql) {
   var upperExpression
 
   var table
+  var setOperator
 
   var afterNextToken
   var firstToken = tokens[0]
@@ -82,8 +82,7 @@ function select (tokens, sql) {
   var foundHaving = false
   var foundOffset = false
   var foundOrderBy = false
-  var foundUnion = false
-  var foundUnionAll = false
+  var foundSetOperator = false
   var foundWhere = false
 
   var fromIndex
@@ -92,8 +91,7 @@ function select (tokens, sql) {
   var limitIndex
   var offsetIndex
   var orderByIndex
-  var unionAllIndex
-  var unionIndex
+  var setOperatorIndex
   var whereIndex
 
   if (!isSelect(firstToken)) throw error.invalidSQL(sql)
@@ -112,15 +110,16 @@ function select (tokens, sql) {
       break
     }
 
-    if (isUnion(token)) {
-      foundUnion = true
-      unionIndex = i
-      break
-    }
+    // A query could use a set operator without a FROM clause, for example
+    //
+    // SELECT 1
+    // UNION
+    // SELECT num FROM mytable
 
-    if (isUnionAll(token)) {
-      foundUnionAll = true
-      unionAllIndex = i
+    if (isSetOperator(token)) {
+      foundSetOperator = true
+      setOperator = token
+      setOperatorIndex = i
       break
     }
 
@@ -516,15 +515,10 @@ function select (tokens, sql) {
         orderByIndex = i
       }
 
-      if (isUnion(token)) {
-        foundUnion = true
-        unionIndex = i
-        break
-      }
-
-      if (isUnionAll(token)) {
-        foundUnionAll = true
-        unionAllIndex = i
+      if (isSetOperator(token)) {
+        foundSetOperator = true
+        setOperator = token
+        setOperatorIndex = i
         break
       }
 
@@ -756,15 +750,11 @@ function select (tokens, sql) {
     }
   }
 
-  // UNION and UNION ALL
+  // EXCEPT INTERSECT, UNION, UNION ALL
   // ////////////////////////////////////////////////////////////////////
 
-  if (foundUnion) {
-    json.UNION = select(tokens.splice(unionIndex + 1), sql)
-  }
-
-  if (foundUnionAll) {
-    json['UNION ALL'] = select(tokens.splice(unionAllIndex + 1), sql)
+  if (foundSetOperator) {
+    json[setOperator] = select(tokens.splice(setOperatorIndex + 1), sql)
   }
 
   return json

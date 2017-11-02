@@ -1,8 +1,4 @@
-var functions = require('../functions.json')
 var keywords = require('../keywords.json')
-var setOperators = require('../setOperators.json')
-
-var allKeywords = keywords.concat(functions).concat(setOperators)
 
 /**
  * Tells if a token is a SQL keyword.
@@ -30,7 +26,7 @@ function isKeyword (keyword) {
 
       var TOKEN = token.toUpperCase()
 
-      if (allKeywords.indexOf(TOKEN) === -1) return false
+      if (keywords.indexOf(TOKEN) === -1) return false
 
       return keyword === TOKEN
     }
@@ -40,7 +36,7 @@ function isKeyword (keyword) {
 
       var TOKEN = token.toUpperCase()
 
-      return allKeywords.indexOf(TOKEN) > -1
+      return keywords.indexOf(TOKEN) > -1
     }
   }
 }

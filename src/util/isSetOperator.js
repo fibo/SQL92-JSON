@@ -1,15 +1,12 @@
-var setOperators = require('../setOperators.json')
+var isKeyword = require('./isKeyword')
 
-function isSetOperator (operator) {
-  return function (token) {
-    if (!token) return
+var isExcept = isKeyword('EXCEPT')
+var isIntersect = isKeyword('INTERSECT')
+var isUnion = isKeyword('UNION')
+var isUnionAll = isKeyword('UNION ALL')
 
-    var TOKEN = token.toUpperCase()
-
-    if (setOperators.indexOf(TOKEN) === -1) return false
-
-    return operator === TOKEN
-  }
+function isSetOperator (token) {
+  return (isExcept(token) || isIntersect(token) || isUnion(token) || isUnionAll(token))
 }
 
 module.exports = isSetOperator

@@ -23,9 +23,10 @@ Adding INSERT and other DMLs statements as well as DDLs is on the roadmap.
 Sub queries are supported.
 The following keywords are already implemented and tested:
 
-> `SELECT` `COUNT` `FROM` `GROUP BY` `ORDER BY` `UNION` `UNION ALL`
-> `AND` `OR` `JOIN` `AS` `HAVING` `LEFT JOIN` `WHERE` `BETWEEN` `NOT BETWEEN` `IN`
-> `MIN` `MAX` `AVG` `SUM` `DISTINCT` `LIMIT` `OFFSET` `DESC` `ASC`, `NVL`
+> `SELECT` `*` `FROM` `WHERE` `GROUP BY` `ORDER BY`
+> `EXCEPT` `INTERSECT` `UNION` `UNION ALL`
+> `AND` `OR` `JOIN` `AS` `HAVING` `LEFT JOIN` `BETWEEN` `NOT BETWEEN` `IN`
+> `COUNT` `MIN` `MAX` `AVG` `SUM` `DISTINCT` `LIMIT` `OFFSET` `DESC` `ASC`, `NVL`
 > `LIKE` `NOT LIKE` `CREATE TABLE` `CREATE TABLE foo AS` `UPPER` `LOWER`
 
 ## Installation
