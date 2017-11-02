@@ -153,7 +153,7 @@ function tokenize (sql) {
     if (isPartialKeyword(token)) {
       var TOKEN = token.toUpperCase()
 
-      if (TOKEN === 'CREATE') {
+      if ((TOKEN === 'CREATE') || (TOKEN === 'DROP')) {
         if ([
           'DATABASE', 'SCHEMA', 'SEQUENCE',
           'TABLE', 'USER', 'VIEW'

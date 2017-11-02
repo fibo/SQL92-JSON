@@ -17,6 +17,7 @@
   "DESC",
   "DISTINCT",
   "DROP",
+  "DROP TABLE",
   "END",
   "EXCEPT",
   "EXISTS",

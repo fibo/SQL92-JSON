@@ -26,6 +26,8 @@ test('tokenize', function (t) {
   t.deepEqual(tokenize('not between'), ['not between'], 'NOT BETWEEN')
   t.deepEqual(tokenize('NOT like'), ['NOT like'], 'NOT LIKE')
   t.deepEqual(tokenize('union all'), ['union all'], 'UNION ALL')
+  t.deepEqual(tokenize('Create Table'), ['Create Table'], 'CREATE TABLE')
+  t.deepEqual(tokenize('Drop   Table'), ['Drop Table'], 'DROP TABLE')
   t.deepEqual(tokenize('20170701::VARCHAR::DATE'), ['20170701::VARCHAR::DATE'], 'double cast')
 
   t.deepEqual(tokenize(`
