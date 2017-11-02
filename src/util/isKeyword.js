@@ -5,12 +5,16 @@ var setOperators = require('../setOperators.json')
 var allKeywords = keywords.concat(functions).concat(setOperators)
 
 /**
- * Tells if a keyword is some token or a specific token.
+ * Tells if a token is a SQL keyword.
  *
  * There are two ways to use it.
  *
+ * 1. Any keyword.
+ *
  * isKeyword()('foo') => false
  * isKeyword()('count') => true
+ *
+ * 2. Specific keyword.
  *
  * var isCount = isKeyword('COUNT')
  * isCount('Count') => true

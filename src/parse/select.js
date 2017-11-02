@@ -23,6 +23,7 @@ var isFrom = isKeyword('FROM')
 var isGroupBy = isKeyword('GROUP BY')
 var isHaving = isKeyword('HAVING')
 var isLimit = isKeyword('LIMIT')
+var isLower = isKeyword('LOWER')
 var isMax = isKeyword('MAX')
 var isMin = isKeyword('MIN')
 var isNvl = isKeyword('NVL')
@@ -32,6 +33,7 @@ var isSelect = isKeyword('SELECT')
 var isSum = isKeyword('SUM')
 var isUnion = isKeyword('UNION')
 var isUnionAll = isKeyword('UNION ALL')
+var isUpper = isKeyword('UPPER')
 var isWhere = isKeyword('WHERE')
 
 var condition = require('./condition')
@@ -53,11 +55,14 @@ function select (tokens, sql) {
   var avgExpression
   var countExpression
   var joinKeyword
+  var lowerExpression
   var maxExpression
   var minExpression
   var nvlExpression
   var subQueryExpression
   var sumExpression
+  var upperExpression
+
   var table
 
   var afterNextToken
@@ -235,6 +240,38 @@ function select (tokens, sql) {
       continue
     }
 
+    if (isLower(token)) {
+      lowerExpression = {}
+
+      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token) {
+        i++
+
+        if (['(', ',', ')'].indexOf(token) > -1) return
+
+        if (isStringNumber(token)) {
+          lowerExpression.LOWER = parseFloat(token)
+        } else {
+          lowerExpression.LOWER = token
+        }
+      })
+
+      nextToken = tokens[i + 1]
+      afterNextToken = tokens[i + 2]
+
+      if (isAs(nextToken)) {
+        if (isDoubleQuotedString(afterNextToken)) {
+          afterNextToken = removeFirstAndLastChar(afterNextToken)
+        }
+
+        lowerExpression.AS = afterNextToken
+        i = i + 2
+      }
+
+      json.SELECT.push(lowerExpression)
+
+      continue
+    }
+
     if (isMax(token)) {
       maxExpression = {}
 
@@ -359,6 +396,38 @@ function select (tokens, sql) {
       }
 
       json.SELECT.push(sumExpression)
+
+      continue
+    }
+
+    if (isUpper(token)) {
+      upperExpression = {}
+
+      tokensEnclosedByParenthesis(tokens, i + 1).forEach(function (token) {
+        i++
+
+        if (['(', ',', ')'].indexOf(token) > -1) return
+
+        if (isStringNumber(token)) {
+          upperExpression.UPPER = parseFloat(token)
+        } else {
+          upperExpression.UPPER = token
+        }
+      })
+
+      nextToken = tokens[i + 1]
+      afterNextToken = tokens[i + 2]
+
+      if (isAs(nextToken)) {
+        if (isDoubleQuotedString(afterNextToken)) {
+          afterNextToken = removeFirstAndLastChar(afterNextToken)
+        }
+
+        upperExpression.AS = afterNextToken
+        i = i + 2
+      }
+
+      json.SELECT.push(upperExpression)
 
       continue
     }

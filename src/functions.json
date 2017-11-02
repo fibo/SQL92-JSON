@@ -1,9 +1,11 @@
 [
+  "AVG",
+  "COALESCE",
   "COUNT",
+  "LOWER",
   "MAX",
   "MIN",
-  "AVG",
+  "NVL",
   "SUM",
-  "COALESCE",
-  "NVL"
+  "UPPER"
 ]

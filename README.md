@@ -26,7 +26,7 @@ The following keywords are already implemented and tested:
 > `SELECT` `COUNT` `FROM` `GROUP BY` `ORDER BY` `UNION` `UNION ALL`
 > `AND` `OR` `JOIN` `AS` `HAVING` `LEFT JOIN` `WHERE` `BETWEEN` `NOT BETWEEN` `IN`
 > `MIN` `MAX` `AVG` `SUM` `DISTINCT` `LIMIT` `OFFSET` `DESC` `ASC`, `NVL`
-> `LIKE` `NOT LIKE` `CREATE TABLE` `CREATE TABLE foo AS`
+> `LIKE` `NOT LIKE` `CREATE TABLE` `CREATE TABLE foo AS` `UPPER` `LOWER`
 
 ## Installation
 

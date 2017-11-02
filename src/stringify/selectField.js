@@ -17,6 +17,11 @@ var nvlExpression = require('./nvlExpression')
 var stringField = require('./stringField')
 var sumExpression = require('./sumExpression')
 
+var unaryFunction = require('./unaryFunction')
+
+var lowerExpression = unaryFunction('LOWER')
+var upperExpression = unaryFunction('UPPER')
+
 /**
  * Map columns in a SELECT.
  *
@@ -60,6 +65,10 @@ function selectField (field, select) {
       return countExpression(field)
     }
 
+    if (field.LOWER) {
+      return lowerExpression(field)
+    }
+
     if (field.MAX) {
       return maxExpression(field)
     }
@@ -74,6 +83,10 @@ function selectField (field, select) {
 
     if (field.SUM) {
       return sumExpression(field)
+    }
+
+    if (field.UPPER) {
+      return upperExpression(field)
     }
 
     // Check if it is an alias. This must be the last check since
