@@ -163,6 +163,13 @@ function tokenize (sql) {
         }
       }
 
+      if (TOKEN === 'DELETE') {
+        if (NEXT_TOKEN === 'FROM') {
+          joinedTokens.push(token + ' ' + nextToken)
+          i = i + 1
+        }
+      }
+
       if ((TOKEN === 'GROUP') || (TOKEN === 'ORDER')) {
         if (NEXT_TOKEN === 'BY') {
           joinedTokens.push(token + ' ' + nextToken)

@@ -13,7 +13,7 @@
   "CREATE USER",
   "CREATE VIEW",
   "DATABASE",
-  "DELETE",
+  "DELETE FROM",
   "DESC",
   "DISTINCT",
   "DROP",

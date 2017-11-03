@@ -1,8 +1,10 @@
 var isCreateTable = require('./isCreateTable')
+var isDeleteFrom = require('./isDeleteFrom')
 var isDropTable = require('./isDropTable')
 var isSelect = require('./isSelect')
 
 var createTable = require('./createTable')
+var deleteFrom = require('./deleteFrom')
 var dropTable = require('./dropTable')
 var select = require('./select')
 
@@ -16,6 +18,10 @@ var select = require('./select')
 
 function stringify (json) {
   var sql = ''
+
+  if (isDeleteFrom(json)) {
+    return deleteFrom(json)
+  }
 
   if (isDropTable(json)) {
     return dropTable(json)
