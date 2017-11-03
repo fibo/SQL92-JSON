@@ -4,7 +4,7 @@ var test = require('tape')
 
 var json2sql = require('sql92-json').stringify
 
-var normalizeSQL = require('src/util/normalizeSQL')
+var normalizeSQL = require('util/normalizeSQL')
 
 var examplesDir = path.join(__dirname, '..', 'examples')
 

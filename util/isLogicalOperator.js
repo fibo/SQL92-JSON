@@ -1,4 +1,4 @@
-var logicalOperators = require('../logicalOperators.json')
+var logicalOperators = require('./logicalOperators.json')
 
 function isLogicalOperator (operator) {
   return function (token) {

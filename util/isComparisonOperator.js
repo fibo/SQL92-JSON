@@ -1,4 +1,4 @@
-var comparisonOperators = require('../comparisonOperators.json')
+var comparisonOperators = require('./comparisonOperators.json')
 
 function isComparisonOperator (token) {
   return comparisonOperators.indexOf(token) > -1

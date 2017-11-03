@@ -2,7 +2,7 @@ var fs = require('fs')
 var path = require('path')
 var test = require('tape')
 
-var isDropTable = require('src/stringify/isDropTable')
+var isDropTable = require('stringify/isDropTable')
 
 var examplesDir = path.join(__dirname, '..', '..', 'examples')
 

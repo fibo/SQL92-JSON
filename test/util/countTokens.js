@@ -1,7 +1,6 @@
-
 var test = require('tape')
 
-var countTokens = require('src/util/countTokens')
+var countTokens = require('util/countTokens')
 
 test('countTokens', function (t) {
   t.equal(countTokens('string'), 1)

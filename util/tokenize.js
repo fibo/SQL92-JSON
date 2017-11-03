@@ -2,7 +2,7 @@ var splitOnOperators = require('./splitOnOperators')
 var isPartialKeyword = require('./isPartialKeyword')
 
 /**
- * Analyze SQL and convert into a list of tokens.
+r* Analyze SQL and convert it into a list of tokens.
  *
  * @param {String} sql
  *

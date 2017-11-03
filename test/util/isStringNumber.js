@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var isStringNumber = require('src/util/isStringNumber')
+var isStringNumber = require('util/isStringNumber')
 
 test('isStringNumber', function (t) {
   t.ok(isStringNumber('1'), 'integer')

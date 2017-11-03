@@ -1,8 +1,8 @@
 var test = require('tape')
 
-var condition = require('src/parse/condition')
-var select = require('src/parse/select')
-var tokenize = require('src/util/tokenize')
+var condition = require('parse/condition')
+var select = require('parse/select')
+var tokenize = require('util/tokenize')
 
 test('condition', function (t) {
   var sql1 = 'SELECT day, region, COUNT(*) FROM mytable WHERE foo = bar GROUP BY day, region'

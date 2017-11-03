@@ -2,7 +2,7 @@ var fs = require('fs')
 var path = require('path')
 var test = require('tape')
 
-var isSelect = require('src/stringify/isSelect')
+var isSelect = require('stringify/isSelect')
 
 var examplesDir = path.join(__dirname, '..', '..', 'examples')
 

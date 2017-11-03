@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var nvlExpression = require('src/stringify/nvlExpression')
+var nvlExpression = require('stringify/nvlExpression')
 
 test('nvlExpression', function (t) {
   t.equal(nvlExpression({ NVL: [ 'click', 0 ] }), 'NVL(click, 0)', 'NVL')

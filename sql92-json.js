@@ -1,4 +1,4 @@
 module.exports = exports.default = {
-  parse: require('./src/parse'),
-  stringify: require('./src/stringify')
+  parse: require('./parse'),
+  stringify: require('./stringify')
 }

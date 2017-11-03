@@ -1,4 +1,4 @@
-var stringOperators = require('../stringOperators.json')
+var stringOperators = require('./stringOperators.json')
 
 function isStringOperator (token) {
   return stringOperators.indexOf(token) > -1

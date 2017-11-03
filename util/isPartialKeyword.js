@@ -1,4 +1,4 @@
-var partialKeywords = require('../partialKeywords.json')
+var partialKeywords = require('./partialKeywords.json')
 
 function isPartialKeyword (token) {
   var TOKEN = token.toUpperCase()

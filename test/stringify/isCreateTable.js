@@ -2,7 +2,7 @@ var fs = require('fs')
 var path = require('path')
 var test = require('tape')
 
-var isCreateTable = require('src/stringify/isCreateTable')
+var isCreateTable = require('stringify/isCreateTable')
 
 var examplesDir = path.join(__dirname, '..', '..', 'examples')
 

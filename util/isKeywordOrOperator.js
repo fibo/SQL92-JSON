@@ -1,9 +1,9 @@
-var comparisonOperators = require('../comparisonOperators.json')
-var logicalOperators = require('../logicalOperators.json')
-var mathOperators = require('../mathOperators.json')
-var setOperators = require('../setOperators.json')
-var stringOperators = require('../stringOperators.json')
-var keywords = require('../keywords.json')
+var comparisonOperators = require('./comparisonOperators.json')
+var logicalOperators = require('./logicalOperators.json')
+var mathOperators = require('./mathOperators.json')
+var setOperators = require('./setOperators.json')
+var stringOperators = require('./stringOperators.json')
+var keywords = require('./keywords.json')
 
 function isKeywordOrOperator (token) {
   if (comparisonOperators.indexOf(token) > -1) return true

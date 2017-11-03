@@ -1,4 +1,4 @@
-var keywords = require('../keywords.json')
+var keywords = require('./keywords.json')
 
 /**
  * Tells if a token is a SQL keyword.

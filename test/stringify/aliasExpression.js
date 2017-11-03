@@ -1,7 +1,7 @@
 var test = require('tape')
 
-var aliasExpression = require('src/stringify/aliasExpression')
-var select = require('src/stringify/select')
+var aliasExpression = require('stringify/aliasExpression')
+var select = require('stringify/select')
 
 test('minExpression', function (t) {
   t.equal(aliasExpression({ }), '', 'no alias')

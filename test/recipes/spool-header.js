@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var normalizeSQL = require('src/util/normalizeSQL')
+var normalizeSQL = require('util/normalizeSQL')
 
 var sql2json = require('sql92-json').parse
 var json2sql = require('sql92-json').stringify

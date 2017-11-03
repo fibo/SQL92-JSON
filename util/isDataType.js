@@ -1,4 +1,4 @@
-var dataTypes = require('../dataTypes.json')
+var dataTypes = require('./dataTypes.json')
 
 function isDataType (token) {
   var TOKEN = token.toUpperCase()

@@ -10,7 +10,7 @@ var quoteIfString = require('../util/quoteIfString')
 
 var isArray = Array.isArray
 
-var comparisonOperators = require('../comparisonOperators')
+var comparisonOperators = require('../util/comparisonOperators.json')
 
 /**
  * Extract filter.

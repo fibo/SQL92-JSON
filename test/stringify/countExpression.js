@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var countExpression = require('src/stringify/countExpression')
+var countExpression = require('stringify/countExpression')
 
 test('countExpression', function (t) {
   t.equal(countExpression({ COUNT: '*' }), 'COUNT(*)', 'COUNT(*)')

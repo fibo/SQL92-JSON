@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var isFieldName = require('src/util/isFieldName')
+var isFieldName = require('util/isFieldName')
 
 test('isFieldName', function (t) {
   t.ok(isFieldName('field'), 'field')

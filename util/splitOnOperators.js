@@ -1,4 +1,4 @@
-var comparisonOperators = require('../comparisonOperators.json')
+var comparisonOperators = require('./comparisonOperators.json')
 
 /**
  * Take a string that is supposed to be not quoted or double quoted.

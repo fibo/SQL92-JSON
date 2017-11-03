@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var isFunction = require('src/util/isFunction')
+var isFunction = require('util/isFunction')
 
 test('isFunction', function (t) {
   t.ok(isFunction('COUNT'), 'COUNT')

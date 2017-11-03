@@ -2,7 +2,7 @@
 
 var test = require('tape')
 
-var tokenize = require('../../src/util/tokenize')
+var tokenize = require('util/tokenize')
 
 test('tokenize', function (t) {
   t.deepEqual(tokenize('select'), ['select'])

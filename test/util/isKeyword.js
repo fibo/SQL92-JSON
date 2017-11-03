@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var isKeyword = require('src/util/isKeyword')
+var isKeyword = require('util/isKeyword')
 
 var isJoin = isKeyword('JOIN')
 var isUnion = isKeyword('UNION')

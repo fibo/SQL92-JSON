@@ -1,4 +1,4 @@
-var functions = require('../functions.json')
+var functions = require('./functions.json')
 
 function isFunction (token) {
   var TOKEN = token.toUpperCase()
