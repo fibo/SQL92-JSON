@@ -21,16 +21,6 @@ title: sql92-json
 
 [![Demo](//g14n.info/SQL92-JSON/demo.png)](//g14n.info/SQL92-JSON/demo)
 
-🚧 **STATUS**: Right now the test suite contains many SELECT statements (and few CREATEs) that are serialized into JSON and viceversa parsed back into SQL successfully.
-Adding INSERT and other DMLs statements as well as DDLs is on the roadmap.
-Sub queries are supported.
-The following keywords are already implemented and tested:
-
-> `SELECT` `COUNT` `FROM` `GROUP BY` `ORDER BY` `UNION` `UNION ALL`
-> `AND` `OR` `JOIN` `AS` `HAVING` `LEFT JOIN` `WHERE` `BETWEEN` `NOT BETWEEN` `IN`
-> `MIN` `MAX` `AVG` `SUM` `DISTINCT` `LIMIT` `OFFSET` `DESC` `ASC`, `NVL`
-> `LIKE` `NOT LIKE` `CREATE TABLE` `CREATE TABLE foo AS`
-
 ## Installation
 
 ### Using npm
@@ -55,6 +45,8 @@ Adding this to your HTML page
 
 > Convert a JSON to SQL
 
+Both `require('sql92-json').stringify` and `require('sql92-json/stringify')` are valid.
+
 ```javascript
 var json2sql = require('sql92-json').stringify
 
@@ -68,6 +60,8 @@ console.log(json2sql({ SELECT: ['*'], FROM: ['revenue'] }))
 ### `parse`
 
 > Convert an SQL to JSON
+
+Both `require('sql92-json').parse` and `require('sql92-json/parse')` are valid.
 
 ```javascript
 var sql2json = require('sql92-json').parse
