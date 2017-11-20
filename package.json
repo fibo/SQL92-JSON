@@ -47,11 +47,11 @@
     "browserify": "^14.5.0",
     "coveralls": "^3.0.0",
     "dot-editorconfig": "^1.0.1",
-    "nyc": "^11.2.1",
+    "nyc": "^11.3.0",
     "pre-commit": "^1.2.2",
-    "standa": "^1.0.2",
+    "standa": "^1.1.0",
     "tape": "^4.8.0",
-    "uglify-js": "^3.1.6"
+    "uglify-js": "^3.1.10"
   },
   "dependencies": {}
 }
