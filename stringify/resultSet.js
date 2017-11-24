@@ -56,17 +56,17 @@ function resultSet (select) {
       var tableAlias = getTableNameAlias(tableNameWithAlias)
       var tableName = tableNameWithAlias[tableAlias]
       var joinKeyword = getJoinKeyword(statement)
-      var joinJSON = statement[joinKeyword]
+      var joinObj = statement[joinKeyword]
 
       if (joinKeyword) {
         result = notFirstJoin ? '' : tableName + ' ' + tableAlias + ' '
 
-        var joinTableNameWithAlias = getTableNameWithAlias(joinJSON)
+        var joinTableNameWithAlias = getTableNameWithAlias(joinObj)
 
         if (joinTableNameWithAlias) {
           var joinTableAlias = getTableNameAlias(joinTableNameWithAlias)
           var joinTableName = joinTableNameWithAlias[joinTableAlias]
-          var onCondition = joinJSON.ON.slice(0)
+          var onCondition = joinObj.ON.slice(0)
 
           result += [joinKeyword, joinTableName, joinTableAlias].join(' ')
           result += ' ON ' + conditions(select)(onCondition)
@@ -75,13 +75,13 @@ function resultSet (select) {
         // TODO statement like JOIN (select * from table) t
         // use getResultSetWithAlias()
 
-        var nextJoinKeyword = getJoinKeyword(joinJSON)
+        var nextJoinKeyword = getJoinKeyword(joinObj)
 
         if (nextJoinKeyword) {
           var nextJoinStatement = {}
           notFirstJoin = true
-          nextJoinStatement[nextJoinKeyword] = joinJSON[nextJoinKeyword]
-          result += ' ' + stringifyResultSet(joinJSON, notFirstJoin)
+          nextJoinStatement[nextJoinKeyword] = joinObj[nextJoinKeyword]
+          result += ' ' + stringifyResultSet(joinObj, notFirstJoin)
         }
       } else {
         // No JOIN found.
