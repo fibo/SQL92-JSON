@@ -33,7 +33,7 @@ npm install sql92-json
 
 ### Using a CDN
 
-Adding this to your HTML page
+Add this to your HTML page
 
 ```html
 <script src="https://unpkg.com/sql92-json/dist/sql92-json.min.js"></script>
@@ -77,7 +77,7 @@ console.log(sql2json('SELECT * FROM revenue')
 
 * [Resultset count](http://g14n.info/SQL92-JSON/recipes/resultset-count/)
 * [Spool header](http://g14n.info/SQL92-JSON/recipes/spool-header/)
-* [Table list](http://g14n.info/SQL92-JSON/recipes/table-list/): (To be completed)
+* [Table list](http://g14n.info/SQL92-JSON/recipes/table-list/) (PoC)
 
 ## Examples
 
