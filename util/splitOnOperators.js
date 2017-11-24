@@ -55,6 +55,8 @@ function splitOnOperators (notQuotedString) {
           currentToken = ''
 
           i = i + 1
+
+          continue
         }
       }
 

@@ -29,6 +29,13 @@ test('tokenize', function (t) {
   t.deepEqual(tokenize('Create Table'), ['Create Table'], 'CREATE TABLE')
   t.deepEqual(tokenize('Drop   Table'), ['Drop Table'], 'DROP TABLE')
   t.deepEqual(tokenize('20170701::VARCHAR::DATE'), ['20170701::VARCHAR::DATE'], 'double cast')
+  t.deepEqual(tokenize('WHERE foo > bar'), ['WHERE', 'foo', '>', 'bar'], 'comparison operator >')
+  t.deepEqual(tokenize('WHERE foo = bar'), ['WHERE', 'foo', '=', 'bar'], 'comparison operator =')
+  t.deepEqual(tokenize('WHERE foo < bar'), ['WHERE', 'foo', '<', 'bar'], 'comparison operator <')
+  t.deepEqual(tokenize('WHERE foo != bar'), ['WHERE', 'foo', '!=', 'bar'], 'comparison operator !=')
+  t.deepEqual(tokenize('WHERE foo >= bar'), ['WHERE', 'foo', '>=', 'bar'], 'comparison operator !=')
+  t.deepEqual(tokenize('WHERE foo <= bar'), ['WHERE', 'foo', '<=', 'bar'], 'comparison operator <=')
+  t.deepEqual(tokenize('WHERE foo <> bar'), ['WHERE', 'foo', '<>', 'bar'], 'comparison operator <>')
 
   t.deepEqual(tokenize(`
 SELECT COUNT(    *) AS num

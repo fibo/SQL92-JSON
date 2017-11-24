@@ -30,7 +30,7 @@ npm install sql92-json
 
 ### Using a CDN
 
-Adding this to your HTML page
+Add this to your HTML page
 
 ```html
 <script src="https://unpkg.com/sql92-json/dist/sql92-json.min.js"></script>

@@ -109,7 +109,7 @@ function tokenize (sql) {
           } else {
             currentToken += currentChar
 
-            // Push it, f it is last token.
+            // Push it, if it is last token.
             if (index === array.length - 1) {
               tokens = tokens.concat(splitOnOperators(currentToken))
             }
