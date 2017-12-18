@@ -35,6 +35,10 @@ function filter (select) {
       var operator = comparisonOperators[i]
       var operand = filter[operator]
 
+      if (isArray(operand)) {
+        return operator + ' ' + operand.join(' ')
+      }
+
       if (typeof operand !== 'undefined') {
         return operator + ' ' + operand
       }

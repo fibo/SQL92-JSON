@@ -1,0 +1,47 @@
+{
+  "SELECT": [
+    {
+      "AS": {
+        "day": "t.time::date"
+      }
+    },
+    "t.id",
+    "t.name",
+    {
+      "COUNT": 1,
+      "AS": "num"
+    }
+  ],
+  "FROM": [
+    {
+      "t": "my.table"
+    }
+  ],
+  "WHERE": [
+    "t.time::date",
+    {
+      ">": [ "SYSDATE", "-", 2 ]
+    },
+    {
+      "AND": [
+        "id",
+        {
+          "IN": [
+            "id1",
+            "id2"
+          ]
+        }
+      ]
+    }
+  ],
+  "GROUP BY": [
+    "t.time::date",
+    "t.id",
+    "t.name"
+  ],
+  "ORDER BY": [
+    {
+      "DESC": 4
+    }
+  ]
+}

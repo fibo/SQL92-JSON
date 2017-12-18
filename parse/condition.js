@@ -1,29 +1,27 @@
 var error = require('../error')
 
 var between = require('./between')
-var like = require('./like')
-
-var isKeyword = require('../util/isKeyword')
-var isSingleQuotedString = require('../util/isSingleQuotedString')
-var isStringNumber = require('../util/isStringNumber')
-
+var comparison = require('./comparison')
+var isMathOperator = require('../util/isMathOperator')
 var isAnyJoin = require('../util/isAnyJoin')
 var isComparisonOperator = require('../util/isComparisonOperator')
 var isKeywordOrOperator = require('../util/isKeywordOrOperator')
+var isKeyword = require('../util/isKeyword')
 var isLogicalOperator = require('../util/isLogicalOperator')
-var comparison = require('./comparison')
+var isSingleQuotedString = require('../util/isSingleQuotedString')
+var isStringNumber = require('../util/isStringNumber')
+var like = require('./like')
 var removeFirstAndLastChar = require('../util/removeFirstAndLastChar')
-
-var isSelect = isKeyword('SELECT')
 
 var isAnd = isLogicalOperator('AND')
 var isOr = isLogicalOperator('OR')
 
 var isBetween = isKeyword('BETWEEN')
+var isIn = isKeyword('IN')
 var isLike = isKeyword('LIKE')
 var isNotBetween = isKeyword('NOT BETWEEN')
 var isNotLike = isKeyword('NOT LIKE')
-var isIn = isKeyword('IN')
+var isSelect = isKeyword('SELECT')
 
 /**
  * Parse a filter condition, like a JOIN, WHERE or HAVING clause.
@@ -46,9 +44,9 @@ function condition (tokens, startIndex, select, sql) {
   var token
 
   var andCondition = null
-  var orCondition = null
-  var currentCondition = null
   var comparisonExpression
+  var currentCondition = null
+  var orCondition = null
 
   var leftOperand
   var rightOperand

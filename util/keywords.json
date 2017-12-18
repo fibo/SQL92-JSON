@@ -26,6 +26,7 @@
   "FROM",
   "FULL OUTER JOIN",
   "GRANT",
+  "IN",
   "INSERT",
   "JOIN",
   "GROUP BY",
