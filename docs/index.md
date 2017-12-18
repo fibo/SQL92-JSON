@@ -41,6 +41,13 @@ Add this to your HTML page
 
 ## API
 
+Both CommonJS and ES6 imports are supported. Code snippets below use
+`require`, it is also possible to do
+
+```javascript
+import { parse, stringify } from 'sql92-json'
+```
+
 ### `stringify`
 
 > Convert a JSON to SQL
