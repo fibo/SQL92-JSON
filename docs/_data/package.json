@@ -17,7 +17,7 @@
     "docs:_data:package.json": "cp package.json docs/_data",
     "docs:_data:tags.json": "wget https://api.github.com/repos/fibo/${npm_package_name}/tags -O docs/_data/tags.json",
     "homepage": "echo \"---\ntitle: $npm_package_name\n---\" > docs/index.md; cat README.md >> docs/index.md",
-    "lint": "standa",
+    "lint": "standa error/*js parse/*js stringify/*js test/*js test/*/*js util/*js",
     "minify": "cd dist; uglifyjs ${npm_package_name}.js --source-map --output ${npm_package_name}.min.js --compress --mangle -b beautify=false,preamble='\"// http://g14n.info/SQL92-JSON\"'; cd -",
     "preversion": "npm run build",
     "postbuild": "git add dist/ docs/; git commit -n -m 'build'; git push origin master",
