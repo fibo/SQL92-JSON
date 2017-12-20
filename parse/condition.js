@@ -2,7 +2,6 @@ var error = require('../error')
 
 var between = require('./between')
 var comparison = require('./comparison')
-var isMathOperator = require('../util/isMathOperator')
 var isAnyJoin = require('../util/isAnyJoin')
 var isComparisonOperator = require('../util/isComparisonOperator')
 var isKeywordOrOperator = require('../util/isKeywordOrOperator')
@@ -152,7 +151,7 @@ function condition (tokens, startIndex, select, sql) {
 
     if (isComparisonOperator(nextToken)) {
       try {
-        comparisonExpression = comparison(token, nextToken, afterNextToken)
+        comparisonExpression = comparison(tokens.slice(i))
 
         if (andCondition) {
           andCondition.AND = andCondition.AND.concat(comparisonExpression)
