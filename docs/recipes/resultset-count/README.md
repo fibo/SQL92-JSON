@@ -1,9 +1,9 @@
 ---
-title: Result set count
+title: Compute resultset count
 permalink: /recipes/resultset-count/
 ---
 
-# Result set count
+# Resultset count
 
 [test source](https://github.com/fibo/SQL92-JSON/blob/master/test/recipes/resultset-count.js)
 

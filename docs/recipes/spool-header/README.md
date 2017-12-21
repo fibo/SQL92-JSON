@@ -1,5 +1,5 @@
 ---
-title: Spool header
+title: Prepend spool header
 permalink: /recipes/spool-header/
 ---
 
