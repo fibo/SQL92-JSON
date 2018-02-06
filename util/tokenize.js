@@ -1,6 +1,9 @@
 var splitOnOperators = require('./splitOnOperators')
 var isPartialKeyword = require('./isPartialKeyword')
 
+var isKeyword = require('../util/isKeyword')
+var isIn = isKeyword('IN')
+
 /**
 r* Analyze SQL and convert it into a list of tokens.
  *
@@ -217,7 +220,12 @@ function tokenize (sql) {
         }
       }
     } else {
-      joinedTokens.push(token)
+      // FIXME
+      if (isIn(token)) {
+        joinedTokens.push('IN')
+      } else {
+        joinedTokens.push(token)
+      }
     }
   }
 

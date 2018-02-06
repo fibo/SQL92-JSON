@@ -63,5 +63,17 @@ FROM (
     ')'
   ], 'readme example')
 
+  t.deepEqual(tokenize(`
+SELECT eventname
+FROM trk.image
+WHERE product='richmedia'
+  AND channel in ('adform','Adform')
+  `), [
+    'SELECT', 'eventname',
+    'FROM', 'trk.image',
+    'WHERE', 'product', '=', "'richmedia'",
+    'AND', 'channel', 'IN', '(', "'adform'", ',', "'Adform'", ')'
+  ], 'mixed case')
+
   t.end()
 })
