@@ -82,8 +82,9 @@ console.log(sql2json('SELECT * FROM revenue')
 
 ## Recipes
 
-* [Resultset count](http://g14n.info/SQL92-JSON/recipes/resultset-count/)
-* [Spool header](http://g14n.info/SQL92-JSON/recipes/spool-header/)
+* [Add resultset limit](http://g14n.info/SQL92-JSON/recipes/resultset-limit/) (WiP)
+* [Compute resultset count](http://g14n.info/SQL92-JSON/recipes/resultset-count/)
+* [Prepend pool header](http://g14n.info/SQL92-JSON/recipes/spool-header/)
 * [Table list](http://g14n.info/SQL92-JSON/recipes/table-list/) (PoC)
 
 ## Examples
@@ -94,9 +95,7 @@ See for example the following [example JSON][exampleJSON] and its [corresponding
 
 ```json
 {
-  "SELECT": [
-    { "COUNT": "*", "AS": "num" }
-  ],
+  "SELECT": [ { "COUNT": "*", "AS": "num" } ],
   "FROM": [
     {
       "SELECT": ["*"],

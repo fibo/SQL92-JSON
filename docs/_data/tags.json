@@ -1,5 +1,14 @@
 [
   {
+    "name": "v0.19.0",
+    "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.19.0",
+    "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.19.0",
+    "commit": {
+      "sha": "63f3ad54ff443254274998c3539f8e83350b0d16",
+      "url": "https://api.github.com/repos/fibo/SQL92-JSON/commits/63f3ad54ff443254274998c3539f8e83350b0d16"
+    }
+  },
+  {
     "name": "v0.18.2",
     "zipball_url": "https://api.github.com/repos/fibo/SQL92-JSON/zipball/v0.18.2",
     "tarball_url": "https://api.github.com/repos/fibo/SQL92-JSON/tarball/v0.18.2",
