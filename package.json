@@ -54,11 +54,11 @@
     "dot-editorconfig": "^1.0.1",
     "nyc": "^11.3.0",
     "pre-commit": "^1.2.2",
-    "standa": "^1.1.0",
+    "standa": "^2.0.2",
     "tape": "^4.8.0",
     "uglify-js": "^3.1.10"
   },
   "dependencies": {
-    "sql-tokenizer": "^0.1.0"
+    "sql-tokenizer": "^0.2.0"
   }
 }
