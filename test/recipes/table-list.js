@@ -1,3 +1,4 @@
+/*
 var test = require('tape')
 
 var sql2json = require('sql92-json').parse
@@ -78,3 +79,4 @@ test('recipe table-list', (t) => {
 
   t.end()
 })
+*/

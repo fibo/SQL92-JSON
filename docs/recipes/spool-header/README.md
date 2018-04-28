@@ -125,8 +125,10 @@ console.log(json2sql(queryStar))
 Since all fields in a `UNION` must have the same cardinality and data
 type, it is necessary to cast all fields to `VARCHAR`. Furthermore the
 header could appear not in the first row.
-See [this answer on Stack Overflow](http://stackoverflow.com/a/27863648/1217468)
-the statement we need is something like the following
+See [this answer on Stack Overflow](http://stackoverflow.com/a/27863648/1217468).
+**Know issue*: Casting a boolean to `VARCHAR` could lead to an error (for sure on Redshift):
+you would need to know which datatype every filed has, and cast booleans to `INTEGER`.
+The statement we need is something like the following
 
 ```sql
 SELECT foo, bar

@@ -2,7 +2,7 @@ var test = require('tape')
 
 var tokensEnclosedByParenthesis = require('util/tokensEnclosedByParenthesis')
 
-test('splitOnOperators', function (t) {
+test('tokensEnclosedByParenthesis', function (t) {
   t.deepEqual(tokensEnclosedByParenthesis(['(', 'a', ')'], 0), ['(', 'a', ')'], 'plain expression')
 
   t.deepEqual(tokensEnclosedByParenthesis(

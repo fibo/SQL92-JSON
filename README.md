@@ -49,10 +49,8 @@ import { parse, stringify } from 'sql92-json'
 
 > Convert a JSON to SQL
 
-Both `require('sql92-json').stringify` and `require('sql92-json/stringify')` are valid.
-
 ```javascript
-var json2sql = require('sql92-json').stringify
+const json2sql = require('sql92-json').stringify
 
 console.log(json2sql({ SELECT: ['*'], FROM: ['revenue'] }))
 //
@@ -65,10 +63,8 @@ console.log(json2sql({ SELECT: ['*'], FROM: ['revenue'] }))
 
 > Convert an SQL to JSON
 
-Both `require('sql92-json').parse` and `require('sql92-json/parse')` are valid.
-
 ```javascript
-var sql2json = require('sql92-json').parse
+const sql2json = require('sql92-json').parse
 
 console.log(sql2json('SELECT * FROM revenue')
 // {
