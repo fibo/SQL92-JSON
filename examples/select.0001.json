@@ -1,0 +1,20 @@
+[
+  {
+    "type": "select statement",
+    "data": [
+      {
+        "type": "select keyword",
+        "code": [ "SELECT", " " ]
+      },
+      {
+        "type": "select list",
+        "data": [
+          {
+            "type": "derived column",
+            "code": [ 1, "\n" ]
+          }
+        ]
+      }
+    ]
+  }
+]

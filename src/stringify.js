@@ -7,7 +7,9 @@
  */
 
 function stringify (json) {
-  return json.reduce((sql, { code }) => sql + code.join(''), '')
+  return json.reduce((sql, { code, data }) => (
+    data ? sql + stringify(data) : sql + code.join('')
+  ), '')
 }
 
 module.exports = stringify
