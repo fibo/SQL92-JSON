@@ -1,0 +1,23 @@
+[
+  {
+    "type": "select statement",
+    "data": [
+      {
+        "type": "select keyword",
+        "code": [ "SELECT", " " ]
+      },
+      {
+        "type": "asterisk",
+        "code": [ "*", "\n" ]
+      },
+      {
+        "type": "from keyword",
+        "code": [ "FROM", " " ]
+      },
+      {
+        "type": "table name",
+        "code": [ "mytable", "\n" ]
+      }
+    ]
+  }
+]

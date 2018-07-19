@@ -82,10 +82,7 @@ function selectStatementData (tokens) {
 
         break
       case (foundSelect && !parsedSelectList):
-        const selectList = {
-          type: 'select list',
-          data: selectListData(tokens.slice(index))
-        }
+        const selectList = selectListData(tokens.slice(index))
 
         index += numTokens(selectList) - 1
 
@@ -117,12 +114,10 @@ function selectStatementData (tokens) {
 }
 
 function selectListData (tokens) {
-  return [
-    {
-      "type": "derived column",
-      "code": [ 1, "\n" ]
-    }
-  ]
+  return {
+    "type": "derived column",
+    "code": [ 1, "\n" ]
+  }
 }
 
 function keywordCode (tokens) {
